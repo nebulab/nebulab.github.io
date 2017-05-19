@@ -1,0 +1,554 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>AB(C) testing with Ruby on Rails</title>
+    <meta name="description" content="A/B testing can be as easy as abc with Ruby on Rails using Split. Follow this simple A/B testing tutorial.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="AB(C) testing with Ruby on Rails">
+    <meta name="twitter:description" content="A/B testing can be as easy as abc with Ruby on Rails using Split. Follow this simple A/B testing tutorial.">
+    <meta name="twitter:image" content="/blog/images/articles-images/abc-testing-rails/abc_testing_rails-8850042e.jpg">
+
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="8 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="AB(C) testing with Ruby on Rails by Simone Bravo" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/ab(c)-testing-with-ruby-on-rails/" />
+    <meta property="og:image" content="/blog/images/articles-images/abc-testing-rails/abc_testing_rails-8850042e.jpg" />
+    <meta property="og:description" content="A/B testing can be as easy as abc with Ruby on Rails using Split. Follow this simple A/B testing tutorial." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_ab-c--testing-with-ruby-on-rails blog_ab-c--testing-with-ruby-on-rails_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          AB(C) testing with Ruby on Rails
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/simone-bf6c55e5.jpg" alt="Simone" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Simone Bravo
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          8 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/abc-testing-rails/abc_testing_rails-8850042e.jpg" alt="AB(C) testing with Ruby on Rails" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>I&rsquo;d have never expected A/B testing would be so easy with Ruby on Rails. At the
+very beginning I didn&rsquo;t even have an idea on what A/B tests were but after a
+little investigation I got over it using <strong>Split</strong>: a simple gem that rocks.</p>
+
+<h2>What is A/B testing?</h2>
+
+<h6><a href="https://en.wikipedia.org/wiki/A/B_testing">Wikipedia</a> says:</h6>
+<pre class="highlight plaintext"><code>In marketing and business intelligence, A/B testing is a term for a randomized
+experiment with two variants, A and B, which are the control and variation in
+the controlled experiment.
+In online settings, such as web design (especially user experience design), the
+goal of A/B testing is to identify changes to web pages that increase or
+maximize an outcome of interest (e.g., click-through rate for a banner
+advertisement). A/B testing is a way to compare two versions of a single
+variable typically by testing a subject's response to variable A against
+variable B, and determining which of the two variables is more effective.
+</code></pre>
+<h4>Requirements</h4>
+
+<p>In this article I&rsquo;ll take for granted you have already installed Ruby on Rails
+and Redis.</p>
+
+<h2>Let&rsquo;s start</h2>
+
+<h3>Choose your tests</h3>
+
+<p>It may seem to be a foregone step but take some time to choose exactly what to
+test on your application.
+As a programmer this step may result the most complex one, so, if you are trying
+to improve your site effectiveness, you may consider to ask an expert for help
+(e.g. a web strategist or a UX designer).</p>
+
+<h3>Set up your Gemfile</h3>
+
+<p>Ok, now you know what to do so let&rsquo;s start by installing the gem. I chose Split
+for its ease of use and customization. Add the gem to your Gemfile</p>
+<pre class="highlight ruby"><code><span class="n">gem</span> <span class="s1">'split'</span><span class="p">,</span> <span class="s1">'~&gt; 2.2.0'</span><span class="p">,</span> <span class="ss">require: </span><span class="s1">'split/dashboard'</span>
+</code></pre>
+<p>I&rsquo;ll explain later why the <code>require</code> parameter is needed. I suggest you to
+control the version number with the <strong>~&gt;</strong> so you&rsquo;ll be sure to have <strong>2.2.*</strong>
+versions and be safe from breaking upgrades.</p>
+
+<h3>Start in your controller</h3>
+
+<p>Split allows you to create several tests at once. However, in my opinion, the
+best way is to start the test in your controller assigning the experiment value
+to an instance variable and then use it to create different pages.
+I found it very difficult to nest more than two tests at once and try to
+understand their results.
+The simplest way is to do as follows:</p>
+<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">YourController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@experiment</span> <span class="o">=</span> <span class="n">ab_test</span><span class="p">(</span><span class="ss">:my_page</span><span class="p">,</span> <span class="p">[</span><span class="s2">"simple"</span><span class="p">,</span> <span class="s2">"kind"</span><span class="p">,</span> <span class="s2">"clickbait"</span><span class="p">])</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>By doing that your controller will start a different test for each user. You
+don&rsquo;t need to save data and remember each visit, <strong>Split</strong> will handle all the
+session details to make sure that every time users request the page they&rsquo;ll get
+the same experiment variant.</p>
+
+<h2>Warning</h2>
+
+<p>Running multiple experiments at once on your application is totally fine but
+avoid creating more than one experiment per page.
+You&rsquo;ll probably run into false positive tests, that&rsquo;s not A/B testing and if
+you need this kind of feedback you should probably check out
+<a href="https://en.wikipedia.org/wiki/Multivariate_testing_in_marketing#In_internet_marketing">multivariate testing</a>.
+These tests are more complex than A/B tests and you&rsquo;ll need more visitors in
+order to get consistent results.</p>
+
+<h3>Edit related views</h3>
+
+<p>Now the <code>@experiment</code> variable will contain the experiment variant value so
+let&rsquo;s start using it. The simplest way to do that is by using <code>if/elsif</code>
+statements and switch your view code as you wish. Here&rsquo;s a simple example on how
+to do that:</p>
+<pre class="highlight erb"><code><span class="cp">&lt;%</span> <span class="k">if</span> <span class="vi">@experiment</span> <span class="o">==</span> <span class="s1">'simple'</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>That's a simple tutorial<span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">elsif</span> <span class="vi">@experiment</span> <span class="o">==</span> <span class="s1">'kind'</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Hi, can you please read this tutorial?<span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">elsif</span> <span class="vi">@experiment</span> <span class="o">==</span> <span class="s1">'clickbait'</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>This tutorial is so cool, check it out!<span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<p>While running in the development environment you can ask Split to return a
+particular experiment just by adding: <code>?ab_test[my_page]=simple</code> in the URL
+params. This will allow you to check if views are rendered properly.
+Here&rsquo;s an example took from our client <a href="https://floyddetroit.com">Floyd</a>.
+<img src="/blog/images/articles-images/abc-testing-rails/view-example-f33ef1f5.jpg" alt="View Screenshot" /></p>
+
+<h3>Choose wisely your trigger</h3>
+
+<p>Don&rsquo;t aim too high when you&rsquo;re choosing your trigger to decide if an experiment
+is a success.
+If you&rsquo;re thinking about directly measuring a product sale I&rsquo;m sorry but that&rsquo;s
+not the correct one: we are trying to find a perceptible change.
+You may test your product page visits, this will probably be the most efficient
+trigger.
+After this tough decision you can configure the conversion tracking method in
+your controller following this pattern:</p>
+<pre class="highlight ruby"><code><span class="k">def</span> <span class="nf">show</span>
+  <span class="c1"># ...</span>
+  <span class="n">ab_finished</span><span class="p">(</span><span class="ss">:my_page</span><span class="p">)</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<p>Now every visit on the show action will be measured and saved to <strong>Redis</strong>.</p>
+
+<h3>Activate the dashboard</h3>
+
+<p>In order to check your results you need to configure <strong>Split&rsquo;s dashboard</strong>. But
+here&rsquo;s the surprise: you&rsquo;ve already done half the work. Do you remember your
+Gemfile? Yes that <code>require</code> is needed to add the dashboard, it will include a
+simple Sinatra front end application that does the trick.
+The missing part is the route configuration. I suggest to put the dashboard
+on the admin area so users can&rsquo;t see it:</p>
+
+<p><strong>Notice</strong>: I&rsquo;m using Devise in this example!</p>
+<pre class="highlight ruby"><code><span class="n">namespace</span> <span class="ss">:admin</span> <span class="k">do</span>
+  <span class="n">authenticate</span> <span class="ss">:admin_user</span><span class="p">,</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="p">{</span> <span class="n">u</span><span class="p">.</span><span class="nf">admin?</span> <span class="p">}</span> <span class="k">do</span>
+    <span class="n">mount</span> <span class="no">Split</span><span class="o">::</span><span class="no">Dashboard</span><span class="p">,</span> <span class="ss">at: </span><span class="s1">'/split'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>Following this example you&rsquo;ll prevent curious users from visiting the dashboard
+and discover your secret plans.
+As you can see you&rsquo;ll find the dashboard on the <code>/admin/split</code> path.
+All collected data is displayed in a simple and straightforward way:
+<img src="/blog/images/articles-images/abc-testing-rails/dashboard-5b82a048.jpg" alt="View Screenshot" /></p>
+
+<h3>Let Split do its job</h3>
+
+<p>At this point you&rsquo;ll probably be eager for results, you just have to wait for
+users to visit your website.
+The more you let your experiments run, the more they will be accurate and reward
+you with the most effective alternative.</p>
+
+<h3>Collect your results</h3>
+
+<p>When you&rsquo;re done testing your visitors like a mad scientist you can choose a
+variant directly from the dashboard and make it default. It&rsquo;s a good practice
+to remove completed tests and replace view code with the <strong>winning</strong> one.
+Don&rsquo;t forget to remove the <code>ab_test</code> method inside your controller because
+the experiment will be reinitialized on the next controller action call.
+We barely scratched the surface here but it should be more than enough to get
+you started with Ruby on Rails A/B testing.</p>
+
+<h3>Sources</h3>
+
+<ul>
+<li><a href="https://github.com/splitrb/split">Split&rsquo;s github page</a></li>
+<li><a href="https://en.wikipedia.org/wiki/A/B_testing">Wikipedia&rsquo;s knowledge</a></li>
+<li><a href="https://conversionxl.com/server-side-vs-client-side-ab-testing-tools-whats-the-difference/">Server side vs client side</a></li>
+</ul>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=AB(C) testing with Ruby on Rails+http://nebulab.it/blog/ab(c)-testing-with-ruby-on-rails/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/ab(c)-testing-with-ruby-on-rails/&title=AB(C) testing with Ruby on Rails">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/ab(c)-testing-with-ruby-on-rails/&title=AB(C) testing with Ruby on Rails&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+  <section class="our-blog">
+      <h6 class="our-blog__section-title">
+        Related posts
+      </h6>
+
+    <div class="articles">
+        <article class="articles__item">
+          <h6>
+            #Code
+          </h6>
+          <h4>
+            <a href="/blog/abc-of-seo-for-ruby-on-rails-developers/">ABC of SEO for Ruby on Rails developers</a>
+          </h4>
+
+          <div class="articles__item__body">
+            <p>This article focuses on best practices for optimizing a Ruby on Rails web application for search engines (SEO). It’s not meant to be a definitive or complete...</p>
+          </div>
+
+          <div class="read-more">
+            <a href="/blog/abc-of-seo-for-ruby-on-rails-developers/">Read the full article</a>
+          </div>
+        </article>
+        <article class="articles__item">
+          <h6>
+            #Code
+          </h6>
+          <h4>
+            <a href="/blog/rspec-basic-using-test-doubles/">RSpec Basic: Using Test Doubles</a>
+          </h4>
+
+          <div class="articles__item__body">
+            <p>In this blog post we’ll focus on differences between stubs, mocks and spies
+in RSpec. We think that there’s a lot of wording confusion for those who start
+using...</p>
+          </div>
+
+          <div class="read-more">
+            <a href="/blog/rspec-basic-using-test-doubles/">Read the full article</a>
+          </div>
+        </article>
+    </div>
+
+  </section>
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

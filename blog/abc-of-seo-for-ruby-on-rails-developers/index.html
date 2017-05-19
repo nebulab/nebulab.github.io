@@ -1,0 +1,580 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>ABC of SEO for Ruby on Rails developers - Nebulab</title>
+    <meta name="description" content="This article focuses on best practices for optimizing a Ruby on Rails web application for search engines (SEO). It’s not meant to be a definitive or complete...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="ABC of SEO for Ruby on Rails developers - Nebulab">
+    <meta name="twitter:description" content="This article focuses on best practices for optimizing a Ruby on Rails web application for search engines (SEO). It’s not meant to be a definitive or complete...">
+    <meta name="twitter:image" content="/blog/images/articles-images/abc-of-seo-for-ruby-on-rails-developers/rails-121b8621.jpg">
+
+        <meta property="twitter:creator" content="@AlbertoVena">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="17 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="ABC of SEO for Ruby on Rails developers - Nebulab by Alberto Vena" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/abc-of-seo-for-ruby-on-rails-developers/" />
+    <meta property="og:image" content="/blog/images/articles-images/abc-of-seo-for-ruby-on-rails-developers/rails-121b8621.jpg" />
+    <meta property="og:description" content="This article focuses on best practices for optimizing a Ruby on Rails web application for search engines (SEO). It’s not meant to be a definitive or complete..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_abc-of-seo-for-ruby-on-rails-developers blog_abc-of-seo-for-ruby-on-rails-developers_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          ABC of SEO for Ruby on Rails developers
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/alberto-f63de619.jpg" alt="Alberto" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Alberto Vena
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          17 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/abc-of-seo-for-ruby-on-rails-developers/rails-121b8621.jpg" alt="ABC of SEO for Ruby on Rails developers" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>This article focuses on best practices for optimizing a <strong>Ruby on Rails</strong> web application for search engines (<strong>SEO</strong>). It&rsquo;s not meant to be a definitive or complete solution but only a group of base techniques that can be definitely extended, improved and mostly customized according to different needs.</p>
+
+<h3>RESTful Friendly URLs</h3>
+
+<h5>Desing a good URL for SEO</h5>
+
+<p>The URLs of our web application have to be comprehensible by both human beings and search engines. The latter indeed, give an important weight to URLs to draw up the page rank. To understand well how to optimize them, let&rsquo;s take a look to how each URLs element influences this rank.
+Let&rsquo;s assume to have this example URL:</p>
+
+<p><img src="/blog/images/articles-images/abc-of-seo-for-ruby-on-rails-developers/url_components-237acecd.jpg" alt="URL Components" /></p>
+
+<ol>
+<li><strong>domain name</strong>: it&rsquo;s the URL section that takes the greater account by search engines but it&rsquo;s not object of our optimization.</li>
+<li><strong>subdomain</strong>: this part has a considerable weight too.</li>
+<li><strong>folders</strong>: it&rsquo;s a good place where to put significant keywords.</li>
+<li><strong>filename</strong>: it has less influence then folders but it&rsquo;s quite important to use keywords related to page content.</li>
+</ol>
+
+<p>The above section helps us better understand that search engines decompose URLs, giving each section a different weight. In general, we can say that the less important keywords can be found at the end of the URL.</p>
+
+<h5>Improve Rails URLs</h5>
+
+<p>To create the URL, the default Rails behavior is to use the name of the resource we created followed by the id as a parameter.
+Let&rsquo;s take a look at how default URLs are generated by scaffolding a BlogPost resource:</p>
+<pre class="highlight shell"><code>rails generate scaffold BlogPost title:string slug:string
+rake db:migrate
+</code></pre>
+<p>URLs will use blog posts id as a parameter:</p>
+
+<p><img src="/blog/images/articles-images/abc-of-seo-for-ruby-on-rails-developers/url_with_id-217c5c98.jpg" alt="Standard URL" /></p>
+
+<p>In the controller, the scaffolded action will use the <em>find</em> method by default and the blog post id will be passed to it. Let&rsquo;s see what the <em>show</em> action does:</p>
+<pre class="highlight ruby"><code><span class="c1"># GET /blog_posts/1</span>
+<span class="c1"># GET /blog_posts/1.json</span>
+<span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@blog_post</span> <span class="o">=</span> <span class="no">BlogPost</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+    <span class="nb">format</span><span class="p">.</span><span class="nf">html</span>
+    <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@blog_post</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>Our goal is to use a slug as a parameter of the URLs so they are both more valueable for search engines and more comprehensible by human begins. For example we want something like this:</p>
+
+<p><img src="/blog/images/articles-images/abc-of-seo-for-ruby-on-rails-developers/url_with_slug-ba1bf029.jpg" alt="Slug URL" /></p>
+
+<p>The first thing we have to do is change the <em>find</em> method with <em>find<em>by</em>slug</em> in every controller action that use this method (show, edit, delete). As usual, we&rsquo;ll look at the <em>show</em> method only:</p>
+<pre class="highlight ruby"><code><span class="c1"># GET /blog_posts/slug</span>
+<span class="c1"># GET /blog_posts/slug.json</span>
+<span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@blog_post</span> <span class="o">=</span> <span class="no">BlogPost</span><span class="p">.</span><span class="nf">find_by_slug</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+    <span class="nb">format</span><span class="p">.</span><span class="nf">html</span>
+    <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@blog_post</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>At last we have to overload the <em>to_param</em> method in the BlogPost model to force Rails to use the slug into the URLs instead of the id for this resource:</p>
+<pre class="highlight ruby"><code><span class="k">def</span> <span class="nf">to_param</span>
+  <span class="n">slug</span>
+<span class="k">end</span>
+</code></pre>
+<p><strong>Note</strong>: if you don&rsquo;t want to edit methods in your controller you can always change the <em>to_params</em> as follow:</p>
+<pre class="highlight ruby"><code><span class="k">def</span> <span class="nf">to_param</span>
+  <span class="s2">"</span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">-</span><span class="si">#{</span><span class="n">slug</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+</code></pre>
+<p>genrating URLs like this:</p>
+
+<p><img src="/blog/images/articles-images/abc-of-seo-for-ruby-on-rails-developers/url_with_id_and_slug-b311305b.jpg" alt="Id and Slug URL" /></p>
+
+<p>The <em>find()</em> method will automatically use the first part of the parameter only to perform the search.</p>
+
+<h5>Validated slugs</h5>
+
+<p>Now we have to add validations to be sure <em>title</em> and <em>slug</em> fields are always present and <em>slug</em> field is unique, because hereafter this will be equivalent to an id:</p>
+<pre class="highlight ruby"><code>  <span class="n">validates</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+  <span class="n">validates</span> <span class="ss">:slug</span><span class="p">,</span>  <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="kp">true</span>
+</code></pre>
+<p>We can still improve our code by automatically create the <em>slug</em> field parameterizing <em>title</em> before saving the blog post. Let&rsquo;s add this piece of code into the BlogPost model:</p>
+<pre class="highlight ruby"><code><span class="n">before_validation</span> <span class="ss">:create_slug</span>
+<span class="err">…</span>
+
+<span class="kp">private</span>
+
+<span class="k">def</span> <span class="nf">create_slug</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">slug</span> <span class="o">=</span> <span class="nb">name</span><span class="p">.</span><span class="nf">try</span><span class="p">(</span><span class="ss">:parameterize</span><span class="p">)</span> <span class="k">if</span> <span class="n">slug</span><span class="p">.</span><span class="nf">blank?</span>
+<span class="k">end</span>
+</code></pre>
+<h3>Dynamic Meta Tags</h3>
+
+<p>Meta tags don&rsquo;t need a big introduction. They are tags invisible to users but quite useful for search engines to keep important information about our pages. The more they are related to content of the page the more they will be effective. So it&rsquo;s really important to have the ability to dynamically generate the meta tags of our web application, also because by doing so we avoid penalities for duplicate meta tags between website pages.</p>
+
+<p>The following method shows how to generate dynamic meta tags using content we have already added without using specific database fields.
+The first thing we have to do is to render a new partial in our application layout (and in every other layout we want to add meta tags):</p>
+<pre class="highlight erb"><code><span class="nt">&lt;head&gt;</span>
+  <span class="c">&lt;!-- ... --&gt;</span>
+
+  <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'shared/meta_tags'</span> <span class="cp">%&gt;</span>
+
+  <span class="c">&lt;!-- ... --&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+</code></pre>
+<p>The partial <em>shared/metatags.html.erb</em> will contain the definition of meta tags we want to use. If meta tags will be present they will be used, otherwise a default value will be printed.</p>
+<pre class="highlight erb"><code><span class="nt">&lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:title</span><span class="p">).</span><span class="nf">presence</span> <span class="o">||</span> <span class="s2">"Default title"</span> <span class="cp">%&gt;</span><span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"keywords"</span> <span class="na">content=</span><span class="s">"</span><span class="cp">&lt;%=</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:meta_keywords</span><span class="p">).</span><span class="nf">presence</span> <span class="o">||</span> <span class="s2">"default, keywords"</span> <span class="cp">%&gt;</span><span class="s">"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"description"</span> <span class="na">content=</span><span class="s">"</span><span class="cp">&lt;%=</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:meta_description</span><span class="p">).</span><span class="nf">presence</span> <span class="o">||</span> <span class="s2">"Default description"</span> <span class="cp">%&gt;</span><span class="s">"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"author"</span> <span class="na">content=</span><span class="s">"</span><span class="cp">&lt;%=</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:meta_author</span><span class="p">).</span><span class="nf">presence</span> <span class="o">||</span> <span class="s2">"Default Author"</span> <span class="cp">%&gt;</span><span class="s">"</span> <span class="nt">/&gt;</span>
+</code></pre>
+<p>Let&rsquo;s now create some methods inside the <em>application_helper</em> to easily pass custom meta tags to the layout:</p>
+<pre class="highlight ruby"><code><span class="c1"># Meta tags helper methods</span>
+<span class="k">def</span> <span class="nf">meta_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+  <span class="n">content_for</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">meta_description</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+  <span class="n">content_for</span><span class="p">(</span><span class="ss">:meta_description</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">meta_keywords</span><span class="p">(</span><span class="n">keywords</span><span class="p">)</span>
+  <span class="n">content_for</span><span class="p">(</span><span class="ss">:meta_keywords</span><span class="p">,</span> <span class="n">keywords</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">meta_author</span><span class="p">(</span><span class="n">author</span><span class="p">)</span>
+  <span class="n">content_for</span><span class="p">(</span><span class="ss">:meta_author</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<p>We can now generate the dynamic meta tags for our blog posts into resource views, for example into <em>blog_posts/show.html.erb</em>:</p>
+<pre class="highlight erb"><code><span class="cp">&lt;%</span>
+  <span class="n">meta_title</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@blog_post</span><span class="p">.</span><span class="nf">title</span><span class="si">}</span><span class="s2"> - MyCoolBlog"</span>
+  <span class="n">meta_keywords</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@blog_post</span><span class="p">.</span><span class="nf">categories</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">", "</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+  <span class="n">meta_description</span> <span class="n">truncate</span><span class="p">(</span><span class="n">strip_tags</span><span class="p">(</span><span class="vi">@blog_post</span><span class="p">.</span><span class="nf">teaser</span><span class="p">),</span> <span class="ss">length: </span><span class="mi">200</span><span class="p">)</span>
+  <span class="n">meta_author</span> <span class="vi">@blog_post</span><span class="p">.</span><span class="nf">user</span>
+<span class="cp">%&gt;</span>
+</code></pre>
+<p>I choose to pass meta tags from views (instead of from controller) beacause in this way we can use helper methods to customize them, as we have just done truncating and stripping HTML tags for the description meta tags.</p>
+
+<p><strong>Note</strong>: <a href="http://www.seomoz.org/">SEOmoz</a>, one of the best SEO campigns managment software, began to reccomend to <strong>completely remove the keywords tag</strong> from our pages because, beside to not being taken into account by search engines, it also give to our competitors the ability to understand the list of our keywords, probably the result of years of work or considerable expense.</p>
+
+<h3>Canonical tag</h3>
+
+<p>Duplicate pages generate penalities. If we can&rsquo;t avoid to have two or more identical pages (for example using the root of a resource as root of our web application) we have to use the &ldquo;canonical tag&rdquo;. This tag, added to the head section, informs search engines that the page has a duplicate and to consider another page when indexing.</p>
+
+<p><img src="/blog/images/articles-images/abc-of-seo-for-ruby-on-rails-developers/canonical_tag-aeb99921.jpg" alt="Canonical Tag" /></p>
+
+<p>For example, if (for some absurd reason) we have this 3 pages with same content but different URLs:</p>
+
+<ul>
+<li>/blog_posts/1</li>
+<li>/blog_posts/title</li>
+<li>/blog_posts/1-title</li>
+</ul>
+
+<p>we have to insert into the head of last 2 pages the following link:</p>
+<pre class="highlight html"><code><span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"canonical"</span> <span class="na">href=</span><span class="s">"/blog_posts/1"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+</code></pre>
+<p>We can also use a technique similar to the above one. Let&rsquo;s add this code into main layout (or into the <em>shared/meta_tags.html.erb</em> partial previously created):</p>
+<pre class="highlight erb"><code><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="ss">:canonical</span> <span class="cp">%&gt;</span>
+</code></pre>
+<p>Now, into our application_helper let&rsquo;s add a method that creates the canonical link:</p>
+<pre class="highlight ruby"><code><span class="k">def</span> <span class="nf">canonical</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="n">content_for</span><span class="p">(</span><span class="ss">:canonical</span><span class="p">,</span> <span class="n">tag</span><span class="p">(</span><span class="ss">:link</span><span class="p">,</span> <span class="ss">rel: :canonical</span><span class="p">,</span> <span class="ss">href: </span><span class="n">url</span><span class="p">))</span> <span class="k">if</span> <span class="n">url</span>
+<span class="k">end</span>
+</code></pre>
+<p>At this point, into the views that generate duplicate contents we can add the following code:</p>
+<pre class="highlight erb"><code><span class="cp">&lt;%</span> <span class="n">canonical</span><span class="p">(</span><span class="n">blog_post_url</span><span class="p">(</span><span class="vi">@blog_post</span><span class="p">))</span> <span class="cp">%&gt;</span>
+</code></pre>
+<h3>Sitemap &amp; Rails</h3>
+
+<p>The XML Sitemap protocol was introduced by Google in 2005 and used soon by every other search engine. It&rsquo;s based on an XML file through which page information is provided. This helps search engines to get website structure and other valuable information like:</p>
+
+<ul>
+<li>index priority of each page</li>
+<li>page refresh rate</li>
+<li>last update date</li>
+</ul>
+
+<p>To create a dynamic sitemap in a Rails application the best choice is to use a gem really simple to configure but highly customizable.
+&ldquo;<a href="http://github.com/viseztrance/rails-sitemap">Sitemap</a>&rdquo; gem is perfect for our goal; let&rsquo;s add it to our <em>Gemfile</em>:</p>
+<pre class="highlight ruby"><code><span class="c1"># ...</span>
+<span class="n">gem</span> <span class="s1">'sitemap'</span>
+<span class="c1"># ...</span>
+</code></pre>
+<p>We can now procede installing the gem:</p>
+<pre class="highlight plaintext"><code>bundle install
+rails generate sitemap:install
+</code></pre>
+<p>and editing the configuration file just created by the generator into <em>config/sitemap.rb</em> as follows:</p>
+<pre class="highlight ruby"><code><span class="no">Sitemap</span><span class="o">::</span><span class="no">Generator</span><span class="p">.</span><span class="nf">instance</span><span class="p">.</span><span class="nf">load</span> <span class="ss">host: </span><span class="s2">"mywebsite.com"</span> <span class="k">do</span>
+  <span class="n">path</span> <span class="ss">:root</span><span class="p">,</span> <span class="ss">priority: </span><span class="mi">1</span>
+  <span class="n">path</span> <span class="ss">:faq</span><span class="p">,</span> <span class="ss">priority: </span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="ss">change_frequency: </span><span class="s2">"weekly"</span>
+  <span class="n">resources</span> <span class="ss">:blog_posts</span>
+<span class="k">end</span>
+</code></pre>
+<p>After running the rake task:</p>
+<pre class="highlight shell"><code>rake sitemap:generate
+</code></pre>
+<p>we will find our fresh sitemap into /public/sitemap.xml ready to be uploaded to Google Webmaster Tools.</p>
+
+<h3>301 redirect from old URLs</h3>
+
+<p>If we are building a new website (or upgrading an existing one) and we don&rsquo;t want to completely lose old URLs page rank, we can use a redirect with 301 status, not penalized from search engines because it corresponds to &ldquo;Moved Permanently&rdquo; HTTP status.</p>
+<pre class="highlight ruby"><code><span class="n">match</span> <span class="s2">"/old_path_to_blog_posts/:id"</span><span class="p">,</span> <span class="ss">to: </span><span class="n">redirect</span><span class="p">(</span><span class="s2">"/blog_posts/%{id}s"</span><span class="p">)</span>
+</code></pre>
+<h3>Other little (but big) advices</h3>
+
+<ul>
+<li>HTML W3C validated and without inline javascript is good for search engines. If we can&rsquo;t avoid inline javascript it&rsquo;s better to place it at the end of the file (after the footer is a good place) beacause search engines may get tired of reading javascript and they can literally &ldquo;jump&rdquo; over your content.</li>
+<li>Alt tag on images helps for images search (like Google Images).</li>
+</ul>
+
+<h3>Other resources</h3>
+
+<ul>
+<li><a href="http://www.netmagazine.com/tutorials/design-perfect-url">Design the perfect URL</a></li>
+<li><a href="http://github.com/viseztrance/rails-sitemap">Sitemap gem</a></li>
+<li><a href="http://www.webconfs.com/redirect-check.php">Check redirect</a></li>
+<li><a href="http://support.google.com/webmasters/bin/answer.py?answer=139394">Canonical Link Video</a></li>
+</ul>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=ABC of SEO for Ruby on Rails developers+http://nebulab.it/blog/abc-of-seo-for-ruby-on-rails-developers/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/abc-of-seo-for-ruby-on-rails-developers/&title=ABC of SEO for Ruby on Rails developers">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/abc-of-seo-for-ruby-on-rails-developers/&title=ABC of SEO for Ruby on Rails developers&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

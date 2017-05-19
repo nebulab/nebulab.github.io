@@ -1,0 +1,468 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Maintenance Page with Apache and Capistrano - Nebulab</title>
+    <meta name="description" content="Sometimes our apps have to remain offline for maintenance purposes, sometimes for a short time, sometimes for more than a while. In both cases it’s a good practice...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Maintenance Page with Apache and Capistrano - Nebulab">
+    <meta name="twitter:description" content="Sometimes our apps have to remain offline for maintenance purposes, sometimes for a short time, sometimes for more than a while. In both cases it’s a good practice...">
+    <meta name="twitter:image" content="/blog/images/articles-images/maintenance-page-with-apache-and-capistrano/maintenance_page-59575dad.jpg">
+
+        <meta property="twitter:creator" content="@AlbertoVena">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="7 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Maintenance Page with Apache and Capistrano - Nebulab by Alberto Vena" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/maintenance-page-with-apache-and-capistrano/" />
+    <meta property="og:image" content="/blog/images/articles-images/maintenance-page-with-apache-and-capistrano/maintenance_page-59575dad.jpg" />
+    <meta property="og:description" content="Sometimes our apps have to remain offline for maintenance purposes, sometimes for a short time, sometimes for more than a while. In both cases it’s a good practice..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_maintenance-page-with-apache-and-capistrano blog_maintenance-page-with-apache-and-capistrano_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Maintenance Page with Apache and Capistrano
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/alberto-f63de619.jpg" alt="Alberto" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Alberto Vena
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          7 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/maintenance-page-with-apache-and-capistrano/maintenance_page-59575dad.jpg" alt="Maintenance Page with Apache and Capistrano" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>Sometimes our apps have to remain offline for maintenance purposes, sometimes for a short time, sometimes for more than a while. In both cases it&rsquo;s a good practice to show a maintenance page for several reasons:</p>
+
+<ul>
+<li>users are aware of discomfort and they know when the website will return online;</li>
+<li>search engines will not index our error pages because the response code associated with them will be 503 (Service Temporarily Unavailable);</li>
+<li>it will prevent some users to create exceptions when requesting a resource that is being updated.</li>
+</ul>
+
+<h3>Configuring Apache</h3>
+
+<p>The first thing we have to do is configure Apache to force it to show this page for every request arriving to web server. To avoid manually changing apache&rsquo;s configuration every time we want to disable a website, we can write some conditions to show the maintenance page only if an html file is present in a specific folder.</p>
+
+<p>Here it is the code to add in your Virtual Host (usually located in  <em>/etc/apache2/site-enabled/000-default</em> )</p>
+<pre class="highlight xml"><code><span class="nt">&lt;VirtualHost</span> <span class="err">*:80</span><span class="nt">&gt;</span>
+  ...
+
+  RewriteEngine On
+
+  # Show maintenance page if it exists
+  ErrorDocument 503 /system/maintenance.html
+  RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|png)$
+  RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+  RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+  RewriteRule ^.*$  -  [redirect=503,last]
+
+  ...
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</code></pre>
+<p>We have to reload the web server to make changes happen:</p>
+<pre class="highlight plaintext"><code>$ sudo service apache2 reload
+</code></pre>
+<p>Now, if we create the file /system/maintenance.html, every requests will be redirected to this page with a 503 response code. Deleting this file the website will return fully available.
+<br><br>
+<strong>Note 1</strong>: Look at the first condition:</p>
+<pre class="highlight plaintext"><code>RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|png)$
+</code></pre>
+<p>This ensures that stylesheets and images are served. In this way we can add this resources to our maintenance page.
+<br><br>
+<strong>Note 2</strong>: <em>mod_rewrite</em> has to be enabled. To do this run:</p>
+<pre class="highlight plaintext"><code>$ sudo a2enmod rewrite
+</code></pre>
+<h3>Disable website with Capistrano</h3>
+
+<p>Manually moving this file on the server every time we want our website to be in maintenance mode could become a very tedious task. It&rsquo;s Capistrano&rsquo;s turn to accomplish this demand with a custom task:</p>
+<pre class="highlight plaintext"><code>$ cap deploy:web:disable
+</code></pre>
+<p>This task will create an html file in your local machine and it will move this file for us to the server. If we want, we can specify some useful arguments: the reason of maintenance and when the website will come back online:</p>
+<pre class="highlight plaintext"><code>$ cap deploy:web:disable \\
+              REASON="hardware upgrade" \\
+              UNTIL="12pm Central Time"
+</code></pre>
+<p>we&rsquo;ll obtain the following result:</p>
+
+<p><img src="/blog/images/articles-images/maintenance-page-with-apache-and-capistrano/standard_maintenance-6854e434.png" alt="Standard Maintenance Page" /></p>
+
+<p><a href="http://github.com/capistrano/capistrano/blob/master/lib/capistrano/recipes/templates/maintenance.rhtml" target="_blank">This</a> is a link to the default maintenance page created by Capistrano.</p>
+
+<h3>Customizing Capistrano&rsquo;s maintenance page</h3>
+
+<p>It&rsquo;s impossible to deny that the default Capistrano maintenance page is as useful as &ldquo;simple&rdquo;. If we have special graphic needs, the only one way to customize this page is overwrite <em>deploy:web:disable</em> task, specifying where our new custom page is located at.</p>
+
+<p>Here it is  an example using erb templates (Ruby on Rails default):</p>
+<pre class="highlight ruby"><code><span class="n">namespace</span> <span class="ss">:deploy</span> <span class="k">do</span>
+  <span class="n">namespace</span> <span class="ss">:web</span> <span class="k">do</span>
+    <span class="n">desc</span> <span class="o">&lt;&lt;-</span><span class="no">DESC</span><span class="sh">
+        Present a maintenance page to visitors. Disables your application's web \
+        interface by writing a "</span><span class="si">#{</span><span class="n">maintenance_basename</span><span class="si">}</span><span class="sh">.html" file to each web server. The \
+        servers must be configured to detect the presence of this file, and if \
+        it is present, always display it instead of performing the request.
+
+        Customized task allow us to render erb file. Usage:
+
+        $ cap deploy:web:disable </span><span class="se">\\</span><span class="sh">
+                REASON="hardware upgrade" </span><span class="se">\\</span><span class="sh">
+                UNTIL="12pm Central Time"
+
+</span><span class="no">    DESC</span>
+    <span class="n">task</span> <span class="ss">:disable</span><span class="p">,</span> <span class="ss">:roles</span> <span class="o">=&gt;</span> <span class="ss">:app</span> <span class="k">do</span>
+
+      <span class="n">on_rollback</span> <span class="p">{</span> <span class="n">rm</span> <span class="s2">"</span><span class="si">#{</span><span class="n">shared_path</span><span class="si">}</span><span class="s2">/system/maintenance.html"</span> <span class="p">}</span>
+
+      <span class="nb">require</span> <span class="s1">'erb'</span>
+      <span class="n">deadline</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'UNTIL'</span><span class="p">],</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'REASON'</span><span class="p">]</span>
+      <span class="n">maintenance</span> <span class="o">=</span> <span class="no">ERB</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s2">"./app/views/layouts/maintenance.html.erb"</span><span class="p">)).</span><span class="nf">result</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span>
+
+      <span class="n">put</span> <span class="n">maintenance</span><span class="p">,</span> <span class="s2">"</span><span class="si">#{</span><span class="n">shared_path</span><span class="si">}</span><span class="s2">/system/maintenance.html"</span><span class="p">,</span> <span class="ss">:mode</span> <span class="o">=&gt;</span> <span class="mo">0644</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>The last thing to do is to create a file (<em>/app/views/layouts/maintenance.html.erb</em>), printing somewhere the variables passed. For example:</p>
+<pre class="highlight erb"><code><span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">"color: red; font-size: 16px; line-height: 20px;"</span><span class="nt">&gt;</span>
+  The system is down for <span class="cp">&lt;%=</span> <span class="n">reason</span> <span class="p">?</span> <span class="n">reason</span> <span class="p">:</span> <span class="s2">"maintenance"</span> <span class="cp">%&gt;</span>
+  as of <span class="cp">&lt;%=</span> <span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="p">.</span><span class="nf">strftime</span><span class="p">(</span><span class="s2">"%H:%M %Z"</span><span class="p">)</span> <span class="cp">%&gt;</span>.
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">style=</span><span class="s">"color: #666;"</span><span class="nt">&gt;</span>
+  It'll be back <span class="cp">&lt;%=</span> <span class="n">deadline</span> <span class="p">?</span> <span class="n">deadline</span> <span class="p">:</span> <span class="s2">"shortly"</span> <span class="cp">%&gt;</span>.
+<span class="nt">&lt;/p&gt;</span>
+</code></pre>
+<h3>Disable website during each deploy</h3>
+
+<p>We can also disable website during each deploy. To do this we just can add a couple of custom hooks to our <em>deploy.rb</em> file:</p>
+<pre class="highlight ruby"><code><span class="n">before</span> <span class="s1">'deploy:update_code'</span><span class="p">,</span> <span class="s1">'deploy:web:disable'</span>
+<span class="n">after</span> <span class="s1">'deploy:restart'</span><span class="p">,</span> <span class="s1">'deploy:web:enable'</span>
+</code></pre>
+<h3>Other resources</h3>
+
+<ul>
+<li><a href="http://www.smashingmagazine.com/2009/06/12/effective-maintenance-pages-examples-and-best-practices/" alt="Effective Maintenance Pages: Examples and Best Practices">Effective Maintenance Pages: Examples and Best Practices</a></li>
+<li><a href="http://onehub.com/blog/posts/rails-maintenance-pages-done-right/" alt="Rails Maintenance Pages Done Right">Rails Maintenance Pages Done Right</a> (Another similar how-to using Capistrano and Nginx)</li>
+</ul>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Maintenance Page with Apache and Capistrano+http://nebulab.it/blog/maintenance-page-with-apache-and-capistrano/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/maintenance-page-with-apache-and-capistrano/&title=Maintenance Page with Apache and Capistrano">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/maintenance-page-with-apache-and-capistrano/&title=Maintenance Page with Apache and Capistrano&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

@@ -1,0 +1,1 @@
+$(function(){$(".menu-button").togglemenu({nav:".full-menu",subnav:!1})});

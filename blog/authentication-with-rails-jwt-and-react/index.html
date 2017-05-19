@@ -1,0 +1,688 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Authentication with Rails, JWT and ReactJS - Nebulab</title>
+    <meta name="description" content="Here at Nebulab we love to hack with new exciting technologies, that’s why we dedicate
+20% of our work time for study and open source contribution. In this post...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Authentication with Rails, JWT and ReactJS - Nebulab">
+    <meta name="twitter:description" content="Here at Nebulab we love to hack with new exciting technologies, that’s why we dedicate
+20% of our work time for study and open source contribution. In this post...">
+    <meta name="twitter:image" content="/blog/images/articles-images/authentication-with-rails-jwt-and-reactjs/jwt-aa476765.jpg">
+
+        <meta property="twitter:creator" content="@nebulab_it">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="27 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Authentication with Rails, JWT and ReactJS - Nebulab by Andrea Pavoni" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/authentication-with-rails-jwt-and-react/" />
+    <meta property="og:image" content="/blog/images/articles-images/authentication-with-rails-jwt-and-reactjs/jwt-aa476765.jpg" />
+    <meta property="og:description" content="Here at Nebulab we love to hack with new exciting technologies, that’s why we dedicate
+20% of our work time for study and open source contribution. In this post..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_authentication-with-rails-jwt-and-react blog_authentication-with-rails-jwt-and-react_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Authentication with Rails, JWT and ReactJS
+        </h1>
+
+        <span class="blog-post__header__author">
+
+          <span class="blog-post__header__author__name">
+            Andrea Pavoni
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          27 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/authentication-with-rails-jwt-and-reactjs/jwt-aa476765.jpg" alt="Authentication with Rails, JWT and ReactJS" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>Here at Nebulab we love to hack with new exciting technologies, that&rsquo;s why we dedicate
+20% of our work time for study and open source contribution. In this post we&rsquo;ll cover authentication made
+with Rails, <a href="http://jwt.io/">JSON Web Tokens</a> and <a href="https://facebook.github.io/react/">ReactJS</a>.</p>
+
+<h3>How JSON Web Token works</h3>
+
+<p><em>JSON Web Token</em> (aka <em>JWT</em>) is a useful standard becoming more prevalent, it allows you to sign information with a signature that can be verified at a later time with a secret signing key. It is a perfect solution for single page apps, avoiding the use of sessions to allow communication between a client (not necessarily a browser) and a server. In its simplest form, JWT is composed by three URL encoded parts:</p>
+
+<ul>
+<li><strong>Header:</strong> it represents the metadata for the token and contains at least the type of the signature and/or encryption algorithm</li>
+<li><strong>Claims:</strong> is the information you want to sign</li>
+<li><strong>JSON Web Signature (JWS):</strong> it is composed by the header and the claims digitally signed using the algorithm specified in the header</li>
+</ul>
+
+<p>Here is a basic example of how to generate a JWT with plain Javascript:</p>
+<pre class="highlight javascript"><code><span class="c1">// Header</span>
+<span class="kd">var</span> <span class="nx">header</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"alg"</span><span class="p">:</span> <span class="s2">"HS256"</span><span class="p">,</span> <span class="c1">// algorithm used for the  signature</span>
+  <span class="s2">"typ"</span><span class="p">:</span> <span class="s2">"JWT"</span>    <span class="c1">// the type of token</span>
+<span class="p">};</span>
+
+<span class="c1">// Claims</span>
+<span class="kd">var</span> <span class="nx">claims</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"1234567890"</span><span class="p">,</span>
+  <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"John Doe"</span><span class="p">,</span>
+  <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"johndoe@example.com"</span>
+<span class="p">};</span>
+
+<span class="c1">// Signature</span>
+<span class="kd">var</span> <span class="nx">payload</span> <span class="o">=</span> <span class="nx">base64UrlEncode</span><span class="p">(</span><span class="nx">header</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="nx">base64UrlEncode</span><span class="p">(</span><span class="nx">claims</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">signature</span> <span class="o">=</span> <span class="nx">HMACSHA256</span><span class="p">(</span><span class="nx">payload</span><span class="p">,</span> <span class="s1">'my_secret'</span><span class="p">);</span>
+
+<span class="c1">// JWT</span>
+<span class="kd">var</span> <span class="nx">myJWT</span> <span class="o">=</span> <span class="nx">payload</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="nx">signature</span><span class="p">;</span>
+</code></pre>
+<h4>The server side</h4>
+
+<p>We&rsquo;re using Rails for the server side part, so we installed the <a href="https://github.com/progrium/ruby-jwt">jwt gem</a> and wrote some code to integrate it inside our app:</p>
+<pre class="highlight ruby"><code><span class="c1"># lib/json_web_token.rb</span>
+
+<span class="k">class</span> <span class="nc">JsonWebToken</span>
+  <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">exp</span> <span class="o">=</span> <span class="mi">24</span><span class="p">.</span><span class="nf">hours</span><span class="p">.</span><span class="nf">from_now</span><span class="p">)</span>
+      <span class="n">payload</span><span class="p">[</span><span class="ss">:exp</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp</span><span class="p">.</span><span class="nf">to_i</span>
+      <span class="no">JWT</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">secrets</span><span class="p">.</span><span class="nf">secret_key_base</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+      <span class="n">body</span> <span class="o">=</span> <span class="no">JWT</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">secrets</span><span class="p">.</span><span class="nf">secret_key_base</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="no">HashWithIndifferentAccess</span><span class="p">.</span><span class="nf">new</span> <span class="n">body</span>
+    <span class="k">rescue</span>
+      <span class="c1"># we don't need to trow errors, just return nil if JWT is invalid or expired</span>
+      <span class="kp">nil</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+</code></pre>
+<h5>Authenticating the user with email and password</h5>
+
+<p>At this point, we needed two workflows: the first one only happens the first time the user authenticates. Once the user&rsquo;s identity is verified, the JWT is created. <strong>Note:</strong> We used <a href="https://github.com/nebulab/simple_command">simple_command</a> gem to manage this part, it helped a lot in keeping Rails controllers and models very slim.</p>
+<pre class="highlight ruby"><code><span class="c1"># app/commands/authenticate_user.rb</span>
+
+<span class="k">class</span> <span class="nc">AuthenticateUser</span>
+  <span class="n">prepend</span> <span class="no">SimpleCommand</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="vi">@email</span> <span class="o">=</span> <span class="n">email</span>
+    <span class="vi">@password</span> <span class="o">=</span> <span class="n">password</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">call</span>
+    <span class="no">JsonWebToken</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="ss">user_id: </span><span class="n">user</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span> <span class="k">if</span> <span class="n">user</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="kp">attr_accessor</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:password</span>
+
+  <span class="k">def</span> <span class="nf">user</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">by_email</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">user</span> <span class="k">if</span> <span class="n">user</span> <span class="o">&amp;&amp;</span> <span class="n">user</span><span class="p">.</span><span class="nf">authenticate</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+
+    <span class="n">errors</span><span class="p">.</span><span class="nf">add</span> <span class="ss">:user_authentication</span><span class="p">,</span> <span class="s1">'invalid credentials'</span>
+    <span class="kp">nil</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>Followed by the controller that uses it:</p>
+<pre class="highlight ruby"><code><span class="c1"># app/controllers/authentication_controller.rb</span>
+
+<span class="k">class</span> <span class="nc">AuthenticationController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">skip_before_action</span> <span class="ss">:authenticate_request</span>
+
+  <span class="k">def</span> <span class="nf">authenticate</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="no">AuthenticateUser</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:email</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="ss">:password</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">command</span><span class="p">.</span><span class="nf">success?</span>
+      <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">auth_token: </span><span class="n">command</span><span class="p">.</span><span class="nf">result</span> <span class="p">}</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">error: </span><span class="n">command</span><span class="p">.</span><span class="nf">errors</span> <span class="p">},</span> <span class="ss">status: :unauthorized</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<h5>Authentication on following requests</h5>
+
+<p>The second part is related to authenticating the requests from client using the JWT we generated during user authentication:</p>
+<pre class="highlight ruby"><code><span class="c1"># app/commands/authenticate_api_request.rb</span>
+
+<span class="k">class</span> <span class="nc">AuthenticateApiRequest</span>
+  <span class="n">prepend</span> <span class="no">SimpleCommand</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">headers</span> <span class="o">=</span> <span class="p">{})</span>
+    <span class="vi">@headers</span> <span class="o">=</span> <span class="n">headers</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">call</span>
+    <span class="n">user</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="kp">attr_reader</span> <span class="ss">:headers</span>
+
+  <span class="k">def</span> <span class="nf">user</span>
+    <span class="vi">@user</span> <span class="o">||=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">decoded_auth_token</span><span class="p">[</span><span class="ss">:user_id</span><span class="p">])</span> <span class="k">if</span> <span class="n">decoded_auth_token</span>
+    <span class="vi">@user</span> <span class="o">||</span> <span class="n">errors</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="ss">:token</span><span class="p">,</span> <span class="s1">'Invalid token'</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="kp">nil</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">decoded_auth_token</span>
+    <span class="vi">@decoded_auth_token</span> <span class="o">||=</span> <span class="no">JsonWebToken</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="n">http_auth_header</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">http_auth_header</span>
+    <span class="k">if</span> <span class="n">headers</span><span class="p">[</span><span class="s1">'Authorization'</span><span class="p">].</span><span class="nf">present?</span>
+      <span class="k">return</span> <span class="n">headers</span><span class="p">[</span><span class="s1">'Authorization'</span><span class="p">].</span><span class="nf">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">).</span><span class="nf">last</span>
+    <span class="k">else</span>
+      <span class="n">errors</span><span class="p">.</span><span class="nf">add</span> <span class="ss">:token</span><span class="p">,</span> <span class="s1">'Missing token'</span>
+    <span class="k">end</span>
+    <span class="kp">nil</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>And again, the controller part:</p>
+<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">API</span>
+  <span class="n">before_action</span> <span class="ss">:authenticate_request</span>
+
+  <span class="kp">attr_reader</span> <span class="ss">:current_user</span>
+  <span class="n">helper_method</span> <span class="ss">:current_user</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">authenticate_request</span>
+    <span class="vi">@current_user</span> <span class="o">=</span> <span class="no">AuthenticateApiRequest</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">headers</span><span class="p">).</span><span class="nf">result</span>
+
+    <span class="n">render</span> <span class="ss">json: </span><span class="p">{</span> <span class="ss">error: </span><span class="s1">'Not Authorized'</span> <span class="p">},</span> <span class="ss">status: </span><span class="mi">401</span> <span class="k">unless</span> <span class="vi">@current_user</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>As you can see it is very simple and similar to session based authentication. The only difference is the fact that we are dealing with a <em>token</em> instead of a cookie.</p>
+
+<h4>The client side</h4>
+
+<p>Of course, the browser doesn&rsquo;t know how to deal with JWTs and thus, it needs to store the JWT for its subsequent requests. To make this possible, we relied on a relatively recent feature of HTML5 called <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API">localStorage</a> that allows to store key/value pairs on the browser. For the Javascript part we chose ReactJS, but keep in mind that this is possible using plain Javascript and we just wrapped the necessary code inside our app.</p>
+
+<h5>Setup</h5>
+
+<p>Before proceedeing it&rsquo;s important to highlight the fact that we <em>skipped</em> the default Rails <a href="http://guides.rubyonrails.org/asset_pipeline.html">asset pipeline</a> and relied on a stack based on <a href="https://nodejs.org/">NodeJS</a>, <a href="http://browserify.org/">Browserify</a> and <a href="http://gulpjs.com/">Gulp</a> with a bunch of plugins. The main reason is the fact that the NodeJS (and <a href="https://www.npmjs.com/">npm</a>) stack is easier, faster and kept updated, without having to deal with <em>wrapper</em> gems. To adapt your rails app is quite easy, just edit <code>config/application.rb</code> and disable the javascript asset generator:</p>
+<pre class="highlight ruby"><code><span class="c1"># ...</span>
+
+<span class="k">module</span> <span class="nn">JWTReactApp</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="c1"># more configs...</span>
+
+    <span class="n">config</span><span class="p">.</span><span class="nf">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">generate</span><span class="o">|</span>
+      <span class="c1"># DISABLE ASSET GENERATORS</span>
+      <span class="n">generate</span><span class="p">.</span><span class="nf">javascript_engine</span> <span class="kp">false</span>
+      <span class="c1"># more generator configs...</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+</code></pre>
+<p>Setup the NodeJS packages we&rsquo;re going to use through <code>package.json</code>:</p>
+<pre class="highlight javascript"><code><span class="p">{</span>
+  <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"my_react_app"</span><span class="p">,</span>
+  <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.0.0"</span><span class="p">,</span>
+  <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"ReactJS app"</span><span class="p">,</span>
+  <span class="s2">"main"</span><span class="p">:</span> <span class="s2">"index.js"</span><span class="p">,</span>
+  <span class="s2">"scripts"</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="s2">"author"</span><span class="p">:</span> <span class="s2">"Andrea Pavoni"</span><span class="p">,</span>
+  <span class="s2">"license"</span><span class="p">:</span> <span class="s2">"MIT"</span><span class="p">,</span>
+  <span class="s2">"homepage"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="s2">"dependencies"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"browserify"</span><span class="p">:</span> <span class="s2">"^8.1.3"</span><span class="p">,</span>
+    <span class="s2">"coffee-react"</span><span class="p">:</span> <span class="s2">"^2.4.1"</span><span class="p">,</span>
+    <span class="s2">"coffee-reactify"</span><span class="p">:</span> <span class="s2">"^2.1.0"</span><span class="p">,</span>
+    <span class="s2">"coffee-script"</span><span class="p">:</span> <span class="s2">"^1.9.1"</span><span class="p">,</span>
+    <span class="s2">"gulp"</span><span class="p">:</span> <span class="s2">"^3.8.11"</span><span class="p">,</span>
+    <span class="s2">"gulp-browserify"</span><span class="p">:</span> <span class="s2">"^0.5.1"</span><span class="p">,</span>
+    <span class="s2">"gulp-rename"</span><span class="p">:</span> <span class="s2">"^1.2.0"</span><span class="p">,</span>
+    <span class="s2">"gulp-size"</span><span class="p">:</span> <span class="s2">"^1.2.1"</span><span class="p">,</span>
+    <span class="s2">"gulp-util"</span><span class="p">:</span> <span class="s2">"^3.0.4"</span><span class="p">,</span>
+    <span class="s2">"jquery"</span><span class="p">:</span> <span class="s2">"^2.1.3"</span><span class="p">,</span>
+    <span class="s2">"react"</span><span class="p">:</span> <span class="s2">"^0.12.2"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<p>Finally a basic a <code>gulpfile.coffee</code> to manage the tasks. These will work like <code>rake</code> in the Ruby world.
+In our case, it exposes <code>build</code> and <code>watch</code>, which respectively <em>bundles</em> all the javascripts in one file and <em>watches</em> the filesystem for changes to javascripts to rebuild:</p>
+<pre class="highlight coffeescript"><code><span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s">"gulp"</span><span class="p">)</span>
+<span class="nx">gutil</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s">"gulp-util"</span><span class="p">)</span>
+<span class="nx">browserify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s">"gulp-browserify"</span><span class="p">)</span>
+<span class="nx">rename</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s">"gulp-rename"</span><span class="p">)</span>
+<span class="nx">size</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s">"gulp-size"</span><span class="p">)</span>
+
+<span class="nx">JS_SRC</span><span class="o">=</span><span class="s">'./app/assets/javascripts'</span>
+<span class="nx">DEST</span><span class="o">=</span><span class="s">'public'</span>
+<span class="nx">JS_BUNDLE</span><span class="o">=</span><span class="s">'app'</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="na">task</span> <span class="s">'build'</span><span class="p">,</span> <span class="o">-&gt;</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="na">src</span><span class="p">(</span><span class="s">"</span><span class="si">#{</span><span class="nx">JS_SRC</span><span class="si">}</span><span class="s">/application.coffee"</span><span class="p">,</span> <span class="p">{</span> <span class="na">read</span><span class="o">:</span> <span class="no">false</span> <span class="p">})</span>
+    <span class="p">.</span><span class="na">pipe</span><span class="p">(</span><span class="nx">browserify</span><span class="p">(</span>
+      <span class="na">transform</span><span class="o">:</span> <span class="p">[</span><span class="s">'coffee-reactify'</span><span class="p">]</span>
+      <span class="na">extensions</span><span class="o">:</span> <span class="p">[</span><span class="s">'.coffee'</span><span class="p">]</span>
+    <span class="p">))</span>
+    <span class="p">.</span><span class="na">on</span><span class="p">(</span><span class="s">"error"</span><span class="p">,</span> <span class="nx">gutil</span><span class="p">.</span><span class="na">log</span><span class="p">)</span>
+    <span class="p">.</span><span class="na">pipe</span><span class="p">(</span><span class="nx">rename</span><span class="p">(</span><span class="s">"</span><span class="si">#{</span><span class="nx">JS_BUNDLE</span><span class="si">}</span><span class="s">.js"</span><span class="p">))</span>
+    <span class="p">.</span><span class="na">pipe</span> <span class="nx">gulp</span><span class="p">.</span><span class="na">dest</span><span class="p">(</span><span class="s">"</span><span class="si">#{</span><span class="nx">DEST</span><span class="si">}</span><span class="s">/js"</span><span class="p">)</span>
+    <span class="p">.</span><span class="na">pipe</span><span class="p">(</span><span class="nx">size</span> <span class="na">showFiles</span><span class="o">:</span> <span class="no">true</span><span class="p">,</span> <span class="na">title</span><span class="o">:</span> <span class="s">"Plain JS"</span><span class="p">)</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="na">task</span> <span class="s">"watch"</span><span class="p">,</span> <span class="o">-&gt;</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="na">watch</span> <span class="s">"</span><span class="si">#{</span><span class="nx">JS_SRC</span><span class="si">}</span><span class="s">/**/*.coffee"</span><span class="p">,</span> <span class="p">[</span><span class="s">'build'</span><span class="p">]</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="na">task</span> <span class="s">"default"</span><span class="p">,</span> <span class="p">[</span><span class="s">"build"</span><span class="p">]</span>
+</code></pre>
+<p><strong>NOTE:</strong> For those not confident with CoffeeScript, you can easily translate it into plain Javascript with <a href="http://js2.coffee/">js2coffee</a> online tool.</p>
+
+<h5>The client side, for real</h5>
+
+<p>Our initial implementation started with a simple utility library to manage the authentication for the client side:</p>
+<pre class="highlight coffeescript"><code><span class="c1"># app/assets/javascripts/lib/auth.coffee</span>
+
+<span class="nx">authenticateUser</span> <span class="o">=</span> <span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">-&gt;</span>
+  <span class="nx">$</span><span class="p">.</span><span class="na">ajax</span> <span class="s">'/authenticate'</span><span class="p">,</span>
+    <span class="na">type</span><span class="o">:</span> <span class="s">'POST'</span>
+    <span class="na">data</span><span class="o">:</span> <span class="p">{</span><span class="na">email</span><span class="o">:</span> <span class="nx">email</span><span class="p">,</span> <span class="na">password</span><span class="o">:</span> <span class="nx">password</span><span class="p">}</span>
+    <span class="na">success</span><span class="o">:</span> <span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="o">-&gt;</span>
+      <span class="nx">callback</span><span class="p">(</span><span class="na">authenticated</span><span class="o">:</span> <span class="no">true</span><span class="p">,</span> <span class="na">token</span><span class="o">:</span> <span class="nx">resp</span><span class="p">.</span><span class="na">auth_token</span><span class="p">)</span>
+    <span class="na">error</span><span class="o">:</span> <span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="o">-&gt;</span>
+      <span class="nx">callback</span><span class="p">(</span><span class="na">authenticated</span><span class="o">:</span> <span class="no">false</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="na">exports</span> <span class="o">=</span>
+  <span class="na">login</span><span class="o">:</span> <span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="nx">pass</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="vi">@</span><span class="na">loggedIn</span><span class="p">()</span>
+      <span class="nx">callback</span><span class="p">(</span><span class="no">true</span><span class="p">)</span> <span class="k">if</span> <span class="nx">callback</span>
+      <span class="vi">@</span><span class="na">onChange</span> <span class="no">true</span>
+      <span class="k">return</span>
+
+    <span class="nx">authenticateUser</span> <span class="nx">email</span><span class="p">,</span> <span class="nx">pass</span><span class="p">,</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span>
+      <span class="nx">authenticated</span> <span class="o">=</span> <span class="no">false</span>
+      <span class="k">if</span> <span class="nx">res</span><span class="p">.</span><span class="na">authenticated</span>
+        <span class="nx">localStorage</span><span class="p">.</span><span class="na">token</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="na">token</span>
+        <span class="nx">authenticated</span> <span class="o">=</span> <span class="no">true</span>
+
+      <span class="nx">callback</span><span class="p">(</span><span class="nx">authenticated</span><span class="p">)</span> <span class="k">if</span> <span class="nx">callback</span>
+      <span class="vi">@</span><span class="na">onChange</span> <span class="nx">authenticated</span>
+
+  <span class="na">getToken</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="nx">localStorage</span><span class="p">.</span><span class="na">token</span>
+
+  <span class="na">logout</span><span class="o">:</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">delete</span> <span class="nx">localStorage</span><span class="p">.</span><span class="na">token</span>
+    <span class="nx">callback</span><span class="p">()</span> <span class="k">if</span> <span class="nx">callback</span>
+    <span class="vi">@</span><span class="na">onChange</span><span class="p">(</span><span class="no">false</span><span class="p">)</span>
+
+  <span class="na">loggedIn</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="o">!!</span><span class="nx">localStorage</span><span class="p">.</span><span class="na">token</span>
+
+  <span class="na">onChange</span><span class="o">:</span> <span class="o">-&gt;</span>
+</code></pre>
+<p>As you can see, it is very simple, we have a Javascript object which exposes some methods and helpers. The main one, <code>login</code>, makes an AJAX request with user credentials to the server endpoint. If credentials are correct, it will store the resulting JWT from the server response and stores it on <code>localStorage</code>. The JWT will then be used to make authenticated requests to the server.</p>
+
+<p>Finally we integrated it inside the main application component:</p>
+<pre class="highlight coffeescript"><code><span class="c1"># app/assets/javascripts/application.coffee</span>
+
+<span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">'react'</span>
+<span class="nx">Auth</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">'./lib/auth'</span>
+<span class="c1"># other requires...</span>
+
+<span class="nx">App</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="na">createClass</span>
+  <span class="na">getInitialState</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="na">loggedIn</span><span class="o">:</span> <span class="nx">Auth</span><span class="p">.</span><span class="na">loggedIn</span><span class="p">()</span>
+
+  <span class="na">setStateOnAuth</span><span class="o">:</span> <span class="p">(</span><span class="nx">loggedIn</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="vi">@</span><span class="na">setState</span> <span class="na">loggedIn</span><span class="o">:</span> <span class="nx">loggedIn</span>
+
+  <span class="na">componentWillMount</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="nx">Auth</span><span class="p">.</span><span class="na">onChange</span> <span class="o">=</span> <span class="vi">@</span><span class="na">setStateOnAuth</span>
+
+  <span class="na">render</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="c1"># React's render ...</span>
+</code></pre>
+<p>And here&rsquo;s how we use it for the authenticated requests:</p>
+<pre class="highlight coffeescript"><code><span class="c1"># app/assets/javascripts/notifications_list.coffee</span>
+
+<span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">'react'</span>
+<span class="nx">Auth</span> <span class="o">=</span> <span class="nx">require</span> <span class="s">'../lib/auth'</span>
+<span class="c1"># other requires...</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="na">exports</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="na">createClass</span>
+  <span class="na">getInitialState</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">results</span><span class="o">:</span> <span class="p">[]}</span>
+
+  <span class="na">componentDidMount</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="nx">$</span><span class="p">.</span><span class="na">ajax</span> <span class="s">'/notifications'</span><span class="p">,</span>
+      <span class="na">headers</span><span class="o">:</span>
+        <span class="s">'Authorization'</span><span class="o">:</span> <span class="s">"Bearer </span><span class="si">#{</span><span class="nx">Auth</span><span class="p">.</span><span class="na">getToken</span><span class="p">()</span><span class="si">}</span><span class="s">"</span>
+      <span class="na">success</span><span class="o">:</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="vi">@</span><span class="na">setState</span><span class="p">({</span><span class="na">results</span><span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="na">notifications</span><span class="p">})</span>
+  <span class="na">render</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="c1"># React's render ...</span>
+</code></pre>
+<p>As you can see, we need to set an authorization token header for our requests. The code is
+simple for didactic purposes, in a real scenario it might be useful to create a custom helper
+to append the authentication header token in each request by default.</p>
+
+<h3>Conclusions</h3>
+
+<p>We&rsquo;ve only scratched the surface, but the intent of this article was to offer a gentle introduction. We&rsquo;re happy to listen to your feedbacks and questions, if you want some more in-depth article, please let us know :-)</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Authentication with Rails, JWT and ReactJS+http://nebulab.it/blog/authentication-with-rails-jwt-and-react/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/authentication-with-rails-jwt-and-react/&title=Authentication with Rails, JWT and ReactJS">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/authentication-with-rails-jwt-and-react/&title=Authentication with Rails, JWT and ReactJS&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

@@ -1,0 +1,391 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>How to create a single patch from different git commit - Nebulab</title>
+    <meta name="description" content="We don’t like to write the same code multiple times. If you have to apply any changes to projects that share files (the files you are editing), you can use git...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="How to create a single patch from different git commit - Nebulab">
+    <meta name="twitter:description" content="We don’t like to write the same code multiple times. If you have to apply any changes to projects that share files (the files you are editing), you can use git...">
+    <meta name="twitter:image" content="/blog/images/articles-images/create-a-single-patch-from-different-git-commit/git-64b31a8c.jpg">
+
+        <meta property="twitter:creator" content="@AlbertoVena">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="2 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="How to create a single patch from different git commit - Nebulab by Alberto Vena" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/how-to-create-a-single-patch-from-different-git-commit/" />
+    <meta property="og:image" content="/blog/images/articles-images/create-a-single-patch-from-different-git-commit/git-64b31a8c.jpg" />
+    <meta property="og:description" content="We don’t like to write the same code multiple times. If you have to apply any changes to projects that share files (the files you are editing), you can use git..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_how-to-create-a-single-patch-from-different-git-commit blog_how-to-create-a-single-patch-from-different-git-commit_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          How to create a single patch from different git commit
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/alberto-f63de619.jpg" alt="Alberto" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Alberto Vena
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          2 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/create-a-single-patch-from-different-git-commit/git-64b31a8c.jpg" alt="How to create a single patch from different git commit" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>We don&rsquo;t like to write the same code multiple times. If you have to apply any changes to projects that share files (the files you are editing), you can use git to accomplish this boring task.
+This is the hypothetical directories structure where the 2 repositories of this example is located:</p>
+<pre class="highlight plaintext"><code>-- projects/
+  |---first_repo_path/
+  |---second_repo_path/
+</code></pre>
+<h4>Create the patch</h4>
+
+<p>We can start looking for what commit we would like to start to create the patch with. Let&rsquo;s enter into the first repo and show the last commits:</p>
+<pre class="highlight plaintext"><code>$ cd projects/first_repo_path/
+$ git log --pretty=oneline --abbrev-commit -3
+a5f83e3 fixes security bug #123
+789f90c fixes security bug #98
+48c120e fixes problems with rails_admin
+</code></pre>
+<p>The second command print some important details on our commits. We can now detect our commit target (&ldquo;789f90c&rdquo; in our example) and create the patch with the command:</p>
+<pre class="highlight plaintext"><code>git format-patch -M 789f90c --stdout &gt; fixes_security_bugs.patch
+</code></pre>
+<p>This will create the file <em>fixes<em>security</em>bugs.patch</em> the incapsulate the changes of the last two commits.</p>
+
+<h4>Apply the patch to other repository</h4>
+
+<p>To apply the patch to the other repository, we can move to his root and launch this command:</p>
+<pre class="highlight plaintext"><code>$ cd ../second_repo_path/
+$ git am --signoff &lt; ../first_repo_path/fixes_security_bugs.patch
+</code></pre>
+<p>Done!</p>
+
+<h4>Resolve possible conflicts</h4>
+
+<p>If there are any problems and the patch application fails no changes will be applied to the second repository. We can solve conflict using:</p>
+<pre class="highlight plaintext"><code>git apply --reject --whitespace=fix fixes_security_bugs.patch
+</code></pre>
+<p>that allows to apply only changes that don&rsquo;t create conflicts. Refused code will be placed in <em>.rej</em> files that we can manually apply to our original code.</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=How to create a single patch from different git commit+http://nebulab.it/blog/how-to-create-a-single-patch-from-different-git-commit/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/how-to-create-a-single-patch-from-different-git-commit/&title=How to create a single patch from different git commit">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/how-to-create-a-single-patch-from-different-git-commit/&title=How to create a single patch from different git commit&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

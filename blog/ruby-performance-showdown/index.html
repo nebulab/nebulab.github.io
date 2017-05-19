@@ -1,0 +1,418 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Ruby performance showdown - Nebulab</title>
+    <meta name="description" content="Ever since Ruby 1.9.3’s first stable release (October 31 2011), we started thinking Nebulab required some updates.
+To keep things lean and simple, we wanted to...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Ruby performance showdown - Nebulab">
+    <meta name="twitter:description" content="Ever since Ruby 1.9.3’s first stable release (October 31 2011), we started thinking Nebulab required some updates.
+To keep things lean and simple, we wanted to...">
+    <meta name="twitter:image" content="/blog/images/articles-images/ruby-performance-showdown/ruby_benchmark-1cfa2f18.jpg">
+
+        <meta property="twitter:creator" content="@matteolatini">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="4 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Ruby performance showdown - Nebulab by Matteo Latini" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/ruby-performance-showdown/" />
+    <meta property="og:image" content="/blog/images/articles-images/ruby-performance-showdown/ruby_benchmark-1cfa2f18.jpg" />
+    <meta property="og:description" content="Ever since Ruby 1.9.3’s first stable release (October 31 2011), we started thinking Nebulab required some updates.
+To keep things lean and simple, we wanted to..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_ruby-performance-showdown blog_ruby-performance-showdown_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Ruby performance showdown
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/matteo-5ece94e8.jpg" alt="Matteo" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Matteo Latini
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          4 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/ruby-performance-showdown/ruby_benchmark-1cfa2f18.jpg" alt="Ruby performance showdown" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>Ever since Ruby 1.9.3&rsquo;s first stable release (October 31 2011), we started thinking Nebulab required some updates.
+To keep things lean and simple, we wanted to run some benchmarks to ensure updating was worthwhile. This post presents the results
+of those benchmarks.</p>
+
+<p>Up until recently, for our web applications, we used <a href="http://www.rubyenterpriseedition.com/">Ruby Enterprise</a> (ree if you use rvm).
+If you never heard of it, Ruby Enterprise is plain old Ruby 1.8.7 patched for better memory consumption and geek friendly garbage collector (GC) tuning.
+Looking at the benchmark results, we gladly decided to use Ruby 1.9.2 for our production environments and it&rsquo;s performing great!</p>
+
+<p>The data is generated using <a href="https://github.com/acangiano/ruby-benchmark-suite">ruby-benchmark-suite</a> running on a MacBookPro5,5. We also
+used rvm to install the following Ruby versions:</p>
+
+<ul>
+<li>ruby-1.8.7-p352</li>
+<li>ruby-1.9.2-p290</li>
+<li>ruby-1.9.3-preview1</li>
+<li>ree-1.8.7-2011.03</li>
+<li>rbx-2.0.0pre</li>
+<li>jruby-1.6.4</li>
+<li>maglev-26852</li>
+</ul>
+
+<p>As you may have noticed, the versions chosen to run the benchmarks are not the latest. Understanding performance gains should not be a problem since we are looking for big differences to choose a fast and reliable Ruby version.</p>
+
+<p>The chart is drawn using  <a href="http://www.highcharts.com/">Highcharts</a> a great js library for drawing dynamic charts. You can explore the chart by clicking and dragging a section with your mouse.</p>
+
+<p>Some regions of the chart may look like missing data, this is mainly due to benchmarks which took less than 1 second to run. The same happens when
+a benchmark gets 0 execution time because of its failure. This means that, if you see an empty space between bars, that particular Ruby version failed
+that particular benchmark because of an exception.</p>
+
+<div id="container" style="width:100%;"></div>
+
+<p>Looking at the chart, it seems obvious that 1.9.2 and 1.9.3 are the two fastest and stablest Ruby versions. The more &ldquo;exotic&rdquo; Ruby versions are, in some
+benchmarks, extremely fast but often take a lot of time to complete a benchmark (if they don&rsquo;t fail miserably).</p>
+
+<p>Personally, I was shocked to find out how clearly Ruby Enterprise seems outdated. After these benchmarks, I can say that Ruby Enterprise is only fit for those production environments where you need to keep running an old outdated application which you do not want/do not need to update.
+That said, Ruby Enterprise also offers other benefits (not strictly related to performance), like memory optimization for multiple apps running on the same server or the fact that the GC can be configured easily.</p>
+
+<p>Anyway, those benefits are not a Ruby Enterprise exclusive anymore. Ruby 1.9&rsquo;s performance and memory consumption have been greatly improved thanks to the inclusion
+of <a href="http://en.wikipedia.org/wiki/YARV">YARV</a> and, since 1.9.3, the GC can be configured just like ree.</p>
+
+<p>To conclude with, I know that for some of you, the geekiest ones, the chart will be too approximate (it is for me too :D) so I thought I&rsquo;d give you the
+<a href="/blog/files/ruby_benchmark.csv">original CSV benchmark results file</a>, so that you can play with it however you see
+fit.</p>
+
+<h3>Insights</h3>
+
+<ul>
+<li><a href="http://programmingzen.com/2008/12/09/the-great-ruby-shootout-december-2008/">The Great Ruby Shootout</a></li>
+<li><a href="http://www.rubychan.de/share/yarv_speedups.html">1.8.7 vs 1.9.2</a></li>
+<li><a href="http://www.rubyinside.com/ruby-1-9-3-faster-loading-times-require-4927.html">The Story Behind Ruby 1.9.3 Getting 36% Faster Loading Times</a></li>
+<li><a href="http://youtu.be/oEkJvvGEtB4">Matz talks about Ruby 1.9</a></li>
+</ul>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
+
+<script src="/blog/javascripts/highcharts-68fce390.js" type="text/javascript"></script>
+
+<script src="/blog/javascripts/ruby_benchmark-c58ed4eb.js" type="text/javascript"></script>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Ruby performance showdown+http://nebulab.it/blog/ruby-performance-showdown/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/ruby-performance-showdown/&title=Ruby performance showdown">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/ruby-performance-showdown/&title=Ruby performance showdown&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

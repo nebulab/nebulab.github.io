@@ -1,0 +1,759 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Integrate Solidus with external services using Cangaroo - Nebulab</title>
+    <meta name="description" content="In this article we’ll create a simple application to show how to
+integrate and use Cangaroo to handle any external service
+integration with your Solidus store">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Integrate Solidus with external services using Cangaroo - Nebulab">
+    <meta name="twitter:description" content="In this article we’ll create a simple application to show how to
+integrate and use Cangaroo to handle any external service
+integration with your Solidus store">
+    <meta name="twitter:image" content="/blog/images/articles-images/integrate-your-solidus-store-with-external-services-using-cangaroo/cangaroo-53b1deb1.jpg">
+
+        <meta property="twitter:creator" content="@alessio_rocco">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="20 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Integrate Solidus with external services using Cangaroo - Nebulab by Alessio Rocco" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/integrate-your-solidus-store-with-external-services-using-cangaroo/" />
+    <meta property="og:image" content="/blog/images/articles-images/integrate-your-solidus-store-with-external-services-using-cangaroo/cangaroo-53b1deb1.jpg" />
+    <meta property="og:description" content="In this article we’ll create a simple application to show how to
+integrate and use Cangaroo to handle any external service
+integration with your Solidus store" />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_integrate-your-solidus-store-with-external-services-using-cangaroo blog_integrate-your-solidus-store-with-external-services-using-cangaroo_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Integrate Solidus with external services using Cangaroo
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/alessio-b245ae61.jpg" alt="Alessio" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Alessio Rocco
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          20 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/integrate-your-solidus-store-with-external-services-using-cangaroo/cangaroo-53b1deb1.jpg" alt="Integrate Solidus with external services using Cangaroo" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>In this article we&rsquo;ll create a simple application to show how to
+integrate and use <a href="https://github.com/nebulab/cangaroo">Cangaroo</a> to handle any external service
+integration with your <a href="http://nebulab.it/solidus">Solidus store</a>. Our goal will be to send a
+tweet out each time a new product is created. Accomplishing this task will
+allow us to walk you throught <em>Cangaroo</em> installation and basic functionalities.</p>
+
+<p><em>In <a href="http://nebulab.it/blog/the-birth-of-a-cangaroo">my previous article</a> I told the full story about why we
+created Cangaroo and I promised to write a tutorial that explains how to
+set it up to use an existing integration.</em></p>
+
+<p>So let&rsquo;s go ahead and make a plan. The steps we&rsquo;ll follow are:</p>
+
+<ol>
+<li><a href="#add-cangaroo">Add Cangaroo to our Solidus application.</a></li>
+<li><a href="#setup-solidus-cangaroo">Setup solidus_cangaroo extension to send products to Cangaroo</a></li>
+<li><a href="#add-twitter-integration">Add Twitter Integration</a>
+
+<ul>
+<li><a href="#the-hard-way">The Hard Way</a></li>
+<li><a href="#the-easy-way">The Easy Way</a></li>
+</ul></li>
+<li><a href="#add-cangaroo-job">Add the TweetProduct Cangaroo Job</a></li>
+</ol>
+
+<p>To follow this tutorial you need:</p>
+
+<ol>
+<li>A working <em>Solidus</em> store (check out <a href="/blog/deploy-solidus-to-heroku-like-a-boss/">how to boostrap a solidus store and
+ deploy it to Heroku</a>).</li>
+<li>A Twitter account and a Twitter application
+(<a href="https://apps.twitter.com/">https://apps.twitter.com/</a>).</li>
+</ol>
+
+<p>After that, we are ready to go!</p>
+
+<p><a name="add-cangaroo"></a>Add Cangaroo to our Solidus application</p>
+
+<p><em>Cangaroo</em> is a <em>Rails</em> engine and can be mounted on any Rails application. In
+this case we are going to mount it on our Solidus store just for the sake
+of simplicity but keep in mind that you can (and we advice to) use it also
+on a separate <em>Rails</em> application.
+In the real world the best way to use <em>Cangaroo</em> is into a
+standalone application; that way it can serve multiple storefronts and
+applications like an ERP and a CMS.</p>
+
+<p>To add <em>Cangaroo</em> to our application we just need to follow the README:</p>
+
+<p>Add <em>Cangaroo</em> gem to Gemfile</p>
+<pre class="highlight ruby"><code><span class="c1"># Gemfile</span>
+
+<span class="n">gem</span> <span class="s1">'cangaroo'</span>
+</code></pre>
+<p>Run <code>bundle</code> as usual, then you have to install and run the needed migrations</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>bin/rake cangaroo:install:migrations
+<span class="gp">$ </span>bin/rake db:migrate
+</code></pre>
+<p>The last step is to add the routes needed from <em>Cangaroo</em> to receive data from
+our apps:</p>
+<pre class="highlight ruby"><code><span class="c1"># routes.rb</span>
+
+<span class="n">mount</span> <span class="no">Cangaroo</span><span class="o">::</span><span class="no">Engine</span> <span class="o">=&gt;</span> <span class="s2">"/cangaroo"</span>
+</code></pre>
+<p>Now Cangaroo is configured into our app and ready to receive data and perform
+Jobs, but first we have to create a <code>Connection</code>. Basically a connection is an
+external app that can send and receive data from Cangaroo.
+To create the connection in the <code>rails console</code> run:</p>
+<pre class="highlight ruby"><code><span class="no">Cangaroo</span><span class="o">::</span><span class="no">Connection</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span>
+  <span class="ss">name: </span><span class="s1">'mystore'</span><span class="p">,</span>
+  <span class="ss">url: </span><span class="s1">'http://localhost:3000'</span><span class="p">,</span>
+  <span class="ss">key: </span><span class="s1">'secretkey'</span><span class="p">,</span>
+  <span class="ss">token: </span><span class="s1">'secrettoken'</span>
+<span class="p">)</span>
+</code></pre>
+<p>The Connection has four fields:</p>
+
+<ul>
+<li><code>name</code>: is used to identify the connection from <em>Cangaroo</em> jobs
+(we&rsquo;ll see this later);</li>
+<li><code>url</code>: is the connection url, in our case we are running rails locally so it&rsquo;s
+<code>localhost:3000</code>;</li>
+<li><code>key</code>: it&rsquo;s used for authentication, you can set it to your liking;</li>
+<li><code>token</code>: also used for authentication, you can set it to your liking;</li>
+</ul>
+
+<h2><a name="setup-solidus-cangaroo"></a> Setup solidus_cangaroo extension to send products to Cangaroo</h2>
+
+<p><a href="https://github.com/nebulab/solidus_cangaroo">solidus_cangaroo</a> is a <em>Solidus</em> extension that provides the
+push API that we&rsquo;ll use to send our products to <em>Cangaroo</em>.
+Again, to setup it up we can just follow its README:</p>
+
+<p>Add <em>solidus_cangaroo</em> gem to our Gemfile as usual:</p>
+<pre class="highlight ruby"><code><span class="c1"># Gemfile</span>
+
+<span class="n">gem</span> <span class="s1">'solidus_cangaroo'</span><span class="p">,</span> <span class="ss">github: </span><span class="s1">'nebulab/solidus_cangaroo'</span><span class="p">,</span> <span class="ss">branch: </span><span class="s1">'master'</span>
+</code></pre>
+<p>then run <code>bundle</code> and <code>bundle exec rails g spree_wombat:install</code>.
+Now we have to add our Cangaroo credential into the file
+<code>config/initializers/cangaroo.rb</code></p>
+<pre class="highlight ruby"><code><span class="c1"># config/initializers/cangaroo.rb</span>
+
+<span class="no">Spree</span><span class="o">::</span><span class="no">Wombat</span><span class="o">::</span><span class="no">Config</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">connection_id</span> <span class="o">=</span> <span class="s1">'secretkey'</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">connection_token</span> <span class="o">=</span> <span class="s1">'secrettoken'</span>
+<span class="k">end</span>
+</code></pre>
+<p>As you can see the <code>connection_id</code> is the <code>key</code> that we previously added to the
+connection and the <code>connection_token</code> is the <code>token</code>. This way <em>Cangaroo</em> will
+authenticate the store when it sends data to <em>Cangaroo</em>.</p>
+
+<p>The next step is to specify which objects we want to send to Cangaroo, in our
+case just the products.
+To do so we use the <code>push_objects</code> configuration:</p>
+<pre class="highlight ruby"><code><span class="c1"># config/initializers/cangaroo.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">push_objects</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Spree::Product"</span><span class="p">]</span>
+</code></pre>
+<p>Then we have to configure the <code>payload_builder</code>, which is needed to normalize
+the data and make it understandable to <em>Cangaroo</em>. Fortunately
+almost all the work is done from <em>solidus_cangaroo</em> that already has the
+<a href="https://github.com/nebulab/solidus_cangaroo/tree/master/app/serializers/spree/wombat">Serializers</a> for nearly all the <em>Solidus</em> objects.
+The <code>root</code> key (of the json object the app is sending to <em>Cangaroo</em>) is needed
+to let <em>Cangaroo</em> understand what kind of data the app is sending:</p>
+<pre class="highlight ruby"><code><span class="c1"># config/initializers/cangaroo.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">payload_builder</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"Spree::Product"</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">serializer: </span><span class="s2">"Spree::Wombat::ProductSerializer"</span><span class="p">,</span> <span class="ss">root: </span><span class="s2">"products"</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<p>At last we have to setup the <code>push_url</code> with the path to our <em>Cangaroo</em>
+installation. In our case it&rsquo;s the same path of our store (but remember that
+it can be another application):</p>
+<pre class="highlight ruby"><code><span class="c1"># config/initializers/cangaroo.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">push_url</span> <span class="o">=</span> <span class="s2">"http://localhost:3000/cangaroo/endpoint"</span>
+</code></pre>
+<p>Now our <code>config/initializers/cangaroo.rb</code> should look like this:</p>
+<pre class="highlight ruby"><code><span class="c1"># config/initializers/cangaroo.rb</span>
+
+<span class="no">Spree</span><span class="o">::</span><span class="no">Wombat</span><span class="o">::</span><span class="no">Config</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">connection_id</span> <span class="o">=</span> <span class="s2">"secretkey"</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">connection_token</span> <span class="o">=</span> <span class="s2">"secrettoken"</span>
+
+  <span class="n">config</span><span class="p">.</span><span class="nf">push_objects</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Spree::Product"</span><span class="p">]</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">payload_builder</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"Spree::Product"</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">serializer: </span><span class="s2">"Spree::Wombat::ProductSerializer"</span><span class="p">,</span> <span class="ss">root: </span><span class="s2">"products"</span> <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">push_url</span> <span class="o">=</span> <span class="s2">"http://localhost:3000/cangaroo/endpoint"</span>
+<span class="k">end</span>
+</code></pre>
+<p>Finally we can check if our application sends products to <em>Cangaroo</em>
+correctly. First, start our <code>rails server</code> and from <code>rails console</code> run:</p>
+<pre class="highlight ruby"><code><span class="no">Spree</span><span class="o">::</span><span class="no">Wombat</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">push_batches</span><span class="p">(</span><span class="s2">"Spree::Product"</span><span class="p">)</span>
+</code></pre>
+<p>after some info logs you should see the return message:</p>
+<pre class="highlight ruby"><code><span class="o">=&gt;</span> <span class="mi">9</span>
+</code></pre>
+<p>this means that 9 products are sent to <em>Cangaroo</em>. On your project this number
+can change, it depends on how many products you have in your database.
+Somewhere in your rails logs you should be able to spot:</p>
+<pre class="highlight plaintext"><code>Completed 202 Accepted in 43ms (Views: 0.2ms | ActiveRecord: 0.9ms)
+</code></pre>
+<p>This confirms that <em>Cangaroo</em> has received our products, anyway nothing
+happened because for now we didn&rsquo;t configure any job. A job is an action
+triggered when an object is received and uses integration to &ldquo;talk&rdquo; with
+external services. In the next step we are going to add the twitter
+integration that will be used by a job to let the world know about our
+amazing new products.</p>
+
+<h2><a name="add-twitter-integration"></a> Add Twitter Integration</h2>
+
+<h3><a name="the-hard-way"></a> The Hard Way</h3>
+
+<p>At first we have to pull the <a href="https://github.com/cangaroo/twitter_integration">twitter_integration</a> repo and
+make it run. Available integrations are made of simple Sinatra apps that
+you can find here: <a href="https://github.com/cangaroo">https://github.com/cangaroo</a>.</p>
+
+<p>The first step is to clone the integration from <em>GitHub</em>:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>git clone https://github.com/cangaroo/twitter_integration
+</code></pre>
+<p>then <code>cd</code> into the directory and run <code>bundle</code>. After that run the <em>Sinatra</em>
+app with:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>bundle <span class="nb">exec </span>rackup
+</code></pre>
+<p>To check if everything is working you can visit <code>http://localhost:9292/</code> and
+look for <code>TwitterIntegration ok</code>.</p>
+
+<h3><a name="the-easy-way"></a> The Easy Way</h3>
+
+<p>To make it even simpler, we have added the
+<a href="https://heroku.com/deploy?template=https://github.com/cangaroo/twitter_integration" class="button-img">
+  <img alt="Deploy" src="https://www.herokucdn.com/deploy/button.svg">
+</a>
+button on the integration <a href="https://github.com/cangaroo/twitter_integration">README</a>.
+If you push this button and follow the instructions you will have a working integration
+on Heroku that you can eventually use also for production.</p>
+
+<p>To check if you have correctly deployed the integration on heroku go to your
+application root path and check that it responds with <code>TwitterIntegration ok</code>.</p>
+
+<p>To add a security layer we need to set the environment variable <code>ENDPOINT_KEY</code>
+with a private token that will be used with the Connection that we are going to
+create in the next step:</p>
+<pre class="highlight shell"><code><span class="nv">ENDPOINT_KEY</span><span class="o">=</span>secrettoken
+</code></pre>
+<p>Now is time to teach our <em>Cangaroo</em> how to tweet. First of all, we have to
+create the connection for this integration, we create it from <code>rails console</code>:</p>
+<pre class="highlight ruby"><code><span class="no">Cangaroo</span><span class="o">::</span><span class="no">Connection</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span>
+  <span class="ss">name: </span><span class="s1">'twitter'</span><span class="p">,</span>
+  <span class="ss">url: </span><span class="s1">'http://localhost:9292'</span><span class="p">,</span>
+  <span class="ss">key: </span><span class="s1">'secrettoken'</span><span class="p">,</span>
+  <span class="ss">token: </span><span class="s1">'secrettoken'</span>
+<span class="p">)</span>
+</code></pre>
+<p>Change <code>url</code> and <code>token</code> accordling to values of your app url and your
+security token.</p>
+
+<p><strong>Note:</strong> <em>Even if key is not used for the integrations, Cangaroo will still validate
+its presence, so you have to set it. This strange behavior comes to support
+the old Wombat behavior. We hope to find a better way to implement it soon.</em></p>
+
+<h2><a name="add-cangaroo-job"></a> Add the TweetProduct Cangaroo Job</h2>
+
+<p>We are finally ready to create the job to send tweets. To do so we run the
+generator:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>bundle <span class="nb">exec </span>rails g job Cangaroo::TweetProduct
+</code></pre>
+<p>now we have to change this job.
+First of all it must inherit from Cangaroo::Job.
+Then we need to remove the queue_as :default, because Cangaroo::Job already
+uses the cangaroo queue (you can change it if you want).
+At this point, we have to specify connection, path and parameters that the job
+will use:</p>
+<pre class="highlight ruby"><code><span class="c1"># app/jobs/cangaroo/tweet_product.rb</span>
+
+<span class="k">class</span> <span class="nc">Cangaroo</span><span class="o">::</span><span class="no">TweetProductJob</span> <span class="o">&lt;</span> <span class="no">Cangaroo</span><span class="o">::</span><span class="no">Job</span>
+  <span class="n">connection</span> <span class="s1">'twitter'</span>
+  <span class="n">path</span> <span class="s1">'/send_tweet'</span>
+  <span class="n">parameters</span> <span class="p">{</span>
+    <span class="ss">consumer_key: </span><span class="s1">'your_twitter_consumer_key'</span><span class="p">,</span>
+    <span class="ss">consumer_secret: </span><span class="s1">'your_twitter_consumer_secret'</span><span class="p">,</span>
+    <span class="ss">access_token: </span><span class="s1">'your_twitter_access_token'</span><span class="p">,</span>
+    <span class="ss">access_token_secret: </span><span class="s1">'your_twittwr_token_secret'</span>
+  <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<p><code>path</code> and <code>parameters</code> are relative to integration you are using.
+For now the integrations don&rsquo;t have much documentation, so you have to refer
+to the code in the <a href="https://github.com/cangaroo/twitter_integration/blob/master/twitter_integration.rb">integration file</a>.
+In case you want to go deeper, you could also take a look at the
+<a href="https://github.com/spree/endpoint_base">endpoint_base</a> gem.</p>
+
+<p><em>We plan to improve integrations and the endpoint_base gem.
+However this is quite a lot of stuff, so contributions are very welcome.</em></p>
+
+<p>After that we have to implement the <code>perform?</code> method.
+<em>Cangaroo</em> uses this method to understand if this job should be performed. In
+our case we have to check if the type is a <code>product</code> and if it&rsquo;s a new product
+(please refer to the <a href="https://github.com/nebulab/cangaroo#cangaroo-jobs">README</a> to see which variables can be
+used inside the <code>perform?</code> method):</p>
+<pre class="highlight ruby"><code><span class="c1"># app/jobs/cangaroo/tweet_product.rb</span>
+
+<span class="p">.</span><span class="nf">.</span><span class="p">.</span>
+<span class="nf">def</span> <span class="n">perform?</span>
+  <span class="n">type</span> <span class="o">==</span> <span class="s1">'products'</span> <span class="o">&amp;&amp;</span>
+    <span class="n">payload</span><span class="p">[</span><span class="s1">'created_at'</span><span class="p">]</span> <span class="o">==</span> <span class="n">payload</span><span class="p">[</span><span class="s1">'updated_at'</span><span class="p">]</span>
+<span class="k">end</span>
+<span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+</code></pre>
+<p>Sometimes integrations don&rsquo;t understand the data that we send to them, so we
+have to <code>transform</code> it. In our case we want to write a tweet with the product&rsquo;s
+name and link so we&rsquo;ll use the <code>transform</code> method to convert the product&rsquo;s data
+coming from the store into a JSON that will be sent to the integration.
+Our <code>transform</code> method looks like:</p>
+<pre class="highlight ruby"><code><span class="c1"># app/jobs/cangaroo/tweet_product.rb</span>
+
+<span class="p">.</span><span class="nf">.</span><span class="p">.</span>
+<span class="nf">def</span> <span class="n">transform</span>
+  <span class="p">{</span>
+    <span class="ss">tweet: </span><span class="p">{</span>
+      <span class="ss">body: </span><span class="s2">"Hey, we have a new awesome product </span><span class="si">#{</span><span class="n">payload</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2"> http://localhost:3000/products/</span><span class="si">#{</span><span class="n">payload</span><span class="p">[</span><span class="s1">'permalink'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="k">end</span>
+<span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+</code></pre>
+<p>and then our job should look like:</p>
+<pre class="highlight ruby"><code><span class="c1"># app/jobs/cangaroo/tweet_product.rb</span>
+
+<span class="k">class</span> <span class="nc">Cangaroo</span><span class="o">::</span><span class="no">TweetProductJob</span> <span class="o">&lt;</span> <span class="no">Cangaroo</span><span class="o">::</span><span class="no">Job</span>
+  <span class="n">connection</span> <span class="s1">'twitter'</span>
+  <span class="n">path</span> <span class="s1">'/send_tweet'</span>
+  <span class="n">parameters</span> <span class="p">{</span>
+    <span class="ss">consumer_key: </span><span class="s1">'your_twitter_consumer_key'</span><span class="p">,</span>
+    <span class="ss">consumer_secret: </span><span class="s1">'your_twitter_consumer_secret'</span><span class="p">,</span>
+    <span class="ss">access_token: </span><span class="s1">'your_twitter_access_token'</span><span class="p">,</span>
+    <span class="ss">access_token_secret: </span><span class="s1">'your_twittwr_token_secret'</span>
+  <span class="p">}</span>
+
+  <span class="k">def</span> <span class="nf">transform</span>
+    <span class="p">{</span>
+      <span class="ss">tweet: </span><span class="p">{</span>
+        <span class="ss">body: </span><span class="s2">"Hey, we have a new awesome product </span><span class="si">#{</span><span class="n">payload</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2"> http://localhost:3000/products/</span><span class="si">#{</span><span class="n">payload</span><span class="p">[</span><span class="s1">'permalink'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">perform?</span>
+    <span class="n">type</span> <span class="o">==</span> <span class="s1">'products'</span> <span class="o">&amp;&amp;</span>
+      <span class="n">payload</span><span class="p">[</span><span class="s1">'created_at'</span><span class="p">]</span> <span class="o">==</span> <span class="n">payload</span><span class="p">[</span><span class="s1">'updated_at'</span><span class="p">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>We are now lacking just the last thing: we have to inform <em>Cangaroo</em> about
+this job. This is an easy task: we just have to add our job to the right
+configuration, in this case Rails.configuration.cangaroo.jobs.
+To do so we need to add it in the cangaroo initializer:</p>
+<pre class="highlight ruby"><code><span class="c1"># config/initializers/cangaroo.rb</span>
+<span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">cangaroo</span><span class="p">.</span><span class="nf">jobs</span> <span class="o">=</span> <span class="p">[</span><span class="no">Cangaroo</span><span class="o">::</span><span class="no">TweetProductJob</span><span class="p">]</span>
+</code></pre>
+<p>All done! Now is time to test our integration:
+create a new product on <em>Solidus</em> then run from <code>rails console</code>:</p>
+<pre class="highlight ruby"><code><span class="no">Spree</span><span class="o">::</span><span class="no">Wombat</span><span class="o">::</span><span class="no">Client</span><span class="p">.</span><span class="nf">push_batches</span><span class="p">(</span><span class="s2">"Spree::Product"</span><span class="p">)</span>
+</code></pre>
+<p>And&hellip;if everything is working you should see a tweet about your new awesome
+product!!!</p>
+
+<p>Take note that, at the moment, our project doesn&rsquo;t use any queue system and
+<em>Cangaroo</em> jobs are just simple Rails jobs.
+You can therefore use any backend queue system that is currently
+supported by Rails.</p>
+
+<p>Also, in this tutorial we pushed objects from the rails console.
+Conversely, in a real application you would probably want to use the
+proper rake task:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>bundle <span class="nb">exec </span>rake wombat:push_it
+</code></pre>
+<p>I hope you now have a better understanding of how <em>Cangaroo</em> works and how to
+use integrations.
+There&rsquo;s still a lot of work to be done, both on <em>Cangaroo</em> and the integrations.
+We&rsquo;ll welcome anyone that wants to work on the projects with us.</p>
+
+<p>You can find the code used for this tutorial on this <a href="https://github.com/nebulab/cangaroo_tutorial">repo</a>.</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Integrate Solidus with external services using Cangaroo+http://nebulab.it/blog/integrate-your-solidus-store-with-external-services-using-cangaroo/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/integrate-your-solidus-store-with-external-services-using-cangaroo/&title=Integrate Solidus with external services using Cangaroo">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/integrate-your-solidus-store-with-external-services-using-cangaroo/&title=Integrate Solidus with external services using Cangaroo&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+    <div class="cta">
+<a href="/contact-us" class="cta__content">      <h2 class="cta__content__title">
+        Need help with your Solidus store?
+      </h2>
+      <span class="cta__content__link">
+        Let's talk
+      </span>
+</a>  </div>
+
+  <section class="our-blog">
+      <h6 class="our-blog__section-title">
+        Related posts
+      </h6>
+
+    <div class="articles">
+        <article class="articles__item">
+          <h6>
+            #Code
+          </h6>
+          <h4>
+            <a href="/blog/the-birth-of-a-cangaroo/">The birth of a Cangaroo</a>
+          </h4>
+
+          <div class="articles__item__body">
+            <p>Before getting deeper into some technical Cangaroo guide I wanted to give
+some more insights about how Cangaroo was born. This is the story that tells
+how the...</p>
+          </div>
+
+          <div class="read-more">
+            <a href="/blog/the-birth-of-a-cangaroo/">Read the full article</a>
+          </div>
+        </article>
+        <article class="articles__item">
+          <h6>
+            #Code
+          </h6>
+          <h4>
+            <a href="/blog/why-solidus/">Why Solidus?</a>
+          </h4>
+
+          <div class="articles__item__body">
+            <p>Spree or Solidus? Which OSS project Nebulab, as an agency involved in
+Ruby on Rails eCommerce development, should invest on? This blog post
+tells the story about...</p>
+          </div>
+
+          <div class="read-more">
+            <a href="/blog/why-solidus/">Read the full article</a>
+          </div>
+        </article>
+    </div>
+
+  </section>
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

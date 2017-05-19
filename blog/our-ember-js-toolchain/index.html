@@ -1,0 +1,506 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Our Ember.js Toolchain - Nebulab</title>
+    <meta name="description" content="Now that we’ve been working with Ember.js for a while, we wanted to give a quick update
+on what we found works out for us while working with it, both client and...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Our Ember.js Toolchain - Nebulab">
+    <meta name="twitter:description" content="Now that we’ve been working with Ember.js for a while, we wanted to give a quick update
+on what we found works out for us while working with it, both client and...">
+    <meta name="twitter:image" content="/blog/images/articles-images/our-emberjs-toolchain/ember-e03697b1.jpg">
+
+        <meta property="twitter:creator" content="@matteolatini">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="9 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Our Ember.js Toolchain - Nebulab by Matteo Latini" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/our-ember-js-toolchain/" />
+    <meta property="og:image" content="/blog/images/articles-images/our-emberjs-toolchain/ember-e03697b1.jpg" />
+    <meta property="og:description" content="Now that we’ve been working with Ember.js for a while, we wanted to give a quick update
+on what we found works out for us while working with it, both client and..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_our-ember-js-toolchain blog_our-ember-js-toolchain_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Our Ember.js Toolchain
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/matteo-5ece94e8.jpg" alt="Matteo" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Matteo Latini
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          9 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/our-emberjs-toolchain/ember-e03697b1.jpg" alt="Our Ember.js Toolchain" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>Now that we&rsquo;ve been working with Ember.js for a while, we wanted to give a quick update
+on what we found works out for us while working with it, both client and server side.
+We thought this post would be useful since we initially had some problems finding the right
+tools but now we really feel we found the right toolchain.</p>
+
+<h2>Client Side</h2>
+
+<p>We found the client side needs tools to: organize code, write tests and fake an API.
+About data persistance libraries: we use <a href="https://github.com/emberjs/data">Ember Data</a>
+but we won&rsquo;t be talking about that here because it&rsquo;s a really hard choice and it really
+depends on what you need to work on.</p>
+
+<h3>Organize Code</h3>
+
+<p>The client side is probably the most complex part; since Ember.js does not (yet) provide powerful
+buildtools, you have to go with whatever works best for you. Forget the starter kit provided
+on the homepage. It&rsquo;s a fast way to start experimenting but you&rsquo;ll end up with a huge messy
+file.</p>
+
+<p>To provide some order to our apps we use <a href="http://brunch.io">Brunch</a> with the
+<a href="https://github.com/mutewinter/tapas-with-ember">tapas-with-ember</a> skeleton. These tools will
+let you (among other things):</p>
+
+<ul>
+<li>organize Ember code in a clean way</li>
+<li>manage Ember, Ember Data/Ember Model and Handlebars libraries</li>
+<li>write CoffeeScript (pretty much everywhere)</li>
+<li>provide automatic file reloading</li>
+<li>have a workbench ready to do TDD</li>
+<li>generate files with templates via <a href="https://github.com/paulmillr/scaffolt">scaffolt</a></li>
+<li>manage multiple environments (we use development, test, staging, production just like in Rails)</li>
+<li>compile, compress, lint your code</li>
+</ul>
+
+<p>In addition to all those things, Brunch and tapas-with-ember are simple and well written so
+it&rsquo;s easy to add any missing functionality you may need.</p>
+
+<h3>Write Tests</h3>
+
+<p>We hate reinventing wheels; for testing Ember applications we went straight to what
+<a href="http://emberjs.com/guides/testing/integration/">Ember provides</a>. This means we use
+<a href="http://qunitjs.com">QUnit</a> which, compared to more elaborate libraries like
+<a href="http://jasmine.github.io">Jasmine</a>, may be disappointing but it also means that it works
+without any additional work on our side.</p>
+
+<p>To make the syntax more readable we use <a href="https://github.com/joshuaclayton/specit">SpecIt</a>.
+It&rsquo;s an old library but it works pretty well. At times we had some deprecation warnings
+but the library it&rsquo;s simple enough that it just requires changing a method to make it compatible
+with QUnit&rsquo;s latest version.</p>
+
+<p>Another thing we found really works out for us is using fixtures (like Ember Data&rsquo;s
+<code>DS.FixtureAdapter</code>) instead of using a mocking library like <a href="http://sinonjs.org">Sinon.JS</a>.
+By adding some test helpers the code needed to create fake data to be used when testing
+is really clean, like this:</p>
+<pre class="highlight coffeescript"><code><span class="nx">create</span><span class="p">(</span>
+  <span class="na">user</span><span class="o">:</span> <span class="p">{</span> <span class="na">id</span><span class="o">:</span> <span class="s">"current"</span><span class="p">,</span> <span class="na">products</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="p">}</span>
+  <span class="na">product</span><span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="na">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">name</span><span class="o">:</span> <span class="s">"Product #1"</span> <span class="p">},</span> <span class="p">{</span> <span class="na">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="na">name</span><span class="o">:</span> <span class="s">"Product #2"</span> <span class="p">}</span> <span class="p">]</span>
+<span class="p">)</span>
+</code></pre>
+<p>To run tests we use <a href="http://karma-runner.github.io/0.10/index.html">Karma</a> which comes
+with tapas-with-ember so you have pretty much everything done for you.</p>
+
+<h3>Fake an API</h3>
+
+<p>One thing we can&rsquo;t believe no one is talking about is how to crate a fake API server to use
+when you want to take a look at all the Ember code you&rsquo;ve written.</p>
+
+<p>On this matter we couldn&rsquo;t find a lot of libraries. Everything that&rsquo;s available usually
+returns static data but we don&rsquo;t like that, we prefer dynamic data so that if we want to fake
+hundreds of json objects we don&rsquo;t need a huge static json file.</p>
+
+<p>After some time spent trying out various solutions we came across <a href="https://github.com/webpro/dyson">dyson</a>
+a simple library for providing fake dynamic data via a Node server. A quick example of how
+to generate ten json objects with dynamic attributes:</p>
+<pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">currentId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">path</span><span class="p">:</span> <span class="s1">'/products'</span><span class="p">,</span>
+  <span class="na">collection</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="na">size</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+
+  <span class="na">template</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">id</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">currentId</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">return</span> <span class="nx">currentId</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+    <span class="p">},</span>
+    <span class="na">name</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="s1">'Product #'</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+<h2>Server Side</h2>
+
+<p>Once you have a pretty good idea of how the Ember application might work, you&rsquo;ll obviously
+need some APIs to actually serve the content that will make the client side application
+come to life.</p>
+
+<p>We usually don&rsquo;t split teams between client side and server side so most of the time whoever is
+working on an Ember application also designs and codes the server side APIs. We use Rails for
+APIs; the biggest problems we usually find are: rendering json data and providing great documentation
+for our APIs.</p>
+
+<h3>Render JSON Data</h3>
+
+<p>To render json data we use <a href="https://github.com/rails-api/active_model_serializers">ActiveModelSerializers</a>;
+it&rsquo;s the library which works best with Ember and it&rsquo;s full of conventions so you don&rsquo;t need
+to write everything yourself. Compared to RABL (another popular API builder library) ActiveModelSerializers
+feels more robust and doesn&rsquo;t give you the feeling you&rsquo;re writing that json data by hand.</p>
+
+<p>One important aspect of writing a good json API is having a good data format. We use <a href="http://jsonapi.org">JSON API</a>
+for this. JSON API is a standard for writing good json APIs; even though it&rsquo;s not quite
+ready yet (it&rsquo;s still in its draft state), it&rsquo;s really powerful because you don&rsquo;t have to spend
+time choosing what format will work for you, you&rsquo;ll have a format that will work and scale
+well from few json objects to thousands.</p>
+
+<h3>API Documentation</h3>
+
+<p>If your API is public you probably want some good documentation to go with it.
+We use <a href="https://github.com/Pajk/apipie-rails">Apipie-rails</a> for this because it&rsquo;s straightforward.
+By providing a simple DSL, Apipie-rails will let you write documentation for your API
+endpoinds in no time. Once you&rsquo;re done writing about your API you&rsquo;ll end up with a mountable
+engine which exposes your neat documentation in an easy to read format.
+Among the cool features of Apipie-rails one of the most useful is that you can actually
+use the documentation DSL to validate the API parameters (presence, type, regex, &hellip;) so
+you don&rsquo;t have to manage parameters validation in the controllers yourself.</p>
+
+<h2>Deploy</h2>
+
+<p>One last note about application deployment. We&rsquo;ve looked around for some solutions
+coming from the js world but couldn&rsquo;t really find something that works out of the box.
+We decided to stick with what we know and love: <a href="http://capistranorb.com">Capistrano</a>.
+There are tons of great gems for Capistrano and it&rsquo;s so powerful that we went from no
+deploy to production in no time!</p>
+
+<h2>Concluding Thoughts</h2>
+
+<p>The Ember ecosystem is not quite ready for the casual noob. Coming from a Rails world
+we had to face many new problems and a lot of hard choices. The good thing is that,
+if you take the time to find the tools that work for you, you&rsquo;ll be immensely rewarded.
+Working with Ember can be just as good as working with Rails even though, for now,
+Ember does not provide its buildtools (but seems like they
+<a href="http://emberjs.com/blog/2013/12/17/whats-coming-in-ember-in-2014.html">will come in 2014</a>).</p>
+
+<p>So this is what we&rsquo;re using currently to work on our Ember applications, what do you think
+about it? What is your current setup?</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Our Ember.js Toolchain+http://nebulab.it/blog/our-ember-js-toolchain/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/our-ember-js-toolchain/&title=Our Ember.js Toolchain">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/our-ember-js-toolchain/&title=Our Ember.js Toolchain&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

@@ -1,0 +1,465 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Using npm like Bundler - Nebulab</title>
+    <meta name="description" content="Coming from a Ruby and Rails background, we’ve always found very strange how
+nowadays most JavaScript libraries that require Node Packaged Modules
+recommend some...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Using npm like Bundler - Nebulab">
+    <meta name="twitter:description" content="Coming from a Ruby and Rails background, we’ve always found very strange how
+nowadays most JavaScript libraries that require Node Packaged Modules
+recommend some...">
+    <meta name="twitter:image" content="/blog/images/articles-images/using-npm-like-bundler/npm-f6940487.jpg">
+
+        <meta property="twitter:creator" content="@matteolatini">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="5 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Using npm like Bundler - Nebulab by Matteo Latini" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/using-npm-like-bundler/" />
+    <meta property="og:image" content="/blog/images/articles-images/using-npm-like-bundler/npm-f6940487.jpg" />
+    <meta property="og:description" content="Coming from a Ruby and Rails background, we’ve always found very strange how
+nowadays most JavaScript libraries that require Node Packaged Modules
+recommend some..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_using-npm-like-bundler blog_using-npm-like-bundler_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Using npm like Bundler
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/matteo-5ece94e8.jpg" alt="Matteo" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Matteo Latini
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          5 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/using-npm-like-bundler/npm-f6940487.jpg" alt="Using npm like Bundler" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>Coming from a <em>Ruby and Rails</em> background, we&rsquo;ve always found very strange how
+nowadays most JavaScript libraries that require <em>Node Packaged Modules</em>
+recommend some dependencies to be installed globally one by one.
+As Ruby developers that always felt strange to us. We&rsquo;ll see how to use
+<a href="https://www.npmjs.org">npm</a> like we use <a href="http://bundler.io">Bundler</a>.</p>
+
+<p>It seems that every recent JavaScript project has one or more <code>npm install -g</code>
+commands you should run to install some of the project&rsquo;s dependencies globally.
+That is bad for READMEs that grow bigger and bigger, bad for setup
+time because developers are forced to read much more instructions before being
+able to work and bad for your computer because you pollute system directories
+with development packages.
+So we&rsquo;ve come up with this question: why on earth should you be installing stuff
+with <code>npm install -g</code> when npm is perfectly capable of running like Bundler
+does?</p>
+
+<p>After years of hard work done by using the great tool that
+<a href="http://bundler.io">Bundler</a> is, we don&rsquo;t like installing all those libraries
+globally. Conceptually we like projects and applications to be self-contained,
+standardized and easy to just pick up and play.</p>
+
+<p>Basically this is the workflow every Rails developer knows and loves:</p>
+
+<ol>
+<li>install bundler with <code>gem install bundler</code> if not already installed;</li>
+<li>download an application, typically via <code>git clone</code>;</li>
+<li><code>cd</code> inside the application and run <code>bundle install</code>.</li>
+</ol>
+
+<p>These three steps are usually everything that&rsquo;s required to have the
+dependencies you need to start playing with the application (for example to
+start exploring with <code>rails console</code>). That also means that you can go from zero
+to the application running without even reading the README.</p>
+
+<p>The same workflow seems unapplicable if you read the documentation of most npm
+packages. As a team we&rsquo;re still very much experimenting with JavaScript so we
+tend to change tools and libraries very often; we&rsquo;re still looking for the
+workflow that works best for us. That means we could be using different tools
+for different projects. Probably many developers are in our same exact position.</p>
+
+<p>So this is why we&rsquo;ve been trying to reproduce with npm the workflow we love
+with Bundler. We found that it is actually possible and quite easy.</p>
+
+<h3>Setup</h3>
+
+<p>As an example we&rsquo;ll demonstrate how to prepare an application from scratch
+by using <a href="http://iamstef.net/ember-cli/">ember-cli</a> a utility we&rsquo;ve been really
+interested in since it came out. It&rsquo;s basically a set of tools and templates to
+work with <a href="http://emberjs.com">ember</a>.</p>
+
+<p>If you take a look at the project&rsquo;s
+<a href="http://iamstef.net/ember-cli/#getting-started">Getting Started</a> section you&rsquo;ll
+see there are plenty of tools you have to install by using <code>npm install -g</code>.
+We&rsquo;ll do it differently.</p>
+
+<p>First of all make sure you have npm installed. In addition to installing npm you
+should add the local binaries folder to your <code>$PATH</code> environment variable. Since
+npm will use the local directory <code>node_modules</code> to keep all your packages (the
+binaries too), you need to have this:</p>
+<pre class="highlight shell"><code><span class="nv">PATH</span><span class="o">=</span>./node_modules/.bin:<span class="nv">$PATH</span>
+</code></pre>
+<p>somewhere inside your <code>~/.zshrc</code> or <code>~/.bashrc</code> files.</p>
+
+<p>Then create an empty folder which will host your project. From inside the
+project&rsquo;s directory you can run all the <code>npm install</code> commands without the <code>-g</code>
+flag and those will be installed in the <code>./node_modules</code> path inside your
+project. You should also exclude this directory from your version control system
+as this directory will contain code you don&rsquo;t want in your repository.</p>
+
+<p>To create an application with <code>ember-cli</code>:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>npm install ember-cli
+<span class="gp">$ </span>ember init
+<span class="gp">$ </span>npm install --save-dev phantomjs bower
+</code></pre>
+<p>This will generate everything and keep track of the dependecies of your app
+inside the <code>package.json</code> file. Think of it as your <code>Gemfile</code> for JavaScript
+applications. The <code>--save-dev</code> flag will make sure npm changes <code>package.json</code> to
+reflect the dependecies you just installed.</p>
+
+<p>To make sure developers don&rsquo;t fight with different versions of a dependency we
+can add a <code>Gemfile.lock</code> equivalent, like this:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>npm shrinkwrap --dev
+</code></pre>
+<p>Npm will add a new <code>npm-shrinkwrap.json</code> that keeps track of the exact
+dependencies required to run your precious application (that you might want to
+keep in your repository).
+The <code>--dev</code> option makes sure development dependencies are tracked as well as
+production dependencies.</p>
+
+<p>Using the <code>npm-shrinkwrap.json</code> file also has some benefits in production
+because it ensures you always have control of which versions will actually be
+installed in the production environment (just like Bundler).</p>
+
+<h3>Have fun</h3>
+
+<p>The procedure for setting up an application might be slightly longer than that
+required by Bundler but, after doing this, the next developer working on the
+application can just run:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>npm install
+</code></pre>
+<p>after downloading the application to get all the dependencies required to use
+the application smoothly.</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Using npm like Bundler+http://nebulab.it/blog/using-npm-like-bundler/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/using-npm-like-bundler/&title=Using npm like Bundler">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/using-npm-like-bundler/&title=Using npm like Bundler&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

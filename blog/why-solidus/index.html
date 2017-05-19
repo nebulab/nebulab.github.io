@@ -1,0 +1,604 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Why Solidus? - Nebulab</title>
+    <meta name="description" content="Spree or Solidus? Which OSS project Nebulab, as an agency involved in
+Ruby on Rails eCommerce development, should invest on? This blog post
+tells the story about...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Why Solidus? - Nebulab">
+    <meta name="twitter:description" content="Spree or Solidus? Which OSS project Nebulab, as an agency involved in
+Ruby on Rails eCommerce development, should invest on? This blog post
+tells the story about...">
+    <meta name="twitter:image" content="/blog/images/articles-images/why-solidus/why_solidus-3b8f1749.jpg">
+
+        <meta property="twitter:creator" content="@AlbertoVena">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="9 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Why Solidus? - Nebulab by Alberto Vena" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/why-solidus/" />
+    <meta property="og:image" content="/blog/images/articles-images/why-solidus/why_solidus-3b8f1749.jpg" />
+    <meta property="og:description" content="Spree or Solidus? Which OSS project Nebulab, as an agency involved in
+Ruby on Rails eCommerce development, should invest on? This blog post
+tells the story about..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_why-solidus blog_why-solidus_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Why Solidus?
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/alberto-f63de619.jpg" alt="Alberto" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Alberto Vena
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          9 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/why-solidus/why_solidus-3b8f1749.jpg" alt="Why Solidus?" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>Spree or Solidus? Which OSS project Nebulab, as an agency involved in
+Ruby on Rails eCommerce development, should invest on? This blog post
+tells the story about what&rsquo;s happening inside our agency in choosing
+where to put more effort.</p>
+
+<h2>Spree and Nebulab</h2>
+
+<p>Nebulab has proudly been one of the first company that adopted Spree. In fact
+we are using it since version 0.30. We always did our best contributing
+actively to the project and its extensions, attending almost all SpreeConf
+around the world and supporting the community via the Spree Mailing List.</p>
+
+<p>We strongly believed in this project that we used for 100% of our eCommerce
+customers, often recommending them to migrate to Spree from other platform,
+like Magento or custom Ruby on Rails eCommerce applications.</p>
+
+<p>We have also been one the first company that applied to be a
+<a href="https://spreecommerce.com/solution_partners">Spree Solution Partner</a>. This partnership allowed us
+to give something back to the project and take a lot of contacts with clients
+all over the world.</p>
+
+<p>On October 28th Spree announced that <a href="https://spreecommerce.com/blog/future-of-spree-oss">they will no longer
+maintain the OSS project</a>.
+The main reason is that the Spree company has been acquired by another
+bigger company, First Data.</p>
+
+<p>It&rsquo;s easy to imagine our feelings hearing that our favorite OSS project
+would have a so drastic change in its maintenance and community management.</p>
+
+<p>Bad news never come alone. <strong><a href="https://github.com/wombat">Wombat</a></strong>, an
+integration platform built from Spree company that we were using for some
+of our clients, would be discontinued soon. Fortunately, according with one of
+our cool customers which was extensively using that service, we developed
+<a href="https://github.com/nebulab/cangaroo">Cangaroo</a>, an Open Source alternative to Wombat, that we are
+currently using successfully in production.</p>
+
+<h2>Solidus</h2>
+
+<p>Months before this event, a group of developers from
+<a href="https://bonobos.com/">Bonobos</a>, one of the
+<a href="https://pando.com/2014/07/06/bonobos-raises-another-55-million-and-aims-for-an-ipo-all-in-spite-of-being-ecommerce/">biggest online retail store</a> in the United States and
+<a href="https://stembolt.com/">Stembolt</a>, a Canadian web development firm, forked
+Spree because they started to diverge from the direction Spree was taking.
+They called the project <a href="http://solidus.io/">Solidus</a>, naming it after an
+<a href="https://en.wikipedia.org/wiki/Solidus_(coin)">old Roman coin</a> and the
+<a href="https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">SOLID principles of Object Oriented Design</a>.</p>
+
+<p>Having more activity we naturally started taking a look at this fork,
+understanding its principles and its different approach that we started
+to appreciate and share.</p>
+
+<p>If you are interested in differences between the two platforms
+<a href="http://bluestout.com/blog/spree-vs-solidus-ecommerce-platforms/">this article</a> is a great resource.</p>
+
+<p>Here&rsquo;s a list of stuff that we like about Solidus:</p>
+
+<h3>A Solid Roadmap</h3>
+
+<p>Solidus guys decided to put focus on fixing and improving current codebase
+instead of adding new features that are probably unnecessary for many stores.</p>
+
+<p>Here you can find the full
+<a href="https://github.com/solidusio/solidus/milestones/Future">Solidus Future Plans</a>.</p>
+
+<p>We trust developers involved in the Solidus project, we can see on the
+<a href="http://github.com/solidusio/solidus">Solidus GitHub Repository</a> that they are great in what they do
+and lately they also have emerged for their attention for security issues.</p>
+
+<h3>Top Priority to Code Integrity</h3>
+
+<p>Solidus is trying to get rid of stuff that doesn&rsquo;t look clean like the
+improper use of <code>class_eval</code>. This is not only a question of code
+style but ensure it&rsquo;s easier to customize your stores, your extensions and
+to update Solidus from one version to the next one.</p>
+
+<p>But why <strong>class_eval</strong> is not a good practice?</p>
+
+<p>Of course it depends by the situation but in general using class_eval you
+are re-opening the general class definition; technically this is not
+an inheritance and this means that into the re-opened class you cannot use
+<code>super</code> to replicate a previously defined method behavior. For the
+sake of better understanding this concept, let&rsquo;s make a simplified example:</p>
+
+<p><strong>Spree::Stock::ShippingRateSorter</strong> is a class defined into the solidus
+core that defines how to sort shipping rates.</p>
+<pre class="highlight ruby"><code><span class="c1"># Solidus Core</span>
+
+<span class="c1"># app/models/spree/stock/shipping_rate_sorter.rb</span>
+<span class="k">module</span> <span class="nn">Spree</span>
+  <span class="k">module</span> <span class="nn">Stock</span>
+    <span class="k">class</span> <span class="nc">ShippingRateSorter</span>
+      <span class="kp">attr_reader</span> <span class="ss">:shipping_rates</span>
+
+      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">shipping_rates</span><span class="p">)</span>
+        <span class="vi">@shipping_rates</span> <span class="o">=</span> <span class="n">shipping_rates</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">sort</span>
+        <span class="n">shipping_rates</span><span class="p">.</span><span class="nf">sort_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:cost</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>Now, in your store or extension, suppose you want to change how to sort
+those elements. Specifically we want to reverse the order of shipping rates.
+We used to write in our stores something like:</p>
+<pre class="highlight ruby"><code><span class="c1"># Our App or Extension</span>
+
+<span class="c1"># app/models/spree/stock/shipping_rate_sorter_decorator.rb</span>
+<span class="k">module</span> <span class="nn">Spree</span>
+  <span class="k">module</span> <span class="nn">Stock</span>
+    <span class="no">ShippingRateSorter</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
+      <span class="k">def</span> <span class="nf">sort</span>
+        <span class="n">shipping_rates</span><span class="p">.</span><span class="nf">sort_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:cost</span><span class="p">).</span><span class="nf">reverse</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>This is not terrible, at least until the default way shipping rates are sorted
+changes into core, and our code is no more compliant with it making it a mess
+to update solidus to more recent versions.</p>
+
+<p>Often, the solution to this kind of problem is using <strong>super</strong> to inherit the
+behavior of core code in order to make our extensions less dependant to that
+code.</p>
+
+<p>Solidus is proposing to change this <code>class_eval</code> over-usage, moving to a more
+clean way to extend stuff.</p>
+<pre class="highlight ruby"><code><span class="c1"># Our App or Extension</span>
+
+<span class="c1"># app/models/spree/stock/custom_shipping_rate_sorter.rb</span>
+<span class="k">module</span> <span class="nn">Spree</span>
+  <span class="k">module</span> <span class="nn">Stock</span>
+    <span class="k">class</span> <span class="nc">CustomShippingRateSorter</span> <span class="o">&lt;</span> <span class="no">ShippingRateSorter</span>
+      <span class="k">def</span> <span class="nf">sort</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">reverse</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># config/initializers/spree.rb</span>
+<span class="no">Spree</span><span class="o">::</span><span class="no">Config</span><span class="p">.</span><span class="nf">shipping_rate_sorter_class</span> <span class="o">=</span> <span class="no">Spree</span><span class="o">::</span><span class="no">Stock</span><span class="o">::</span><span class="no">MyShippingRateSorter</span>
+</code></pre>
+<p>Awesome, isn&rsquo;t it?</p>
+
+<h3>Forked from Spree 2.4</h3>
+
+<p>Solidus has been forked from Spree 2.4, and now Spree is at 3.0. The main change
+between these versions is the introduction of <strong>Twitter Boostrap</strong> into both
+frontend and backend. That wasn&rsquo;t a good idea in our opinion for several
+reasons:</p>
+
+<ul>
+<li>updating would mean changing frontend code of all stores we were working on;</li>
+<li>90% of our clients are not interested in bootstrap themes but a
+custom frontend style, so often it would probably be more work to
+remove it than to adapt the spree frontend to that specific store needs;</li>
+<li>in our vision the frontend HTML should not include front-end framework class
+names but semantic ones that represents what&rsquo;s inside that specific element.</li>
+</ul>
+
+<h3>Active Community</h3>
+
+<p>Lot of friends and contributors that we did know on the Spree community have
+already joined the Solidus community. In fact, in the
+<a href="slack.solidus.io/">Solidus Slack channel</a> there are already 400+ developers
+that discuss, support each other and design together the future Solidus moves.</p>
+
+<p>We also love conferences, and we look forward to attend
+<a href="http://conf.solidus.io/">Solidus Conf 2016</a> in Toronto, an opportunity for us
+to learn, to better understand the Solidus goals and to meet community members
+and clients in person.</p>
+
+<h2>Our choice</h2>
+
+<p>Our plan is to start all new stores using Solidus but to stay with Spree for
+the majority of those already developed. We think that this is the decision
+that makes more sense, also because Spree has new maintainers now and this
+should ensure quick response to any security issue that could come out.</p>
+
+<p>Even if Spree seems to be reborn with a
+<a href="https://spreecommerce.com/blog/spree-roadmap-announcement">new core team and roadmap</a>,
+we think that there&rsquo;s still a lot to do for Spree to recapture our interest
+and we currently feel comfortable with the Solidus approach, which we hope to
+contribute to as much as we can.</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Why Solidus?+http://nebulab.it/blog/why-solidus/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/why-solidus/&title=Why Solidus?">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/why-solidus/&title=Why Solidus?&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+    <div class="cta">
+<a href="/solidus" class="cta__content">      <h2 class="cta__content__title">
+        Still not sure Solidus fits your business?
+      </h2>
+      <span class="cta__content__link">
+        Learn more
+      </span>
+</a>  </div>
+
+  <section class="our-blog">
+      <h6 class="our-blog__section-title">
+        Related posts
+      </h6>
+
+    <div class="articles">
+        <article class="articles__item">
+          <h6>
+            #Code
+          </h6>
+          <h4>
+            <a href="/blog/the-soliton-hackathon/">The Soliton Hackathon</a>
+          </h4>
+
+          <div class="articles__item__body">
+            <p>In order to let the creativity to flow, we decided to organize an hackathon
+involving all the team.
+Nebulab believes in side projects, they help to form the junior...</p>
+          </div>
+
+          <div class="read-more">
+            <a href="/blog/the-soliton-hackathon/">Read the full article</a>
+          </div>
+        </article>
+        <article class="articles__item">
+          <h6>
+            #Code
+          </h6>
+          <h4>
+            <a href="/blog/the-birth-of-a-cangaroo/">The birth of a Cangaroo</a>
+          </h4>
+
+          <div class="articles__item__body">
+            <p>Before getting deeper into some technical Cangaroo guide I wanted to give
+some more insights about how Cangaroo was born. This is the story that tells
+how the...</p>
+          </div>
+
+          <div class="read-more">
+            <a href="/blog/the-birth-of-a-cangaroo/">Read the full article</a>
+          </div>
+        </article>
+    </div>
+
+  </section>
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

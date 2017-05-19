@@ -1,0 +1,589 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Developing Spree extension with TDD - Nebulab</title>
+    <meta name="description" content="Here at Nebulab, we have just built an extension (Spree Subscriptions) that adds to Spree features needed to buy and manage subscription based items, ideal for...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Developing Spree extension with TDD - Nebulab">
+    <meta name="twitter:description" content="Here at Nebulab, we have just built an extension (Spree Subscriptions) that adds to Spree features needed to buy and manage subscription based items, ideal for...">
+    <meta name="twitter:image" content="/blog/images/articles-images/developing-spree-extension-with-tdd/tdd-79bbaf24.jpg">
+
+        <meta property="twitter:creator" content="@AlbertoVena">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="18 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Developing Spree extension with TDD - Nebulab by Alberto Vena" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/developing-spree-extension-with-tdd/" />
+    <meta property="og:image" content="/blog/images/articles-images/developing-spree-extension-with-tdd/tdd-79bbaf24.jpg" />
+    <meta property="og:description" content="Here at Nebulab, we have just built an extension (Spree Subscriptions) that adds to Spree features needed to buy and manage subscription based items, ideal for..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_developing-spree-extension-with-tdd blog_developing-spree-extension-with-tdd_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Developing Spree extension with TDD
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/alberto-f63de619.jpg" alt="Alberto" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Alberto Vena
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          18 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/developing-spree-extension-with-tdd/tdd-79bbaf24.jpg" alt="Developing Spree extension with TDD" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>Here at Nebulab, we have just built an extension (<a href="http://github.com/nebulab/spree-subscriptions">Spree Subscriptions</a>) that adds to Spree features needed to buy and manage subscription based items, ideal for magazines or similar products. We developed this extension for one of our clients and it has been our first official extension. Starting from scratch allowed us to better undestand how to develop Spree extensions using a TDD process and we wanted to share some thoughts and best practices about this topic.
+To make a rapid overview, in this article we will create a new extension, using some spree-subscriptions real scenarios and code, that adds a checkbox to the products edit page to denote if it is a subscribable product (a magazine). We will start writing tests and then we will make them pass.</p>
+
+<h3>Before starting</h3>
+
+<h4>Choose the right tools</h4>
+
+<p>A Spree extension is essentially a simple Rails engine that has the spree_core gem (another engine) as dependency; this means we can use any preferred library to test it. Since Spree uses <a href="http://rspec.info/">Rspec</a>, <a href="http://github.com/thoughtbot/factory_girl">FactoryGirl</a> and <a href="http://github.com/jnicklas/capybara">Capybara</a> we think that the best approach is to use the same tools in order to make Spree developers feel comfortable with tools they are used to work with and, eventually, reproduce or use some code already present in spree core. For example, in our extension we can reuse spree core factories or create new factories that have them as parents.</p>
+
+<h4>Create the new extension</h4>
+
+<p>It&rsquo;s suggested to read <a href="http://guides.spreecommerce.com/creating_extensions.html">Creating Extension</a> Spree Official Guide before starting, which explores better this topic.</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>gem install rails
+<span class="gp">$ </span>gem install spree
+</code></pre>
+<p>Now we can create the extension using the <code>spree extension</code> command.</p>
+<pre class="highlight shell"><code><span class="gp">$ </span><span class="nb">cd</span> ~/path/to/your/Code
+<span class="gp">$ </span>spree extension Subscriptions
+<span class="gp">$ </span><span class="nb">cd </span>spree_subscriptions
+</code></pre>
+<p><strong>Note:</strong> This guide refers to Spree 1.1 version of Spree. I think the only difference with the 1.2 (actually RC) will be with handling <code>spree_auth</code> that will not be a strict dependency of spree-core, letting us choose our favourite authentication system.</p>
+
+<h5>Generate a resource</h5>
+
+<p>Althoughe we have not to generate a resource for our extension example scenario, it could be useful to see how to do it and how to automatically create rspec files with a simple command. We have to add rspec gem to our extension Gemfile:</p>
+<pre class="highlight ruby"><code><span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'rspec'</span>
+<span class="k">end</span>
+</code></pre>
+<p>After a <code>bundle install</code> we can lauch:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>rails g resource spree/subscription
+      invoke  active_record
+      create    db/migrate/20120705112710_create_spree_subscriptions.rb
+      create    app/models/spree/subscription.rb
+      create    app/models/spree.rb
+      invoke    rspec
+      create      spec/models/spree/subscription_spec.rb
+      invoke  controller
+      create    app/controllers/spree/subscriptions_controller.rb
+      invoke    erb
+      create      app/views/spree/subscriptions
+      invoke    rspec
+      create      spec/controllers/spree/subscriptions_controller_spec.rb
+      invoke    helper
+      create      app/helpers/spree/subscriptions_helper.rb
+      invoke      rspec
+      create        spec/helpers/spree/subscriptions_helper_spec.rb
+      invoke    assets
+      invoke      js
+      create        app/assets/javascripts/spree/subscriptions.js
+      invoke      css
+      create        app/assets/stylesheets/spree/subscriptions.css
+      invoke  resource_route
+       route    namespace :spree <span class="k">do </span>resources :subscriptions end
+</code></pre>
+<p>And the tree will be correctly generated with rspec files too.</p>
+
+<h5>Include local factories</h5>
+
+<p>By default Spree extensions require the factories used for spree core testing. In fact into the spec_helper we can find:</p>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'spree/core/testing_support/factories'</span>
+</code></pre>
+<p>These factories can be very useful because we are sure we are modeling our test following real spree objects but if we want to test our extension we probably want to add some new factories. To add this feature we can simply add this lines after the core factories require:</p>
+<pre class="highlight ruby"><code><span class="no">Dir</span><span class="p">[</span><span class="s2">"</span><span class="si">#{</span><span class="no">File</span><span class="p">.</span><span class="nf">dirname</span><span class="p">(</span><span class="kp">__FILE__</span><span class="p">)</span><span class="si">}</span><span class="s2">/factories/**/*.rb"</span><span class="p">].</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+  <span class="n">fp</span> <span class="o">=</span>  <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+  <span class="nb">require</span> <span class="n">fp</span>
+<span class="k">end</span>
+</code></pre>
+<p>Now we can add our custom factories into <code>spec/factories</code> directory.
+We can also extend existing spree core factories using them as parents for our new factories, for example:</p>
+<pre class="highlight ruby"><code><span class="no">FactoryGirl</span><span class="p">.</span><span class="nf">define</span> <span class="k">do</span>
+  <span class="n">factory</span> <span class="ss">:subscribable_product</span><span class="p">,</span> <span class="ss">:parent</span> <span class="o">=&gt;</span> <span class="ss">:product</span> <span class="k">do</span>
+    <span class="n">subscribable</span> <span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<h5>Using spree preferences in our tests</h5>
+
+<p>Testing an extension will probably let us bump into the setup of some spree preferences. Spree Core is tested resetting preferences to default values each time they are used to ensure tests always run in a default environment. To reproduce this behavior in our extension we can simply create (copy) a support method into <code>/spec/support/preferences.rb</code></p>
+<pre class="highlight ruby"><code><span class="k">def</span> <span class="nf">reset_spree_preferences</span>
+  <span class="no">Spree</span><span class="o">::</span><span class="no">Preferences</span><span class="o">::</span><span class="no">Store</span><span class="p">.</span><span class="nf">instance</span><span class="p">.</span><span class="nf">persistence</span> <span class="o">=</span> <span class="kp">false</span>
+  <span class="n">config</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">spree</span><span class="p">.</span><span class="nf">preferences</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">reset</span>
+  <span class="k">yield</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">if</span> <span class="nb">block_given?</span>
+<span class="k">end</span>
+</code></pre>
+<p>that will allow us to setup required preferences in our tests:</p>
+<pre class="highlight ruby"><code><span class="n">before</span><span class="p">(</span><span class="ss">:each</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">reset_spree_preferences</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">default_country_id</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:country</span><span class="p">).</span><span class="nf">id</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">site_name</span> <span class="o">=</span> <span class="s2">"my dummy test store for subscriptions"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<h5>Add auth gem to test as an admin user</h5>
+
+<p>To test as admin interface functionality we have to sign in as admin user. To do it we have to require spree<em>auth into our `lib/spree</em>subscriptions.rb` file. which now will be like this:</p>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'spree_core'</span>
+<span class="nb">require</span> <span class="s1">'spree_auth'</span>
+<span class="nb">require</span> <span class="s1">'spree_subscriptions/engine'</span>
+</code></pre>
+<p>In order to complete login easily throught integration tests we can define another support method &ldquo;sign<em>in</em>as!&rdquo;, taken directly from spree_auth gem:</p>
+<pre class="highlight ruby"><code><span class="k">def</span> <span class="nf">sign_in_as!</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+  <span class="n">visit</span> <span class="s1">'/login'</span>
+  <span class="n">fill_in</span> <span class="s1">'Email'</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="n">user</span><span class="p">.</span><span class="nf">email</span>
+  <span class="n">fill_in</span> <span class="s1">'Password'</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="s1">'secret'</span>
+  <span class="n">click_button</span> <span class="s1">'Login'</span>
+<span class="k">end</span>
+</code></pre>
+<h3>Run tests on extension</h3>
+
+<p>To test our extension we need to crate a dummy test app that will reside into <code>spec/dummy/</code>. This app will contain everything needed to execute the tests from our extension. Before running rspec for the first time and every time we make a structural change to the extension (like changing or adding a migration) we need to create the test app with this command:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>rake test_app
+</code></pre>
+<p>Once completed we can run tests within our extension with:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>rspec spec
+</code></pre>
+<h5>Add some integration tests</h5>
+
+<p>Let&rsquo;s say we want to test the ability of an admin user to flag a product as subscribable through the admin panel. We need to create some integation tests first.
+In <code>spec/requests/admin/product_spec.rb</code>:</p>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'spec_helper'</span>
+
+<span class="n">describe</span> <span class="s2">"Product"</span> <span class="k">do</span>
+  <span class="n">context</span> <span class="s2">"on edit"</span> <span class="k">do</span>
+    <span class="n">it</span> <span class="s2">"should be selected as subscribable"</span> <span class="k">do</span>
+      <span class="n">product</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:product</span><span class="p">)</span>
+      <span class="n">user</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">:admin_user</span><span class="p">,</span> <span class="ss">:email</span> <span class="o">=&gt;</span> <span class="s2">"test@example.com"</span><span class="p">)</span>
+      <span class="n">sign_in_as!</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+      <span class="n">visit</span> <span class="n">spree</span><span class="p">.</span><span class="nf">admin_path</span>
+      <span class="n">click_link</span> <span class="s2">"Products"</span>
+      <span class="n">within</span><span class="p">(</span><span class="s1">'table.index tr:nth-child(2)'</span><span class="p">)</span> <span class="p">{</span> <span class="n">click_link</span> <span class="s2">"Edit"</span> <span class="p">}</span>
+      <span class="n">check</span><span class="p">(</span><span class="s1">'product_subscribable'</span><span class="p">)</span>
+      <span class="n">click_button</span> <span class="s2">"Update"</span>
+      <span class="n">page</span><span class="p">.</span><span class="nf">should</span> <span class="n">have_content</span><span class="p">(</span><span class="s2">"successfully updated!"</span><span class="p">)</span>
+      <span class="n">page</span><span class="p">.</span><span class="nf">has_checked_field?</span><span class="p">(</span><span class="s1">'product_subscribable'</span><span class="p">).</span><span class="nf">should</span> <span class="o">==</span> <span class="kp">true</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>This test will not pass because the checkbox doesn&rsquo;t exist yet. We can create with this Deface override:</p>
+<pre class="highlight ruby"><code><span class="no">Deface</span><span class="o">::</span><span class="no">Override</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">:virtual_path</span> <span class="o">=&gt;</span> <span class="s2">"spree/admin/products/_form"</span><span class="p">,</span>
+                     <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">"adds_subscribable_to_product"</span><span class="p">,</span>
+                     <span class="ss">:insert_bottom</span> <span class="o">=&gt;</span> <span class="s2">"[data-hook='admin_product_form_right']"</span><span class="p">,</span>
+                     <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="s2">"spree/admin/products/subscription_field"</span><span class="p">)</span>
+</code></pre>
+<p>As you can see, this override will render a partial in the right part of the product edit form. This partial contains:</p>
+<pre class="highlight erb"><code><span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">field_container</span> <span class="ss">:subscribable</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:subscribable</span> <span class="cp">%&gt;</span><span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">check_box</span> <span class="ss">:subscribable</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<p>Test fails agin. This time because there are no setter and getter method for &ldquo;subscribable&rdquo; attribute. It&rsquo;s time to add some model tests.</p>
+
+<h5>Add some model tests</h5>
+
+<p>Into <code>spec/model/product_spec.rb</code> we can add this code that test the existence of subscribable method and its default value:</p>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'spec_helper'</span>
+
+<span class="n">describe</span> <span class="no">Spree</span><span class="o">::</span><span class="no">Product</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:subscribable_product</span><span class="p">)</span> <span class="p">{</span> <span class="no">Factory</span><span class="p">(</span><span class="ss">:subscribable_product</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:simple_product</span><span class="p">)</span> <span class="p">{</span> <span class="no">Factory</span><span class="p">(</span><span class="ss">:simple_product</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s2">"should respond to subscribable method"</span> <span class="k">do</span>
+    <span class="n">subscribable_product</span><span class="p">.</span><span class="nf">should</span> <span class="n">respond_to</span> <span class="ss">:subscribable</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s2">"should be subscribable"</span> <span class="k">do</span>
+    <span class="n">subscribable_product</span><span class="p">.</span><span class="nf">subscribable</span><span class="p">.</span><span class="nf">should</span> <span class="n">be_true</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s2">"should have subscribable to false by default"</span> <span class="k">do</span>
+    <span class="n">simple_product</span><span class="p">.</span><span class="nf">subscribable?</span><span class="p">.</span><span class="nf">should</span> <span class="n">be</span> <span class="kp">false</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>In order to let these tests pass, we have to add the subscribable field to the product table with a migration, then we have to recreate the test app to update its database that will include this last migration.</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>rails g migration add_subscribable_to_spree_products subscribable:boolean
+<span class="gp">$ </span>rake test_app
+</code></pre>
+<p>We can try to run test but they will continue to fail. This time the issue is with mass assignment of subscribable attribute. To solve this problem we have to extend the product model creating a product decorator file in <code>app/models/spree/product_decorator.rb</code>:</p>
+<pre class="highlight ruby"><code><span class="no">Spree</span><span class="o">::</span><span class="no">Product</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
+  <span class="n">attr_accessible</span> <span class="ss">:subscribable</span>
+<span class="k">end</span>
+</code></pre>
+<p>These simple example tests pass so we can now be sure an admin user can set a product as subscribable.</p>
+
+<h3>Get a screenshot on test failure</h3>
+
+<p>Sometime we found really useful to view a screenshot (in .html format) of the page a test fails. There is a gem that does exactly the job: &lsquo;capybara-screenshot&rsquo;. To add it to our spree extension we can modify our <code>Gemfile</code> adding the gem to the test group:</p>
+<pre class="highlight ruby"><code><span class="n">group</span> <span class="ss">:test</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'capybara-screenshot'</span><span class="p">,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+<span class="k">end</span>
+</code></pre>
+<p>and requiring it after <code>rspec/rails</code> in the <code>spec_helper</code></p>
+<pre class="highlight ruby"><code><span class="p">.</span><span class="nf">.</span><span class="p">.</span>
+<span class="nf">require</span> <span class="s1">'rspec/rails'</span>
+<span class="nb">require</span> <span class="s1">'capybara-screenshot'</span>
+<span class="nb">require</span> <span class="s1">'ffaker'</span>
+<span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+</code></pre>
+<p>After a test failure we can find the html screenshot in <code>/spec/dummy/tmp/capybara/</code> folder. Keep in mind that these files will be deleted everytime we run <code>rake test_app</code>.</p>
+
+<h3>Configure TravisCI for our extension</h3>
+
+<p>If we need a CI for our extension, we can simply configure TravisCI. The only extra configuration required to let it handle correctly an extension is related to the <code>rake test_app</code> command that we have to execute before running our tests. Here it is a sample .travis.yml file:</p>
+<pre class="highlight yaml"><code><span class="na">before_install</span><span class="pi">:</span> <span class="s">gem install bundler --pre</span>
+<span class="na">before_script</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">rake</span><span class="nv"> </span><span class="s">test_app"</span>
+<span class="na">script</span><span class="pi">:</span> <span class="s2">"</span><span class="s">DISPLAY=:99.0</span><span class="nv"> </span><span class="s">bundle</span><span class="nv"> </span><span class="s">exec</span><span class="nv"> </span><span class="s">rspec</span><span class="nv"> </span><span class="s">spec"</span>
+<span class="na">notifications</span><span class="pi">:</span>
+  <span class="na">email</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">your@email.com</span>
+<span class="na">branches</span><span class="pi">:</span>
+  <span class="na">only</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">master</span>
+<span class="na">rvm</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">1.8.7</span>
+  <span class="pi">-</span> <span class="s">1.9.2</span>
+  <span class="pi">-</span> <span class="s">1.9.3</span>
+</code></pre>
+<h3>Conclusion</h3>
+
+<p>We want to get straight to the point: tests saved us a lot of time developing our first extension, expecially when we have to test orders. Imagine testing a critical feature that depends on checkout; every time you change something in the code you should test an order with guest checkout, an order for an already logged in user, an order for a user that signs up during the checkout, an admin order completion and probably other use cases we&rsquo;ve not considered. Making things work without tests would surely be a pain.</p>
+
+<h3>Useful resources</h3>
+
+<ul>
+<li><a href="http://guides.spreecommerce.com/creating_extensions.html">Creating Spree Extension Official Guide</a></li>
+<li><a href="http://guides.spreecommerce.com/testing.html">Tesing Spree Application Official Guide</a></li>
+<li><a href="http://spreecasts.org/spreecasts-episode-5-tdd-an-extension-part-1">Spreecasts Episode 5 - Tdd an extension part 1</a></li>
+</ul>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Developing Spree extension with TDD+http://nebulab.it/blog/developing-spree-extension-with-tdd/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/developing-spree-extension-with-tdd/&title=Developing Spree extension with TDD">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/developing-spree-extension-with-tdd/&title=Developing Spree extension with TDD&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

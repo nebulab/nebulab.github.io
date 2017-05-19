@@ -1,0 +1,1263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Nebulab Blog</title>
+  <subtitle>The Nebulab Blog</subtitle>
+  <id>http://nebulab.it/blog</id>
+  <link href="http://nebulab.it/blog"/>
+  <link href="http://nebulab.it/blog/feed.xml" rel="self"/>
+  <updated>2017-04-02T00:00:00+00:00</updated>
+  <author>
+    <name>Nebulab Staff</name>
+  </author>
+  <entry>
+    <title>AB(C) testing with Ruby on Rails</title>
+    <link rel="alternate" href="http://nebulab.it/blog/ab(c)-testing-with-ruby-on-rails/"/>
+    <id>http://nebulab.it/blog/ab(c)-testing-with-ruby-on-rails/</id>
+    <published>2017-04-02T00:00:00+00:00</published>
+    <updated>2017-05-19T12:38:21+00:00</updated>
+    <author>
+      <name>Simone Bravo</name>
+    </author>
+    <content type="html">&lt;p&gt;I&amp;rsquo;d have never expected A/B testing would be so easy with Ruby on Rails. At the
+very beginning I didn&amp;rsquo;t even have an idea on what A/B tests were but after a
+little investigation I got over it using &lt;strong&gt;Split&lt;/strong&gt;: a simple gem that rocks.&lt;/p&gt;
+
+&lt;h2&gt;What is A/B testing?&lt;/h2&gt;
+
+&lt;h6&gt;&lt;a href="https://en.wikipedia.org/wiki/A/B_testing"&gt;Wikipedia&lt;/a&gt; says:&lt;/h6&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;In marketing and business intelligence, A/B testing is a term for a randomized
+experiment with two variants, A and B, which are the control and variation in
+the controlled experiment.
+In online settings, such as web design (especially user experience design), the
+goal of A/B testing is to identify changes to web pages that increase or
+maximize an outcome of interest (e.g., click-through rate for a banner
+advertisement). A/B testing is a way to compare two versions of a single
+variable typically by testing a subject's response to variable A against
+variable B, and determining which of the two variables is more effective.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;Requirements&lt;/h4&gt;
+
+&lt;p&gt;In this article I&amp;rsquo;ll take for granted you have already installed Ruby on Rails
+and Redis.&lt;/p&gt;
+
+&lt;h2&gt;Let&amp;rsquo;s start&lt;/h2&gt;
+
+&lt;h3&gt;Choose your tests&lt;/h3&gt;
+
+&lt;p&gt;It may seem to be a foregone step but take some time to choose exactly what to
+test on your application.
+As a programmer this step may result the most complex one, so, if you are trying
+to improve your site effectiveness, you may consider to ask an expert for help
+(e.g. a web strategist or a UX designer).&lt;/p&gt;
+
+&lt;h3&gt;Set up your Gemfile&lt;/h3&gt;
+
+&lt;p&gt;Ok, now you know what to do so let&amp;rsquo;s start by installing the gem. I chose Split
+for its ease of use and customization. Add the gem to your Gemfile&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'split'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'~&amp;gt; 2.2.0'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;require: &lt;/span&gt;&lt;span class="s1"&gt;'split/dashboard'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I&amp;rsquo;ll explain later why the &lt;code&gt;require&lt;/code&gt; parameter is needed. I suggest you to
+control the version number with the &lt;strong&gt;~&amp;gt;&lt;/strong&gt; so you&amp;rsquo;ll be sure to have &lt;strong&gt;2.2.*&lt;/strong&gt;
+versions and be safe from breaking upgrades.&lt;/p&gt;
+
+&lt;h3&gt;Start in your controller&lt;/h3&gt;
+
+&lt;p&gt;Split allows you to create several tests at once. However, in my opinion, the
+best way is to start the test in your controller assigning the experiment value
+to an instance variable and then use it to create different pages.
+I found it very difficult to nest more than two tests at once and try to
+understand their results.
+The simplest way is to do as follows:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;YourController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApplicationController&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;index&lt;/span&gt;
+    &lt;span class="vi"&gt;@experiment&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ab_test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:my_page&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"simple"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"kind"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"clickbait"&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;By doing that your controller will start a different test for each user. You
+don&amp;rsquo;t need to save data and remember each visit, &lt;strong&gt;Split&lt;/strong&gt; will handle all the
+session details to make sure that every time users request the page they&amp;rsquo;ll get
+the same experiment variant.&lt;/p&gt;
+
+&lt;h2&gt;Warning&lt;/h2&gt;
+
+&lt;p&gt;Running multiple experiments at once on your application is totally fine but
+avoid creating more than one experiment per page.
+You&amp;rsquo;ll probably run into false positive tests, that&amp;rsquo;s not A/B testing and if
+you need this kind of feedback you should probably check out
+&lt;a href="https://en.wikipedia.org/wiki/Multivariate_testing_in_marketing#In_internet_marketing"&gt;multivariate testing&lt;/a&gt;.
+These tests are more complex than A/B tests and you&amp;rsquo;ll need more visitors in
+order to get consistent results.&lt;/p&gt;
+
+&lt;h3&gt;Edit related views&lt;/h3&gt;
+
+&lt;p&gt;Now the &lt;code&gt;@experiment&lt;/code&gt; variable will contain the experiment variant value so
+let&amp;rsquo;s start using it. The simplest way to do that is by using &lt;code&gt;if/elsif&lt;/code&gt;
+statements and switch your view code as you wish. Here&amp;rsquo;s a simple example on how
+to do that:&lt;/p&gt;
+&lt;pre class="highlight erb"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;%&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vi"&gt;@experiment&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;'simple'&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;That's a simple tutorial&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;%&lt;/span&gt; &lt;span class="k"&gt;elsif&lt;/span&gt; &lt;span class="vi"&gt;@experiment&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;'kind'&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Hi, can you please read this tutorial?&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;%&lt;/span&gt; &lt;span class="k"&gt;elsif&lt;/span&gt; &lt;span class="vi"&gt;@experiment&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;'clickbait'&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;This tutorial is so cool, check it out!&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;%&lt;/span&gt; &lt;span class="k"&gt;end&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;While running in the development environment you can ask Split to return a
+particular experiment just by adding: &lt;code&gt;?ab_test[my_page]=simple&lt;/code&gt; in the URL
+params. This will allow you to check if views are rendered properly.
+Here&amp;rsquo;s an example took from our client &lt;a href="https://floyddetroit.com"&gt;Floyd&lt;/a&gt;.
+&lt;img src="/blog/images/articles-images/abc-testing-rails/view-example-f33ef1f5.jpg" alt="View Screenshot" /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Choose wisely your trigger&lt;/h3&gt;
+
+&lt;p&gt;Don&amp;rsquo;t aim too high when you&amp;rsquo;re choosing your trigger to decide if an experiment
+is a success.
+If you&amp;rsquo;re thinking about directly measuring a product sale I&amp;rsquo;m sorry but that&amp;rsquo;s
+not the correct one: we are trying to find a perceptible change.
+You may test your product page visits, this will probably be the most efficient
+trigger.
+After this tough decision you can configure the conversion tracking method in
+your controller following this pattern:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;show&lt;/span&gt;
+  &lt;span class="c1"&gt;# ...&lt;/span&gt;
+  &lt;span class="n"&gt;ab_finished&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:my_page&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="c1"&gt;# ...&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now every visit on the show action will be measured and saved to &lt;strong&gt;Redis&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Activate the dashboard&lt;/h3&gt;
+
+&lt;p&gt;In order to check your results you need to configure &lt;strong&gt;Split&amp;rsquo;s dashboard&lt;/strong&gt;. But
+here&amp;rsquo;s the surprise: you&amp;rsquo;ve already done half the work. Do you remember your
+Gemfile? Yes that &lt;code&gt;require&lt;/code&gt; is needed to add the dashboard, it will include a
+simple Sinatra front end application that does the trick.
+The missing part is the route configuration. I suggest to put the dashboard
+on the admin area so users can&amp;rsquo;t see it:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Notice&lt;/strong&gt;: I&amp;rsquo;m using Devise in this example!&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:admin&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;authenticate&lt;/span&gt; &lt;span class="ss"&gt;:admin_user&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;admin?&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;mount&lt;/span&gt; &lt;span class="no"&gt;Split&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Dashboard&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;at: &lt;/span&gt;&lt;span class="s1"&gt;'/split'&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Following this example you&amp;rsquo;ll prevent curious users from visiting the dashboard
+and discover your secret plans.
+As you can see you&amp;rsquo;ll find the dashboard on the &lt;code&gt;/admin/split&lt;/code&gt; path.
+All collected data is displayed in a simple and straightforward way:
+&lt;img src="/blog/images/articles-images/abc-testing-rails/dashboard-5b82a048.jpg" alt="View Screenshot" /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Let Split do its job&lt;/h3&gt;
+
+&lt;p&gt;At this point you&amp;rsquo;ll probably be eager for results, you just have to wait for
+users to visit your website.
+The more you let your experiments run, the more they will be accurate and reward
+you with the most effective alternative.&lt;/p&gt;
+
+&lt;h3&gt;Collect your results&lt;/h3&gt;
+
+&lt;p&gt;When you&amp;rsquo;re done testing your visitors like a mad scientist you can choose a
+variant directly from the dashboard and make it default. It&amp;rsquo;s a good practice
+to remove completed tests and replace view code with the &lt;strong&gt;winning&lt;/strong&gt; one.
+Don&amp;rsquo;t forget to remove the &lt;code&gt;ab_test&lt;/code&gt; method inside your controller because
+the experiment will be reinitialized on the next controller action call.
+We barely scratched the surface here but it should be more than enough to get
+you started with Ruby on Rails A/B testing.&lt;/p&gt;
+
+&lt;h3&gt;Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/splitrb/split"&gt;Split&amp;rsquo;s github page&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/A/B_testing"&gt;Wikipedia&amp;rsquo;s knowledge&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://conversionxl.com/server-side-vs-client-side-ab-testing-tools-whats-the-difference/"&gt;Server side vs client side&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Deploy Solidus to Heroku like a boss</title>
+    <link rel="alternate" href="http://nebulab.it/blog/deploy-solidus-to-heroku-like-a-boss/"/>
+    <id>http://nebulab.it/blog/deploy-solidus-to-heroku-like-a-boss/</id>
+    <published>2017-03-10T00:00:00+00:00</published>
+    <updated>2017-05-19T12:38:21+00:00</updated>
+    <author>
+      <name>Daniele Palombo</name>
+    </author>
+    <content type="html">&lt;p&gt;In this tutorial we&amp;rsquo;ll show you how to deploy a &lt;a href="http://nebulab.it/solidus"&gt;Solidus eCommerce&lt;/a&gt; application
+to Heroku, the most famous cloud platform.&lt;/p&gt;
+
+&lt;p&gt;Here are our requirements:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://aws.amazon.com/s3/"&gt;AWS S3 Account&lt;/a&gt; with access&lt;em&gt;key and secret&lt;/em&gt;key&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://signup.heroku.com"&gt;Heroku account&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Installed and configured &lt;a href="https://devcenter.heroku.com/articles/heroku-cli"&gt;Heroku CLI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Rails (version 5.0 was used to write this article)&lt;/li&gt;
+&lt;li&gt;Git&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;Install and configure your eCommerce locally&lt;/h3&gt;
+
+&lt;p&gt;First of all, like you did a thousand times, create your new Rails application:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;rails new my_ecommerce --database&lt;span class="o"&gt;=&lt;/span&gt;postgresql
+&lt;span class="nb"&gt;cd &lt;/span&gt;my_ecommerce
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Initialize your project and make your first commit in Git:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;git init
+git add .
+git commit -m &lt;span class="s1"&gt;'Initial project'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In order to turn your simple application into an eCommerce, you now need to
+install the Solidus gem. Simply add the following lines to your Gemfile:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'solidus'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'~&amp;gt; 2.1.0'&lt;/span&gt;
+&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'solidus_auth_devise'&lt;/span&gt;
+&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'aws-sdk'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'&amp;lt; 2.0'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Note that we are also specifying the &lt;code&gt;aws-sdk&lt;/code&gt; gem; this is needed if we want to
+use S3.
+Edit your &lt;code&gt;config/database.yml&lt;/code&gt; and add the database configuration:&lt;/p&gt;
+&lt;pre class="highlight yaml"&gt;&lt;code&gt;&lt;span class="na"&gt;default&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt; &lt;span class="nl"&gt;&amp;amp;default&lt;/span&gt;
+  &lt;span class="na"&gt;adapter&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt; &lt;span class="s"&gt;postgresql&lt;/span&gt;
+  &lt;span class="na"&gt;pool&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt; &lt;span class="s"&gt;5&lt;/span&gt;
+
+&lt;span class="na"&gt;development&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt;
+  &lt;span class="s"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt; &lt;span class="nv"&gt;*default&lt;/span&gt;
+  &lt;span class="na"&gt;database&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt; &lt;span class="s"&gt;my_ecommerce_dev&lt;/span&gt;
+
+&lt;span class="na"&gt;test&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt;
+  &lt;span class="s"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt; &lt;span class="nv"&gt;*default&lt;/span&gt;
+  &lt;span class="na"&gt;database&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt; &lt;span class="s"&gt;my_ecommerce_test&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Install and run migrations on Solidus:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
+bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rake db:create
+bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rails g spree:install
+bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rails g solidus:auth:install
+bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rake railties:install:migrations
+bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rake db:migrate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run &lt;code&gt;bundle exec rails s&lt;/code&gt; then go to
+&lt;a href="http://localhost:3000"&gt;http://localhost:3000&lt;/a&gt; and make sure you correctly
+visualize the homepage.&lt;/p&gt;
+
+&lt;h3&gt;Configure Heroku&lt;/h3&gt;
+
+&lt;p&gt;Ok, let&amp;rsquo;s start running some commands on Heroku. Make sure you are already
+logged in Heroku with the &lt;code&gt;heroku login&lt;/code&gt; command. Then you can create your new
+Heroku application with the following:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;heroku apps:create my_ecommerce
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This command creates a new application called &lt;code&gt;my_ecommerce&lt;/code&gt; on Heroku. A new
+remote repository named heroku (pointing to the new application) will also be
+added to your git config.
+You can check this with:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;git remote -v
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Configure the production environment&lt;/h3&gt;
+
+&lt;p&gt;Add the &lt;code&gt;heroku-postgresql&lt;/code&gt; add-on to your Heroku application:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;heroku addons:create heroku-postgresql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After adding the add-on you can see the new configuration environment with the
+command:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;heroku config
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The above command should return something like this:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="o"&gt;===&lt;/span&gt; my_ecommerce Config Vars
+DATABASE_URL: postgres://XXXX:yyyyy@ec2-1-2-3-4.compute.amazonaws.com:5432/zzzzz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;DATABASE_URL&lt;/code&gt; variable stores the location of the database. You can now add
+the following lines to your &lt;code&gt;config/database.yml&lt;/code&gt; under the production
+environment settings:&lt;/p&gt;
+&lt;pre class="highlight yaml"&gt;&lt;code&gt;&lt;span class="na"&gt;production&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt;
+  &lt;span class="s"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt; &lt;span class="nv"&gt;*default&lt;/span&gt;
+  &lt;span class="na"&gt;url&lt;/span&gt;&lt;span class="pi"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;lt;%= ENV['DATABASE_URL'] %&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Saving files on S3&lt;/h3&gt;
+
+&lt;p&gt;Heroku uses an &lt;a href="https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem"&gt;Ephemeral filesystem&lt;/a&gt;, which means that it doesn&amp;rsquo;t
+provide any sort of persistent storage for data. Your images would therefore be
+removed after each deploy.
+In order to bypass this limitation you&amp;rsquo;ll need to use an external service (like
+Amazon S3) to store your images.
+Run the following commands to prepare the Heroku environment:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;heroku config:add &lt;span class="nv"&gt;AWS_ACCESS_KEY_ID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'YOUR_ACCESS_KEY'&lt;/span&gt;
+heroku config:add &lt;span class="nv"&gt;AWS_SECRET_ACCESS_KEY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'YOUR_SECRET_KEY'&lt;/span&gt;
+heroku config:add &lt;span class="nv"&gt;S3_BUCKET_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'YOUR_BUCKET_NAME'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Add this configuration in &lt;code&gt;config/initializers/spree.rb&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;env&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;production?&lt;/span&gt;
+  &lt;span class="n"&gt;attachment_config&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="ss"&gt;s3_credentials: &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="ss"&gt;access_key_id:     &lt;/span&gt;&lt;span class="no"&gt;ENV&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'AWS_ACCESS_KEY_ID'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+      &lt;span class="ss"&gt;secret_access_key: &lt;/span&gt;&lt;span class="no"&gt;ENV&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'AWS_SECRET_ACCESS_KEY'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+      &lt;span class="ss"&gt;bucket:            &lt;/span&gt;&lt;span class="no"&gt;ENV&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'S3_BUCKET_NAME'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt;
+
+    &lt;span class="ss"&gt;storage:        :s3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;s3_headers:     &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="s1"&gt;'Cache-Control'&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;'max-age=31557600'&lt;/span&gt; &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="ss"&gt;s3_protocol:    &lt;/span&gt;&lt;span class="s1"&gt;'https'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;bucket:         &lt;/span&gt;&lt;span class="no"&gt;ENV&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'S3_BUCKET_NAME'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+    &lt;span class="ss"&gt;url:            &lt;/span&gt;&lt;span class="s1"&gt;':s3_domain_url'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+
+    &lt;span class="ss"&gt;styles: &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="ss"&gt;mini:     &lt;/span&gt;&lt;span class="s1"&gt;'48x48&amp;gt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="ss"&gt;small:    &lt;/span&gt;&lt;span class="s1"&gt;'100x100&amp;gt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="ss"&gt;product:  &lt;/span&gt;&lt;span class="s1"&gt;'240x240&amp;gt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="ss"&gt;large:    &lt;/span&gt;&lt;span class="s1"&gt;'600x600&amp;gt;'&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt;
+
+    &lt;span class="ss"&gt;path:           &lt;/span&gt;&lt;span class="s1"&gt;'/:class/:id/:style/:basename.:extension'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;default_url:    &lt;/span&gt;&lt;span class="s1"&gt;'noimage/:style.png'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;default_style:  &lt;/span&gt;&lt;span class="s1"&gt;'product'&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="n"&gt;attachment_config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="no"&gt;Spree&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Image&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;attachment_definitions&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:attachment&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_sym&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Deploy Solidus to Heroku&lt;/h3&gt;
+
+&lt;p&gt;Now commit and push your code to the Heroku repository:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;git add .
+git commit &lt;span class="s1"&gt;'Configure Heroku Environment'&lt;/span&gt;
+git push heroku master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If the &lt;code&gt;push&lt;/code&gt; command runs without errors you&amp;rsquo;ll see:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;remote:
+remote: Verifying deploy... &lt;span class="k"&gt;done&lt;/span&gt;.
+To https://git.heroku.com/my_ecommerce.git
+ &lt;span class="k"&gt;*&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;new branch]      master -&amp;gt; master
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Populate your remote database&lt;/h3&gt;
+
+&lt;p&gt;Last but not least, you can now put your data in the database.
+Heroku CLI helps you with the command &lt;code&gt;heroku run&lt;/code&gt;, that runs rake tasks
+on the deployed application.&lt;/p&gt;
+
+&lt;p&gt;Migrate the database and run the seed data:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;heroku run rake db:migrate
+heroku run rake db:seed
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The seed process creates the default admin user and the basic configuration
+needed to bootstrap your eCommerce and start selling on the Internet.&lt;/p&gt;
+
+&lt;p&gt;If you want to add &lt;a href="https://github.com/solidusio/solidus/blob/master/sample/README.md"&gt;sample data&lt;/a&gt; you can run:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;heroku run rake spree_sample:load
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now you can open your browser and enjoy your Solidus eCommerce by visiting
+http://my_ecommerce.herokuapp.com or using the following Heroku CLI command:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;heroku open
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can find the code used for this tutorial on this &lt;a href="https://github.com/nebulab/solidus-on-heroku"&gt;repo&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>RSpec Basic: Using Test Doubles</title>
+    <link rel="alternate" href="http://nebulab.it/blog/rspec-basic-using-test-doubles/"/>
+    <id>http://nebulab.it/blog/rspec-basic-using-test-doubles/</id>
+    <published>2017-02-24T00:00:00+00:00</published>
+    <updated>2017-05-19T12:38:21+00:00</updated>
+    <author>
+      <name>Alberto Vena</name>
+    </author>
+    <content type="html">&lt;p&gt;In this blog post we&amp;rsquo;ll focus on differences between stubs, mocks and spies
+in RSpec. We think that there&amp;rsquo;s a lot of wording confusion for those who start
+using these testing tools and we would like to try to explain how to use them
+as &lt;strong&gt;simply​&lt;/strong&gt; as possible.&lt;/p&gt;
+
+&lt;p&gt;By creating some example test scenarios we&amp;rsquo;ll present frequent contexts a
+developer can come up against while adopting more advanced test techniques.
+After reading this blog post, readers should have a more clear overview of test
+doubles and they should be able to understand how and which one of the
+presented tools to use in order to better solve the situation they are
+dealing with.&lt;/p&gt;
+
+&lt;h2&gt;Definition of Test Double&lt;/h2&gt;
+
+&lt;p&gt;First of all let&amp;rsquo;s group stubs, mocks and spies into the generic definition
+of &lt;strong&gt;test double&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;A test double is a simplified version of an object that allows us
+to define &amp;ldquo;fake&amp;rdquo; methods and their return values.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;For example, suppose we have two classes: &lt;code&gt;User&lt;/code&gt; and &lt;code&gt;Book&lt;/code&gt;.
+A User can buy multiple books, and the logic is implemented with this code:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;User&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;buy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quantity&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;quantity&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Book&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;quantity&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="no"&gt;API&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Stock&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Book&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;quantity&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# return true or false&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;While testing the &lt;code&gt;buy&lt;/code&gt; method on User we probably don&amp;rsquo;t want to actually call
+&lt;code&gt;decrease_count_on_hand&lt;/code&gt; on Book for several reasons:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;it could call an external API which is generally slow;&lt;/li&gt;
+&lt;li&gt;it could be hard to configure the database with factories in order to make it
+work;&lt;/li&gt;
+&lt;li&gt;it is not responsibility of a User unit test to ensure that this method
+works properly;&lt;/li&gt;
+&lt;li&gt;this method could not have been implemented yet on the API;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Spec without test doubles&lt;/h2&gt;
+
+&lt;p&gt;How would we test the buy method without using any test double?
+Probably with something like:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'#buy'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:book&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="no"&gt;Book&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'returns true'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;buy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;eq&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Everything is correct here but does it make sense?
+What are we actually doing here?
+We are just testing the return value of &lt;code&gt;decrease_count_on_hand&lt;/code&gt; method,
+which is slow and it is probably already tested elsewhere.&lt;/p&gt;
+
+&lt;p&gt;We can improve our spec by testing that &lt;code&gt;decrease_count_on_hand&lt;/code&gt; on Book
+is called, which is exactly what the &lt;code&gt;buy&lt;/code&gt; method on &lt;code&gt;User&lt;/code&gt; is doing.&lt;/p&gt;
+
+&lt;p&gt;To accomplish this task we can use test doubles.
+We are going to analyze three types of usage of test doubles:
+&lt;strong&gt;stubs&lt;/strong&gt;, &lt;strong&gt;mocks&lt;/strong&gt; and &lt;strong&gt;spy&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Stubs&lt;/h2&gt;
+
+&lt;p&gt;By definition:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;A method stub is an implementation that returns a pre-determined value.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This means that we can say RSpec to preventively define the return value of an
+object method without actually call it.&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'#buy'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:book&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="no"&gt;Book&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'returns true'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;allow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;receive&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;and_return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;buy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;eq&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This way &lt;code&gt;decrease_count_on_hand&lt;/code&gt; is not actually called on Book.
+Anyway we can do better since we are creating a real Book instance without
+using it at all. Also, creating a Book instance could trigger API calls or
+other slow operations.&lt;/p&gt;
+
+&lt;p&gt;What if we were able to create a fake object which we could define methods
+behavior on?&lt;/p&gt;
+
+&lt;p&gt;Well, we can by defining a &lt;code&gt;double&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'#buy'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:book&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;double&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'fake book'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'calls decrease_count_on_hand'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;allow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;receive&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;and_return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;buy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;eq&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can imagine a &lt;strong&gt;double&lt;/strong&gt; as a empty object which will only respond to those
+methods we are going to stub on it.&lt;/p&gt;
+
+&lt;h2&gt;Mocks&lt;/h2&gt;
+
+&lt;p&gt;Better, but often not enough: this test makes sense because we are sure that
+the &lt;code&gt;buy&lt;/code&gt; method is calling &lt;code&gt;decrease_count_on_hand&lt;/code&gt;. But what would happen
+if we change the &lt;code&gt;buy&lt;/code&gt; method implementation so that in some case it just
+return true?&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;buy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;quantity&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;ebook?&lt;/span&gt;
+  &lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;quantity&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Of course the test will pass. When we need to be sure a method is called
+we can &lt;strong&gt;mock&lt;/strong&gt; it, which means &lt;strong&gt;stub&lt;/strong&gt; it and set an expectation that it will
+be called. In this case we want to be sure &lt;code&gt;decrease_count_on_hand&lt;/code&gt; is called
+on the &lt;code&gt;book&lt;/code&gt; double only for some scenarios:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'#buy'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:book&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;double&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'fake book'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'when book is digital'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;before&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="n"&gt;allow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;receive&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:ebook?&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;and_return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'does not call decrease_count_on_hand'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;not_to&lt;/span&gt; &lt;span class="n"&gt;receive&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+      &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;buy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'when book is not digital'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;before&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="n"&gt;allow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;receive&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:ebook?&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;and_return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;false&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'calls decrease_count_on_hand'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;receive&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;and_return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+      &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;buy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This spec breaks if &lt;code&gt;decrease_count_on_hand&lt;/code&gt; is not called with &lt;code&gt;1&lt;/code&gt; as parameter.
+Also, it comes with a stubbed &lt;code&gt;true&lt;/code&gt; return value. From its definition:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;A mock is a stub with a built-in expectation to be satisfied during the test.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Note that we had to stub the &lt;code&gt;ebook?&lt;/code&gt; method return value since the &lt;strong&gt;double&lt;/strong&gt;
+wouldn&amp;rsquo;t have responded to this method otherwise.&lt;/p&gt;
+
+&lt;h2&gt;Spies&lt;/h2&gt;
+
+&lt;p&gt;Mocking someway breaks the usual spec flows, that should be similar to the one
+described by Dan Croak in
+&lt;a href="https://robots.thoughtbot.com/four-phase-test"&gt;Four-Phase Test&lt;/a&gt; post.
+We are setting the expectation before executing the code that we want to verify.
+If we want to respect the &amp;ldquo;standard&amp;rdquo; flow we can take advantage of &lt;strong&gt;Spies&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Spies are objects that by default can accept all methods without throwing any
+exception and keep an history of the methods called on them.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;We can easily revert the flow:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'#buy'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:book&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;spy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'fake book'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'calls decrease_count_on_hand'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;buy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;have_received&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;More confidence with Verifying Doubles&lt;/h2&gt;
+
+&lt;p&gt;Working with test doubles it is normal to feel like we are dealing with
+too much abstract objects, sometime it&amp;rsquo;s like a complete fiction.
+Some &lt;em&gt;justified&lt;/em&gt; questions that can pop into a developer&amp;rsquo;s mind could be:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;what if I delete &lt;code&gt;decrease_count_on_hand&lt;/code&gt; method from my &lt;code&gt;Book&lt;/code&gt; class?&lt;/li&gt;
+&lt;li&gt;what if the implementation changes and &lt;code&gt;quantity&lt;/code&gt; become, for example, the
+second argument?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All these questions are legitimate, especially because in both cases the answer
+would be: &amp;ldquo;yes, tests will yet pass, wrongly.
+But when more confidence is needed we can use &lt;strong&gt;Verifying Doubles&lt;/strong&gt;, another
+type of double provided by RSpec.
+&lt;strong&gt;Verifying Doubles&lt;/strong&gt; are very similar to simple doubles or spies but they also
+check that methods actually exist on objects and that they are called with
+parameters consistent with method definition.
+This way you can even sleep better at night.&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="s1"&gt;'#buy'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="n"&gt;let&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:book&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="n"&gt;instance_spy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'Book'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="n"&gt;it&lt;/span&gt; &lt;span class="s1"&gt;'calls decrease_count_on_hand'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;buy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;expect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;book&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;to&lt;/span&gt; &lt;span class="n"&gt;have_received&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:decrease_count_on_hand&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For example, above code behaves exactly like the previous example but it also
+checks that &lt;code&gt;decrease_count_on_hand&lt;/code&gt; is defined into Book and it accepts an
+integer as first parameter.&lt;/p&gt;
+
+&lt;p&gt;Verifying doubles are available for class methods as well. You can find more
+info &lt;a href="https://github.com/rspec/rspec-mocks/tree/master/features/verifying_doubles"&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Conclusions: How to choose the right test double?&lt;/h2&gt;
+
+&lt;p&gt;Here&amp;rsquo;s some simple rules to keep in mind when we need to choose the right test
+double in our specs:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Choose to &lt;strong&gt;stub&lt;/strong&gt; (using &lt;code&gt;allow&lt;/code&gt;) when you want to stub something into the
+setup phase, which usually is a prerequisite of what you want to test;&lt;/li&gt;
+&lt;li&gt;Choose to &lt;strong&gt;mock&lt;/strong&gt; or &lt;strong&gt;spy&lt;/strong&gt; (using &lt;code&gt;expect&lt;/code&gt;) when the stubbed method is
+also a method you want to test;&lt;/li&gt;
+&lt;li&gt;Choose to use a &lt;strong&gt;verifying double&lt;/strong&gt; when you need to be sure that the method
+you are stubbing remains consistent with its real implementation.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <title>RubyDay 2016</title>
+    <link rel="alternate" href="http://nebulab.it/blog/rubyday-2016/"/>
+    <id>http://nebulab.it/blog/rubyday-2016/</id>
+    <published>2016-12-01T00:00:00+00:00</published>
+    <updated>2017-05-19T12:38:21+00:00</updated>
+    <author>
+      <name>Matteo Latini</name>
+    </author>
+    <content type="html">&lt;p&gt;Ok, we&amp;rsquo;re back from &lt;a href="https://twitter.com/hashtag/RubyDay2016"&gt;#RubyDay2016&lt;/a&gt; and
+it was a blast! We moved our whole team to Florence to organize our second
+conference and this time it&amp;rsquo;s bigger and better! This is a little recap of how
+hard it was to organize but how much it paid off in the end.&lt;/p&gt;
+
+&lt;h2&gt;A little history&lt;/h2&gt;
+
+&lt;p&gt;RubyDay has always been an awesome event, a place where you could meet a lot of
+coders, a lot of people that maybe you&amp;rsquo;ve only met online. Since a lot of us
+work remotely, it could happen that you could meet your year-round colleagues at
+the conference. There was just one problem: the conference was closed and
+unaccessible. It was hosted mainly in Italian, the same people would come every
+year and most of them would be a male audience.&lt;/p&gt;
+
+&lt;p&gt;Way back in 2014 we drew the line. As an Italian company we felt Italy was
+missing a great Ruby conference (just like the ones we often attend worldwide).
+With the help of Cantiere Creativo and Welaika we were ready to organize a
+conference that could be a boiling pot of cultures, good people and warm
+feelings.&lt;/p&gt;
+
+&lt;p&gt;We started in 2015 by organizing a 1-day Ruby conference in Turin. Lots of
+positive feedback there but we wanted more. The conference was still partly
+Italian and a lot of the RubyDay aficionados enjoyed it however few new people
+showed up and we knew we could do better.&lt;/p&gt;
+
+&lt;p&gt;Then came RubyDay 2016 (which probably should be called RubyConf Italy by now).
+A two day Ruby conference with more than 200 people (which is nothing compared
+to some bigger conferences but a huge achievement for us), people from all over
+the world and with a diversity never seen before in a previous RubyDay.&lt;/p&gt;
+
+&lt;h2&gt;What happened in Florence&lt;/h2&gt;
+
+&lt;p&gt;We wanted to make sure people came to the conference to have fun. And we know
+fun involves:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;interesting, insightful talks;&lt;/li&gt;
+&lt;li&gt;cool, diverse people;&lt;/li&gt;
+&lt;li&gt;an awesome place to be;&lt;/li&gt;
+&lt;li&gt;night party!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So the RubyDay came to be. Hosted in Florence (which probably needs no
+introduction :)) in a comfortable venue packed with interesting people talking
+about cool topics.&lt;/p&gt;
+
+&lt;p&gt;This RubyDay was all about improving what we&amp;rsquo;ve done for &lt;a href="https://twitter.com/hashtag/RubyDay2015"&gt;#RubyDay2015&lt;/a&gt;
+so our main goals were to create a highly technical conference that also
+accounted for those people and minorities that do not regularly attend Ruby
+conferences.&lt;/p&gt;
+
+&lt;p&gt;If we&amp;rsquo;d have to pick a couple of talks that sum up the conference it would
+probably be Paolo Perrotta&amp;rsquo;s technical talk on refinements which explained what
+Ruby refinements are and why apparently nobody is using them and Marion
+Schleifer&amp;rsquo;s talk about what her experience of the Ruby community has been from
+the point of view of someone who knew nothing about programming and wanted to
+start working with Ruby. Marion&amp;rsquo;s talk also exposed one really important aspect:
+what&amp;rsquo;s the status of women in the Ruby community, why we don&amp;rsquo;t see them that
+often in our work environment and what we have to do to grow that presence.&lt;/p&gt;
+
+&lt;p&gt;Another big presence at the conference was of speakers working on Rails
+alternatives. &lt;a href="https://twitter.com/jodosha"&gt;Luca Guidi&lt;/a&gt; (&lt;a href="http://hanamirb.org"&gt;Hanami&lt;/a&gt;),
+&lt;a href="https://twitter.com/_solnic_"&gt;Piotr Solnica&lt;/a&gt; (&lt;a href="http://rom-rb.org"&gt;ROM&lt;/a&gt;, &lt;a href="http://dry-rb.org"&gt;dry-rb&lt;/a&gt;),
+&lt;a href="https://twitter.com/apotonick"&gt;Nick Sutterer&lt;/a&gt; (&lt;a href="http://trailblazer.to"&gt;Trailblazer&lt;/a&gt;)
+all talked about the need to move on from what Rails has taught us the in early
+years. In the words of Devon Estes who was also part of the speaker line up, we
+are part of &lt;a href="http://devonestes.herokuapp.com/the-european-ruby-revolution/"&gt;The European Ruby Revolution&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The talks were all very interesting and it would have been great attending them
+all. Fortunately we&amp;rsquo;ll release the recordings shortly.&lt;/p&gt;
+
+&lt;p&gt;The following day was completely dedicated to workshops. We had three tracks and
+9 total workshops to choose from. They ranged from &lt;a href="http://solidus.io"&gt;Solidus&lt;/a&gt;
+and &lt;a href="http://hanamirb.org"&gt;Hanami&lt;/a&gt; to &lt;a href="https://webpack.github.io"&gt;Webpack&lt;/a&gt; and
+running Ruby on a RasperryPI.&lt;/p&gt;
+
+&lt;p&gt;Of course we also had time to rest, eat and have a good glass of wine. We had a
+a lot of good Italian food and wine for lunch and a long after-party where
+people had the chance to connect, laugh and share experiences in the Ruby
+community.&lt;/p&gt;
+
+&lt;h2&gt;Thank you so much&lt;/h2&gt;
+
+&lt;p&gt;A lot of hard work went into organizing this conference. We were required to be
+responsive, full of ideas and with a positive attitude. Everybody wants to take
+home different things from a conference and we knew we needed to account for all
+of them. Thanks to all the conferences we regularly attend we know what
+attendees, speakers and sponsors want and we tried providing the best possible
+experience. It probably took us at least 500 hours to run this event and we hope
+everybody had a good time, we totally think it was worth it considering all the
+happy people that were at the conference.&lt;/p&gt;
+
+&lt;p&gt;We&amp;rsquo;d also like to thank all the sponsors, the speakers and the attendees that
+made it possible to have so much fun in Florence.
+We would also like to thank the &lt;a href="http://foundation.travis-ci.org"&gt;Travis Foundation&lt;/a&gt;
+that helped us via their &lt;a href="https://diversitytickets.org"&gt;Diversity Tickets&lt;/a&gt; platform.
+One of those tickets made it possible to meet &lt;a href="https://twitter.com/oanasipos"&gt;Oana Sipos&lt;/a&gt;
+that helped us managing the talk rooms!&lt;/p&gt;
+
+&lt;p&gt;Special thanks also go to Daniele Palombo (the latest addition to &lt;a href="/about-us"&gt;our team&lt;/a&gt;),
+that helped writing this blogpost by reporting his experience at the conference
+as an attendee.&lt;/p&gt;
+
+&lt;p&gt;Stay tuned for next year! Also, if you have tips, suggestions, something you
+didn&amp;rsquo;t like about the conference, drop us a line at &lt;a href="mailto:hello@nebulab.it"&gt;hello@nebulab.it&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Epic shots of awesomeness&lt;/h2&gt;
+
+&lt;p&gt;To end this long post, here are some of the funniest (and incriminating) tweets
+and photos from the conf!&lt;/p&gt;
+
+&lt;p&gt;Some of the hard work behind it:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;We&amp;rsquo;re hard at work preparing your welcome bags. See how much we love you? 😘😉 &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/RubyConf?src=hash"&gt;#RubyConf&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/Ruby?src=hash"&gt;#Ruby&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/RoR?src=hash"&gt;#RoR&lt;/a&gt; &lt;a href="https://t.co/EsWT5Y5g6H"&gt;pic.twitter.com/EsWT5Y5g6H&lt;/a&gt;&lt;/p&gt;&amp;mdash; RubyDay Italy (@rubydayit) &lt;a href="https://twitter.com/rubydayit/status/801848757369393152"&gt;24 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Alessandro Lepore hosting an unofficial drinking event before the conference:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;Unofficial drinking event is at &lt;a href="https://twitter.com/BrewDogFirenze"&gt;@BrewDogFirenze&lt;/a&gt; , join us! &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt;&lt;/p&gt;&amp;mdash; Alessandro Lepore (@alelepore) &lt;a href="https://twitter.com/alelepore/status/801850153653116930"&gt;24 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;A photo of the conference venue before starting the conference:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;It is happening! &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://t.co/h5ktOJbaMt"&gt;pic.twitter.com/h5ktOJbaMt&lt;/a&gt;&lt;/p&gt;&amp;mdash; Peter Suschlik (@splattael) &lt;a href="https://twitter.com/splattael/status/802060366532452356"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Xavier Noria talking about tension-causing commas:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;.&lt;a href="https://twitter.com/fxn"&gt;@fxn&lt;/a&gt;: &amp;ldquo;You&amp;rsquo;ll feel tension here.&amp;rdquo; hahaha ;) &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://t.co/FY5AvqqDpS"&gt;pic.twitter.com/FY5AvqqDpS&lt;/a&gt;&lt;/p&gt;&amp;mdash; Daniel Carral (@dcarral) &lt;a href="https://twitter.com/dcarral/status/802072524733476864"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Kylie Stradley talking about bugs with a delightful mix of code and hand-drawings:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="und" dir="ltr"&gt;Bugs Taxonomy: Bohrbug &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/ruby?src=hash"&gt;#ruby&lt;/a&gt; &lt;a href="https://t.co/PfJwcE0AlB"&gt;pic.twitter.com/PfJwcE0AlB&lt;/a&gt;&lt;/p&gt;&amp;mdash; Rebased (@rebased) &lt;a href="https://twitter.com/rebased/status/802130052712435712"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Frontend developers having fun even if JavaScript is nowhere to be found:
+&lt;blockquote class="twitter-tweet" data-cards="hidden" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;So far it&amp;rsquo;s a really interesting and nice experience attending my first non JavaScript conference. &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://t.co/4wgQVfSapr"&gt;pic.twitter.com/4wgQVfSapr&lt;/a&gt;&lt;/p&gt;&amp;mdash; André Ruffert (@andreruffert) &lt;a href="https://twitter.com/andreruffert/status/802136687627407361"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Paolo Perrotta&amp;rsquo;s talk making people laugh and wonder about refinements:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;Simple as that, by &lt;a href="https://twitter.com/nusco"&gt;@nusco&lt;/a&gt; in his excellent talk walking through the history of refinements. High-level talks today! :) &lt;a href="https://twitter.com/hashtag/RubyDay?src=hash"&gt;#RubyDay&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://t.co/W3N2R9QSaJ"&gt;pic.twitter.com/W3N2R9QSaJ&lt;/a&gt;&lt;/p&gt;&amp;mdash; Daniel Carral (@dcarral) &lt;a href="https://twitter.com/dcarral/status/802154030298529792"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Awesome people at the conference:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;Today is a good day to thank for having the opportunity to meet awesome people within the Ruby community. Thank you &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://t.co/STq8rt46hQ"&gt;pic.twitter.com/STq8rt46hQ&lt;/a&gt;&lt;/p&gt;&amp;mdash; Maurizio De Magnis (@olistik) &lt;a href="https://twitter.com/olistik/status/802226952446812160"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Awesome spekers at the conference:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;Ruby Underground (&lt;a href="https://twitter.com/jodosha"&gt;@jodosha&lt;/a&gt;, &lt;a href="https://twitter.com/apotonick"&gt;@apotonick&lt;/a&gt; and &lt;a href="https://twitter.com/_solnic_"&gt;@&lt;em&gt;solnic&lt;/em&gt;&lt;/a&gt;) on a single photo at &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://t.co/kwpruKeZ3k"&gt;pic.twitter.com/kwpruKeZ3k&lt;/a&gt;&lt;/p&gt;&amp;mdash; Ivan Nemytchenko (@inem) &lt;a href="https://twitter.com/inem/status/802193122172272640"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Awesome food at the conference:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;I&amp;rsquo;ve never seen food! &lt;a href="https://twitter.com/hashtag/rubyday2016?src=hash"&gt;#rubyday2016&lt;/a&gt; &lt;a href="https://t.co/djm6GNKV4V"&gt;pic.twitter.com/djm6GNKV4V&lt;/a&gt;&lt;/p&gt;&amp;mdash; Alessio Coser (@AlessioCoser) &lt;a href="https://twitter.com/AlessioCoser/status/802119919693430784"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;That&amp;rsquo;s unbelievable that it was lunch for attendees. Thanks &lt;a href="https://twitter.com/rubydayit"&gt;@rubydayit&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/lunch?src=hash"&gt;#lunch&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/awesome?src=hash"&gt;#awesome&lt;/a&gt; &lt;a href="https://t.co/trxcJOPNCN"&gt;pic.twitter.com/trxcJOPNCN&lt;/a&gt;&lt;/p&gt;&amp;mdash; Bartosz Bonisławski (@b0niek) &lt;a href="https://twitter.com/b0niek/status/802133304552067076"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;Real Italian espresso during coffee break! &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/ruby?src=hash"&gt;#ruby&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/conference?src=hash"&gt;#conference&lt;/a&gt; &lt;a href="https://twitter.com/rubydayit"&gt;@rubydayit&lt;/a&gt; &lt;a href="https://t.co/CHrfHmyByy"&gt;pic.twitter.com/CHrfHmyByy&lt;/a&gt;&lt;/p&gt;&amp;mdash; Bartosz Bonisławski (@b0niek) &lt;a href="https://twitter.com/b0niek/status/802093256377036800"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Awesome speakers (probably drunk):
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;Amazing talks from these guys at the &lt;a href="https://twitter.com/rubydayit"&gt;@rubydayit&lt;/a&gt; held in Florence this weekend! Nice to meet you both &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://t.co/g9XQlnykhv"&gt;pic.twitter.com/g9XQlnykhv&lt;/a&gt;&lt;/p&gt;&amp;mdash; Nuno Costa (@nunoc0sta) &lt;a href="https://twitter.com/nunoc0sta/status/802827534534512640"&gt;27 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Some more awesome speakers (joking about other speakers):
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;.&lt;a href="https://twitter.com/apotonick"&gt;@apotonick&lt;/a&gt; just in case you need evidence that the Rails Core Team secretly uses Trailblazer &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; cc &lt;a href="https://twitter.com/fxn"&gt;@fxn&lt;/a&gt; &lt;a href="https://twitter.com/rafaelfranca"&gt;@rafaelfranca&lt;/a&gt; &lt;a href="https://t.co/gso0YAI45s"&gt;pic.twitter.com/gso0YAI45s&lt;/a&gt;&lt;/p&gt;&amp;mdash; Alberto Vena (@AlbertoVena) &lt;a href="https://twitter.com/AlbertoVena/status/803191441488941056"&gt;28 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Cool RubyDay shirts:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;Leaving Florence soonish! Proudly wearing &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; shirts 👏 Thank you for the awesome conference❤&lt;a href="https://twitter.com/dawid_jacob"&gt;@dawid_jacob&lt;/a&gt; &lt;a href="https://twitter.com/schn1ttchen"&gt;@schn1ttchen&lt;/a&gt; &lt;a href="https://t.co/GaMDbERaQo"&gt;pic.twitter.com/GaMDbERaQo&lt;/a&gt;&lt;/p&gt;&amp;mdash; Peter Suschlik (@splattael) &lt;a href="https://twitter.com/splattael/status/802781076024393728"&gt;27 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Alessandro Lepore keeps on drinking:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="und" dir="ltr"&gt;&lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://twitter.com/hashtag/LeporeTShirt?src=hash"&gt;#LeporeTShirt&lt;/a&gt; &lt;a href="https://t.co/sXxhgztFIy"&gt;pic.twitter.com/sXxhgztFIy&lt;/a&gt;&lt;/p&gt;&amp;mdash; Monica (@KFMolli) &lt;a href="https://twitter.com/KFMolli/status/802246316571131905"&gt;25 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;IT&amp;rsquo;S NOT OVER &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://t.co/DGFT8OTuvM"&gt;pic.twitter.com/DGFT8OTuvM&lt;/a&gt;&lt;/p&gt;&amp;mdash; Alessandro Lepore (@alelepore) &lt;a href="https://twitter.com/alelepore/status/802594863799828484"&gt;26 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Late night stroll in Florence after the conference:
+&lt;blockquote class="twitter-tweet" data-lang="it"&gt;&lt;p lang="en" dir="ltr"&gt;Last shot from &lt;a href="https://twitter.com/hashtag/RubyDay2016?src=hash"&gt;#RubyDay2016&lt;/a&gt; &lt;a href="https://t.co/6JkKKPhRwK"&gt;pic.twitter.com/6JkKKPhRwK&lt;/a&gt;&lt;/p&gt;&amp;mdash; Daniele (@ksemuldie) &lt;a href="https://twitter.com/ksemuldie/status/802959529457631232"&gt;27 novembre 2016&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;And of course there&amp;rsquo;s &lt;a href="https://twitter.com/hashtag/RubyDaySelfie"&gt;Ju Liu&amp;rsquo;s awesome #RubyDaySelfie&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Integrate Solidus with external services using Cangaroo</title>
+    <link rel="alternate" href="http://nebulab.it/blog/integrate-your-solidus-store-with-external-services-using-cangaroo/"/>
+    <id>http://nebulab.it/blog/integrate-your-solidus-store-with-external-services-using-cangaroo/</id>
+    <published>2016-05-06T00:00:00+00:00</published>
+    <updated>2017-05-19T12:38:21+00:00</updated>
+    <author>
+      <name>Alessio Rocco</name>
+    </author>
+    <content type="html">&lt;p&gt;In this article we&amp;rsquo;ll create a simple application to show how to
+integrate and use &lt;a href="https://github.com/nebulab/cangaroo"&gt;Cangaroo&lt;/a&gt; to handle any external service
+integration with your &lt;a href="http://nebulab.it/solidus"&gt;Solidus store&lt;/a&gt;. Our goal will be to send a
+tweet out each time a new product is created. Accomplishing this task will
+allow us to walk you throught &lt;em&gt;Cangaroo&lt;/em&gt; installation and basic functionalities.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;In &lt;a href="http://nebulab.it/blog/the-birth-of-a-cangaroo"&gt;my previous article&lt;/a&gt; I told the full story about why we
+created Cangaroo and I promised to write a tutorial that explains how to
+set it up to use an existing integration.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s go ahead and make a plan. The steps we&amp;rsquo;ll follow are:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="#add-cangaroo"&gt;Add Cangaroo to our Solidus application.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#setup-solidus-cangaroo"&gt;Setup solidus_cangaroo extension to send products to Cangaroo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#add-twitter-integration"&gt;Add Twitter Integration&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="#the-hard-way"&gt;The Hard Way&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#the-easy-way"&gt;The Easy Way&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#add-cangaroo-job"&gt;Add the TweetProduct Cangaroo Job&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To follow this tutorial you need:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;A working &lt;em&gt;Solidus&lt;/em&gt; store (check out &lt;a href="/blog/deploy-solidus-to-heroku-like-a-boss/"&gt;how to boostrap a solidus store and
+ deploy it to Heroku&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;A Twitter account and a Twitter application
+(&lt;a href="https://apps.twitter.com/"&gt;https://apps.twitter.com/&lt;/a&gt;).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;After that, we are ready to go!&lt;/p&gt;
+
+&lt;p&gt;&lt;a name="add-cangaroo"&gt;&lt;/a&gt;Add Cangaroo to our Solidus application&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Cangaroo&lt;/em&gt; is a &lt;em&gt;Rails&lt;/em&gt; engine and can be mounted on any Rails application. In
+this case we are going to mount it on our Solidus store just for the sake
+of simplicity but keep in mind that you can (and we advice to) use it also
+on a separate &lt;em&gt;Rails&lt;/em&gt; application.
+In the real world the best way to use &lt;em&gt;Cangaroo&lt;/em&gt; is into a
+standalone application; that way it can serve multiple storefronts and
+applications like an ERP and a CMS.&lt;/p&gt;
+
+&lt;p&gt;To add &lt;em&gt;Cangaroo&lt;/em&gt; to our application we just need to follow the README:&lt;/p&gt;
+
+&lt;p&gt;Add &lt;em&gt;Cangaroo&lt;/em&gt; gem to Gemfile&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# Gemfile&lt;/span&gt;
+
+&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'cangaroo'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run &lt;code&gt;bundle&lt;/code&gt; as usual, then you have to install and run the needed migrations&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;bin/rake cangaroo:install:migrations
+&lt;span class="gp"&gt;$ &lt;/span&gt;bin/rake db:migrate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The last step is to add the routes needed from &lt;em&gt;Cangaroo&lt;/em&gt; to receive data from
+our apps:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# routes.rb&lt;/span&gt;
+
+&lt;span class="n"&gt;mount&lt;/span&gt; &lt;span class="no"&gt;Cangaroo&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Engine&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;"/cangaroo"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now Cangaroo is configured into our app and ready to receive data and perform
+Jobs, but first we have to create a &lt;code&gt;Connection&lt;/code&gt;. Basically a connection is an
+external app that can send and receive data from Cangaroo.
+To create the connection in the &lt;code&gt;rails console&lt;/code&gt; run:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="no"&gt;Cangaroo&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Connection&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+  &lt;span class="ss"&gt;name: &lt;/span&gt;&lt;span class="s1"&gt;'mystore'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;url: &lt;/span&gt;&lt;span class="s1"&gt;'http://localhost:3000'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;key: &lt;/span&gt;&lt;span class="s1"&gt;'secretkey'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;token: &lt;/span&gt;&lt;span class="s1"&gt;'secrettoken'&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The Connection has four fields:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;name&lt;/code&gt;: is used to identify the connection from &lt;em&gt;Cangaroo&lt;/em&gt; jobs
+(we&amp;rsquo;ll see this later);&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;url&lt;/code&gt;: is the connection url, in our case we are running rails locally so it&amp;rsquo;s
+&lt;code&gt;localhost:3000&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;key&lt;/code&gt;: it&amp;rsquo;s used for authentication, you can set it to your liking;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;token&lt;/code&gt;: also used for authentication, you can set it to your liking;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;&lt;a name="setup-solidus-cangaroo"&gt;&lt;/a&gt; Setup solidus_cangaroo extension to send products to Cangaroo&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/nebulab/solidus_cangaroo"&gt;solidus_cangaroo&lt;/a&gt; is a &lt;em&gt;Solidus&lt;/em&gt; extension that provides the
+push API that we&amp;rsquo;ll use to send our products to &lt;em&gt;Cangaroo&lt;/em&gt;.
+Again, to setup it up we can just follow its README:&lt;/p&gt;
+
+&lt;p&gt;Add &lt;em&gt;solidus_cangaroo&lt;/em&gt; gem to our Gemfile as usual:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# Gemfile&lt;/span&gt;
+
+&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'solidus_cangaroo'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;github: &lt;/span&gt;&lt;span class="s1"&gt;'nebulab/solidus_cangaroo'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;branch: &lt;/span&gt;&lt;span class="s1"&gt;'master'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;then run &lt;code&gt;bundle&lt;/code&gt; and &lt;code&gt;bundle exec rails g spree_wombat:install&lt;/code&gt;.
+Now we have to add our Cangaroo credential into the file
+&lt;code&gt;config/initializers/cangaroo.rb&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# config/initializers/cangaroo.rb&lt;/span&gt;
+
+&lt;span class="no"&gt;Spree&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Wombat&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;connection_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'secretkey'&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;connection_token&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'secrettoken'&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see the &lt;code&gt;connection_id&lt;/code&gt; is the &lt;code&gt;key&lt;/code&gt; that we previously added to the
+connection and the &lt;code&gt;connection_token&lt;/code&gt; is the &lt;code&gt;token&lt;/code&gt;. This way &lt;em&gt;Cangaroo&lt;/em&gt; will
+authenticate the store when it sends data to &lt;em&gt;Cangaroo&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The next step is to specify which objects we want to send to Cangaroo, in our
+case just the products.
+To do so we use the &lt;code&gt;push_objects&lt;/code&gt; configuration:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# config/initializers/cangaroo.rb&lt;/span&gt;
+
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;push_objects&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Spree::Product"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then we have to configure the &lt;code&gt;payload_builder&lt;/code&gt;, which is needed to normalize
+the data and make it understandable to &lt;em&gt;Cangaroo&lt;/em&gt;. Fortunately
+almost all the work is done from &lt;em&gt;solidus_cangaroo&lt;/em&gt; that already has the
+&lt;a href="https://github.com/nebulab/solidus_cangaroo/tree/master/app/serializers/spree/wombat"&gt;Serializers&lt;/a&gt; for nearly all the &lt;em&gt;Solidus&lt;/em&gt; objects.
+The &lt;code&gt;root&lt;/code&gt; key (of the json object the app is sending to &lt;em&gt;Cangaroo&lt;/em&gt;) is needed
+to let &lt;em&gt;Cangaroo&lt;/em&gt; understand what kind of data the app is sending:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# config/initializers/cangaroo.rb&lt;/span&gt;
+
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;payload_builder&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="s2"&gt;"Spree::Product"&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="ss"&gt;serializer: &lt;/span&gt;&lt;span class="s2"&gt;"Spree::Wombat::ProductSerializer"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;root: &lt;/span&gt;&lt;span class="s2"&gt;"products"&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;At last we have to setup the &lt;code&gt;push_url&lt;/code&gt; with the path to our &lt;em&gt;Cangaroo&lt;/em&gt;
+installation. In our case it&amp;rsquo;s the same path of our store (but remember that
+it can be another application):&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# config/initializers/cangaroo.rb&lt;/span&gt;
+
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;push_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"http://localhost:3000/cangaroo/endpoint"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now our &lt;code&gt;config/initializers/cangaroo.rb&lt;/code&gt; should look like this:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# config/initializers/cangaroo.rb&lt;/span&gt;
+
+&lt;span class="no"&gt;Spree&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Wombat&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;connection_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"secretkey"&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;connection_token&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"secrettoken"&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;push_objects&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Spree::Product"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;payload_builder&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s2"&gt;"Spree::Product"&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="ss"&gt;serializer: &lt;/span&gt;&lt;span class="s2"&gt;"Spree::Wombat::ProductSerializer"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;root: &lt;/span&gt;&lt;span class="s2"&gt;"products"&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;push_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"http://localhost:3000/cangaroo/endpoint"&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally we can check if our application sends products to &lt;em&gt;Cangaroo&lt;/em&gt;
+correctly. First, start our &lt;code&gt;rails server&lt;/code&gt; and from &lt;code&gt;rails console&lt;/code&gt; run:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="no"&gt;Spree&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Wombat&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;push_batches&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Spree::Product"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;after some info logs you should see the return message:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;this means that 9 products are sent to &lt;em&gt;Cangaroo&lt;/em&gt;. On your project this number
+can change, it depends on how many products you have in your database.
+Somewhere in your rails logs you should be able to spot:&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;Completed 202 Accepted in 43ms (Views: 0.2ms | ActiveRecord: 0.9ms)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This confirms that &lt;em&gt;Cangaroo&lt;/em&gt; has received our products, anyway nothing
+happened because for now we didn&amp;rsquo;t configure any job. A job is an action
+triggered when an object is received and uses integration to &amp;ldquo;talk&amp;rdquo; with
+external services. In the next step we are going to add the twitter
+integration that will be used by a job to let the world know about our
+amazing new products.&lt;/p&gt;
+
+&lt;h2&gt;&lt;a name="add-twitter-integration"&gt;&lt;/a&gt; Add Twitter Integration&lt;/h2&gt;
+
+&lt;h3&gt;&lt;a name="the-hard-way"&gt;&lt;/a&gt; The Hard Way&lt;/h3&gt;
+
+&lt;p&gt;At first we have to pull the &lt;a href="https://github.com/cangaroo/twitter_integration"&gt;twitter_integration&lt;/a&gt; repo and
+make it run. Available integrations are made of simple Sinatra apps that
+you can find here: &lt;a href="https://github.com/cangaroo"&gt;https://github.com/cangaroo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The first step is to clone the integration from &lt;em&gt;GitHub&lt;/em&gt;:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;git clone https://github.com/cangaroo/twitter_integration
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;then &lt;code&gt;cd&lt;/code&gt; into the directory and run &lt;code&gt;bundle&lt;/code&gt;. After that run the &lt;em&gt;Sinatra&lt;/em&gt;
+app with:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rackup
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To check if everything is working you can visit &lt;code&gt;http://localhost:9292/&lt;/code&gt; and
+look for &lt;code&gt;TwitterIntegration ok&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3&gt;&lt;a name="the-easy-way"&gt;&lt;/a&gt; The Easy Way&lt;/h3&gt;
+
+&lt;p&gt;To make it even simpler, we have added the
+&lt;a href="https://heroku.com/deploy?template=https://github.com/cangaroo/twitter_integration" class="button-img"&gt;
+  &lt;img alt="Deploy" src="https://www.herokucdn.com/deploy/button.svg"&gt;
+&lt;/a&gt;
+button on the integration &lt;a href="https://github.com/cangaroo/twitter_integration"&gt;README&lt;/a&gt;.
+If you push this button and follow the instructions you will have a working integration
+on Heroku that you can eventually use also for production.&lt;/p&gt;
+
+&lt;p&gt;To check if you have correctly deployed the integration on heroku go to your
+application root path and check that it responds with &lt;code&gt;TwitterIntegration ok&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To add a security layer we need to set the environment variable &lt;code&gt;ENDPOINT_KEY&lt;/code&gt;
+with a private token that will be used with the Connection that we are going to
+create in the next step:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;ENDPOINT_KEY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;secrettoken
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now is time to teach our &lt;em&gt;Cangaroo&lt;/em&gt; how to tweet. First of all, we have to
+create the connection for this integration, we create it from &lt;code&gt;rails console&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="no"&gt;Cangaroo&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Connection&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+  &lt;span class="ss"&gt;name: &lt;/span&gt;&lt;span class="s1"&gt;'twitter'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;url: &lt;/span&gt;&lt;span class="s1"&gt;'http://localhost:9292'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;key: &lt;/span&gt;&lt;span class="s1"&gt;'secrettoken'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;token: &lt;/span&gt;&lt;span class="s1"&gt;'secrettoken'&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Change &lt;code&gt;url&lt;/code&gt; and &lt;code&gt;token&lt;/code&gt; accordling to values of your app url and your
+security token.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; &lt;em&gt;Even if key is not used for the integrations, Cangaroo will still validate
+its presence, so you have to set it. This strange behavior comes to support
+the old Wombat behavior. We hope to find a better way to implement it soon.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2&gt;&lt;a name="add-cangaroo-job"&gt;&lt;/a&gt; Add the TweetProduct Cangaroo Job&lt;/h2&gt;
+
+&lt;p&gt;We are finally ready to create the job to send tweets. To do so we run the
+generator:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rails g job Cangaroo::TweetProduct
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;now we have to change this job.
+First of all it must inherit from Cangaroo::Job.
+Then we need to remove the queue_as :default, because Cangaroo::Job already
+uses the cangaroo queue (you can change it if you want).
+At this point, we have to specify connection, path and parameters that the job
+will use:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/jobs/cangaroo/tweet_product.rb&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Cangaroo&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;TweetProductJob&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Cangaroo&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Job&lt;/span&gt;
+  &lt;span class="n"&gt;connection&lt;/span&gt; &lt;span class="s1"&gt;'twitter'&lt;/span&gt;
+  &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="s1"&gt;'/send_tweet'&lt;/span&gt;
+  &lt;span class="n"&gt;parameters&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="ss"&gt;consumer_key: &lt;/span&gt;&lt;span class="s1"&gt;'your_twitter_consumer_key'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;consumer_secret: &lt;/span&gt;&lt;span class="s1"&gt;'your_twitter_consumer_secret'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;access_token: &lt;/span&gt;&lt;span class="s1"&gt;'your_twitter_access_token'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;access_token_secret: &lt;/span&gt;&lt;span class="s1"&gt;'your_twittwr_token_secret'&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;path&lt;/code&gt; and &lt;code&gt;parameters&lt;/code&gt; are relative to integration you are using.
+For now the integrations don&amp;rsquo;t have much documentation, so you have to refer
+to the code in the &lt;a href="https://github.com/cangaroo/twitter_integration/blob/master/twitter_integration.rb"&gt;integration file&lt;/a&gt;.
+In case you want to go deeper, you could also take a look at the
+&lt;a href="https://github.com/spree/endpoint_base"&gt;endpoint_base&lt;/a&gt; gem.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;We plan to improve integrations and the endpoint_base gem.
+However this is quite a lot of stuff, so contributions are very welcome.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;After that we have to implement the &lt;code&gt;perform?&lt;/code&gt; method.
+&lt;em&gt;Cangaroo&lt;/em&gt; uses this method to understand if this job should be performed. In
+our case we have to check if the type is a &lt;code&gt;product&lt;/code&gt; and if it&amp;rsquo;s a new product
+(please refer to the &lt;a href="https://github.com/nebulab/cangaroo#cangaroo-jobs"&gt;README&lt;/a&gt; to see which variables can be
+used inside the &lt;code&gt;perform?&lt;/code&gt; method):&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/jobs/cangaroo/tweet_product.rb&lt;/span&gt;
+
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;.&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="nf"&gt;def&lt;/span&gt; &lt;span class="n"&gt;perform?&lt;/span&gt;
+  &lt;span class="n"&gt;type&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;'products'&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+    &lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'created_at'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'updated_at'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;.&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Sometimes integrations don&amp;rsquo;t understand the data that we send to them, so we
+have to &lt;code&gt;transform&lt;/code&gt; it. In our case we want to write a tweet with the product&amp;rsquo;s
+name and link so we&amp;rsquo;ll use the &lt;code&gt;transform&lt;/code&gt; method to convert the product&amp;rsquo;s data
+coming from the store into a JSON that will be sent to the integration.
+Our &lt;code&gt;transform&lt;/code&gt; method looks like:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/jobs/cangaroo/tweet_product.rb&lt;/span&gt;
+
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;.&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="nf"&gt;def&lt;/span&gt; &lt;span class="n"&gt;transform&lt;/span&gt;
+  &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="ss"&gt;tweet: &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="ss"&gt;body: &lt;/span&gt;&lt;span class="s2"&gt;"Hey, we have a new awesome product &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'name'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; http://localhost:3000/products/&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'permalink'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;.&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and then our job should look like:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/jobs/cangaroo/tweet_product.rb&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Cangaroo&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;TweetProductJob&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Cangaroo&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Job&lt;/span&gt;
+  &lt;span class="n"&gt;connection&lt;/span&gt; &lt;span class="s1"&gt;'twitter'&lt;/span&gt;
+  &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="s1"&gt;'/send_tweet'&lt;/span&gt;
+  &lt;span class="n"&gt;parameters&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="ss"&gt;consumer_key: &lt;/span&gt;&lt;span class="s1"&gt;'your_twitter_consumer_key'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;consumer_secret: &lt;/span&gt;&lt;span class="s1"&gt;'your_twitter_consumer_secret'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;access_token: &lt;/span&gt;&lt;span class="s1"&gt;'your_twitter_access_token'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;access_token_secret: &lt;/span&gt;&lt;span class="s1"&gt;'your_twittwr_token_secret'&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;transform&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="ss"&gt;tweet: &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="ss"&gt;body: &lt;/span&gt;&lt;span class="s2"&gt;"Hey, we have a new awesome product &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'name'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; http://localhost:3000/products/&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'permalink'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+      &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;perform?&lt;/span&gt;
+    &lt;span class="n"&gt;type&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;'products'&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+      &lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'created_at'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;payload&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'updated_at'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We are now lacking just the last thing: we have to inform &lt;em&gt;Cangaroo&lt;/em&gt; about
+this job. This is an easy task: we just have to add our job to the right
+configuration, in this case Rails.configuration.cangaroo.jobs.
+To do so we need to add it in the cangaroo initializer:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# config/initializers/cangaroo.rb&lt;/span&gt;
+&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;.&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configuration&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;cangaroo&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;jobs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="no"&gt;Cangaroo&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;TweetProductJob&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All done! Now is time to test our integration:
+create a new product on &lt;em&gt;Solidus&lt;/em&gt; then run from &lt;code&gt;rails console&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="no"&gt;Spree&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Wombat&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;push_batches&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Spree::Product"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And&amp;hellip;if everything is working you should see a tweet about your new awesome
+product!!!&lt;/p&gt;
+
+&lt;p&gt;Take note that, at the moment, our project doesn&amp;rsquo;t use any queue system and
+&lt;em&gt;Cangaroo&lt;/em&gt; jobs are just simple Rails jobs.
+You can therefore use any backend queue system that is currently
+supported by Rails.&lt;/p&gt;
+
+&lt;p&gt;Also, in this tutorial we pushed objects from the rails console.
+Conversely, in a real application you would probably want to use the
+proper rake task:&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;rake wombat:push_it
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I hope you now have a better understanding of how &lt;em&gt;Cangaroo&lt;/em&gt; works and how to
+use integrations.
+There&amp;rsquo;s still a lot of work to be done, both on &lt;em&gt;Cangaroo&lt;/em&gt; and the integrations.
+We&amp;rsquo;ll welcome anyone that wants to work on the projects with us.&lt;/p&gt;
+
+&lt;p&gt;You can find the code used for this tutorial on this &lt;a href="https://github.com/nebulab/cangaroo_tutorial"&gt;repo&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>The birth of a Cangaroo</title>
+    <link rel="alternate" href="http://nebulab.it/blog/the-birth-of-a-cangaroo/"/>
+    <id>http://nebulab.it/blog/the-birth-of-a-cangaroo/</id>
+    <published>2016-03-25T00:00:00+00:00</published>
+    <updated>2017-05-19T12:38:21+00:00</updated>
+    <author>
+      <name>Alessio Rocco</name>
+    </author>
+    <content type="html">&lt;p&gt;Before getting deeper into some technical &lt;a href="https://github.com/nebulab/cangaroo"&gt;Cangaroo&lt;/a&gt; guide I wanted to give
+some more insights about how &lt;strong&gt;Cangaroo&lt;/strong&gt; was born. This is the story that tells
+how the death of a &lt;em&gt;SaaS&lt;/em&gt; gave us the opportunity to create a brand new
+&lt;strong&gt;open-source&lt;/strong&gt; project.&lt;/p&gt;
+
+&lt;p&gt;One of our clients has many Spree stores, almost ten and all of these stores
+share the following features:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;send order information data to a third-party application;&lt;/li&gt;
+&lt;li&gt;receive stock updates from that application;&lt;/li&gt;
+&lt;li&gt;receive shipments updates from that application;&lt;/li&gt;
+&lt;li&gt;send an email to the customer service when an order is considerd risky.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the first place you can think that the easier way to accomplish this is
+updating each store code to &amp;ldquo;speak&amp;rdquo; directly with that application in order to
+send and receive data. This introduces a lot of code duplication and is really
+error prone.&lt;/p&gt;
+
+&lt;p&gt;Another solution could be to create a gem that is included in all stores.
+At the beginning it looked like a good solution but what happens if you had to
+add another feature? For example what if you have to send an email for each new
+customer? At this point you had to:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;update the gem to include this feature;&lt;/li&gt;
+&lt;li&gt;update the new ref of the gem into the &lt;code&gt;Gemfile&lt;/code&gt; of each store;&lt;/li&gt;
+&lt;li&gt;run tests (often duplicated) on each store;&lt;/li&gt;
+&lt;li&gt;deploy each store.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now, it can seems like reasonable approach but think at each time you find a bug
+and you have to replicate all the steps above. It&amp;rsquo;s time consuming and we love
+to use our time to build new features instead of repeating actions mechanically.&lt;/p&gt;
+
+&lt;p&gt;Another problem comes when any third-party application endpoint has some
+problem, like a downtime. In order to don&amp;rsquo;t loose data you need to add a queue
+system to retry the request. Of course each store needs its own queue system
+with all performance related stuff that increases infrastructure costs.&lt;/p&gt;
+
+&lt;p&gt;With the primary aim to solve this scenario the Spreecommerce created a Saas
+named Wombat, whose claim said:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Wombat is your store’s integration platform; connect any store to any
+service. Wombat gets you up and running in minutes, no custom code required.&amp;rdquo;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;With Wombat an user can configure what to do on a particular event, with a UI
+interface, for example you can setup something like&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;When a new Order comes in from the store A, send an email to the customer and
+tweet an happy face.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;or&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;When a new Order comes in from any store, send an email to the customer
+service.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Wombat talks with external services API using &lt;a href="https://github.com/wombat"&gt;integrations&lt;/a&gt; that
+live in the middle between Wombat and third-party services. Each external
+service has its own integration, for example there are integrations for
+Mailchimp, SalesForce, etc.&lt;/p&gt;
+
+&lt;p&gt;Everything was working fine until the day the Spreecommerce was aquired,
+Wombat died and the source code was released only to customers.&lt;/p&gt;
+
+&lt;p&gt;At this point we had to decide how to go ahead, and the alternatives were:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;to take Wombat source code and to host it on our servers;&lt;/li&gt;
+&lt;li&gt;to reintroduce features back into the stores with all the issues described
+above;&lt;/li&gt;
+&lt;li&gt;to create an alternative system that replaces Wombat behavior.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Accordling to one of our cool clients, we decided to go with the latter and, since
+we strongly believe in open-source we also decided to publicly release it.
+&lt;strong&gt;Cangaroo&lt;/strong&gt; was born.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Cangaroo&lt;/strong&gt; is named after the Kangaroo animal, which I&amp;rsquo;ve seen together with a
+real wombat during one of my trips across Australia. Unfortunately Kangaroo gem
+name was already taken so we changed it a bit.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/blog/images/articles-images/the-birth-of-a-cangaroo/australian_trip-199e3f7f.jpg" alt="Wombat and Kangaroo" /&gt;
+&lt;em&gt;A picture with a Wombat and a Kangaroo taken by me in Australia.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Cangaroo&lt;/strong&gt; is a Rails Engine that you can mount on a new or exsisting Rails
+application. One cool thing about this project is that it uses the same API
+specification of Wombat so we don&amp;rsquo;t have to change anything into our client
+stores repo continuing to use the code that was acting as an adapter for Wombat
+(via the &lt;code&gt;spree_wombat&lt;/code&gt; extension).&lt;/p&gt;
+
+&lt;p&gt;The main differences from Wombat are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cangaroo&lt;/strong&gt; is designed for developers, not for endusers.
+As a developer I prefer to use my editor to configure behaviors instead of
+clicking around a web page; this is why it&amp;rsquo;s developer friendly,
+it doesn&amp;rsquo;t have a UI like Wombat, everythings is done via code.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cangaroo&lt;/strong&gt; doesn’t store data like Wombat did, it just receives data and
+decides what to do based on how it&amp;rsquo;s configured.&lt;/li&gt;
+&lt;li&gt;Lately Wombat added the possibility to also schedule recurring requests to
+external services in order to receive data without having an event that triggers
+that call. For now &lt;strong&gt;Cangaroo&lt;/strong&gt; doesn&amp;rsquo;t have this feature but it&amp;rsquo;s something
+we are planning to add as soon as possible.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is the whole story about &lt;strong&gt;Cangaroo&lt;/strong&gt; and why we decided to create it.
+To learn more you can take a look at &lt;a href="https://github.com/nebulab/cangaroo"&gt;README&lt;/a&gt; and stay in touch with our
+blog. We are planning to post soon a tutorial that explains how to setup
+&lt;strong&gt;Cangaroo&lt;/strong&gt;, integrate it into a spree/solidus store using the
+&lt;a href="https://github.com/spree/spree_wombat"&gt;spree_wombat extension&lt;/a&gt; and one of the existing Wombat integrations.&lt;/p&gt;
+</content>
+  </entry>
+</feed>

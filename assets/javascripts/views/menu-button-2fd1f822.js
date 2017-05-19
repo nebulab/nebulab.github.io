@@ -1,0 +1,1 @@
+$(function(){$(window).scroll(function(){$(this).scrollTop()>$(".header").height()+105?$(".menu-button").addClass("js-show"):$(".menu-button").removeClass("js-show"),$(".menu-button").hasClass("is-active")&&$(".menu-button").addClass("js-show")})});

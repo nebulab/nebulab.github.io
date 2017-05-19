@@ -1,0 +1,523 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>RubyDay 2016 - Nebulab</title>
+    <meta name="description" content="Ok, we’re back from #RubyDay2016 and
+it was a blast! We moved our whole team to Florence to organize our second
+conference and this time it’s bigger and better...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="RubyDay 2016 - Nebulab">
+    <meta name="twitter:description" content="Ok, we’re back from #RubyDay2016 and
+it was a blast! We moved our whole team to Florence to organize our second
+conference and this time it’s bigger and better...">
+    <meta name="twitter:image" content="/blog/images/articles-images/rubyday-2016/rubyday_2016-50cb8980.jpg">
+
+        <meta property="twitter:creator" content="@matteolatini">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="14 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="RubyDay 2016 - Nebulab by Matteo Latini" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/rubyday-2016/" />
+    <meta property="og:image" content="/blog/images/articles-images/rubyday-2016/rubyday_2016-50cb8980.jpg" />
+    <meta property="og:description" content="Ok, we’re back from #RubyDay2016 and
+it was a blast! We moved our whole team to Florence to organize our second
+conference and this time it’s bigger and better..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_rubyday-2016 blog_rubyday-2016_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          RubyDay 2016
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/matteo-5ece94e8.jpg" alt="Matteo" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Matteo Latini
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Events
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          14 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/rubyday-2016/rubyday_2016-50cb8980.jpg" alt="RubyDay 2016" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>Ok, we&rsquo;re back from <a href="https://twitter.com/hashtag/RubyDay2016">#RubyDay2016</a> and
+it was a blast! We moved our whole team to Florence to organize our second
+conference and this time it&rsquo;s bigger and better! This is a little recap of how
+hard it was to organize but how much it paid off in the end.</p>
+
+<h2>A little history</h2>
+
+<p>RubyDay has always been an awesome event, a place where you could meet a lot of
+coders, a lot of people that maybe you&rsquo;ve only met online. Since a lot of us
+work remotely, it could happen that you could meet your year-round colleagues at
+the conference. There was just one problem: the conference was closed and
+unaccessible. It was hosted mainly in Italian, the same people would come every
+year and most of them would be a male audience.</p>
+
+<p>Way back in 2014 we drew the line. As an Italian company we felt Italy was
+missing a great Ruby conference (just like the ones we often attend worldwide).
+With the help of Cantiere Creativo and Welaika we were ready to organize a
+conference that could be a boiling pot of cultures, good people and warm
+feelings.</p>
+
+<p>We started in 2015 by organizing a 1-day Ruby conference in Turin. Lots of
+positive feedback there but we wanted more. The conference was still partly
+Italian and a lot of the RubyDay aficionados enjoyed it however few new people
+showed up and we knew we could do better.</p>
+
+<p>Then came RubyDay 2016 (which probably should be called RubyConf Italy by now).
+A two day Ruby conference with more than 200 people (which is nothing compared
+to some bigger conferences but a huge achievement for us), people from all over
+the world and with a diversity never seen before in a previous RubyDay.</p>
+
+<h2>What happened in Florence</h2>
+
+<p>We wanted to make sure people came to the conference to have fun. And we know
+fun involves:</p>
+
+<ul>
+<li>interesting, insightful talks;</li>
+<li>cool, diverse people;</li>
+<li>an awesome place to be;</li>
+<li>night party!</li>
+</ul>
+
+<p>So the RubyDay came to be. Hosted in Florence (which probably needs no
+introduction :)) in a comfortable venue packed with interesting people talking
+about cool topics.</p>
+
+<p>This RubyDay was all about improving what we&rsquo;ve done for <a href="https://twitter.com/hashtag/RubyDay2015">#RubyDay2015</a>
+so our main goals were to create a highly technical conference that also
+accounted for those people and minorities that do not regularly attend Ruby
+conferences.</p>
+
+<p>If we&rsquo;d have to pick a couple of talks that sum up the conference it would
+probably be Paolo Perrotta&rsquo;s technical talk on refinements which explained what
+Ruby refinements are and why apparently nobody is using them and Marion
+Schleifer&rsquo;s talk about what her experience of the Ruby community has been from
+the point of view of someone who knew nothing about programming and wanted to
+start working with Ruby. Marion&rsquo;s talk also exposed one really important aspect:
+what&rsquo;s the status of women in the Ruby community, why we don&rsquo;t see them that
+often in our work environment and what we have to do to grow that presence.</p>
+
+<p>Another big presence at the conference was of speakers working on Rails
+alternatives. <a href="https://twitter.com/jodosha">Luca Guidi</a> (<a href="http://hanamirb.org">Hanami</a>),
+<a href="https://twitter.com/_solnic_">Piotr Solnica</a> (<a href="http://rom-rb.org">ROM</a>, <a href="http://dry-rb.org">dry-rb</a>),
+<a href="https://twitter.com/apotonick">Nick Sutterer</a> (<a href="http://trailblazer.to">Trailblazer</a>)
+all talked about the need to move on from what Rails has taught us the in early
+years. In the words of Devon Estes who was also part of the speaker line up, we
+are part of <a href="http://devonestes.herokuapp.com/the-european-ruby-revolution/">The European Ruby Revolution</a>.</p>
+
+<p>The talks were all very interesting and it would have been great attending them
+all. Fortunately we&rsquo;ll release the recordings shortly.</p>
+
+<p>The following day was completely dedicated to workshops. We had three tracks and
+9 total workshops to choose from. They ranged from <a href="http://solidus.io">Solidus</a>
+and <a href="http://hanamirb.org">Hanami</a> to <a href="https://webpack.github.io">Webpack</a> and
+running Ruby on a RasperryPI.</p>
+
+<p>Of course we also had time to rest, eat and have a good glass of wine. We had a
+a lot of good Italian food and wine for lunch and a long after-party where
+people had the chance to connect, laugh and share experiences in the Ruby
+community.</p>
+
+<h2>Thank you so much</h2>
+
+<p>A lot of hard work went into organizing this conference. We were required to be
+responsive, full of ideas and with a positive attitude. Everybody wants to take
+home different things from a conference and we knew we needed to account for all
+of them. Thanks to all the conferences we regularly attend we know what
+attendees, speakers and sponsors want and we tried providing the best possible
+experience. It probably took us at least 500 hours to run this event and we hope
+everybody had a good time, we totally think it was worth it considering all the
+happy people that were at the conference.</p>
+
+<p>We&rsquo;d also like to thank all the sponsors, the speakers and the attendees that
+made it possible to have so much fun in Florence.
+We would also like to thank the <a href="http://foundation.travis-ci.org">Travis Foundation</a>
+that helped us via their <a href="https://diversitytickets.org">Diversity Tickets</a> platform.
+One of those tickets made it possible to meet <a href="https://twitter.com/oanasipos">Oana Sipos</a>
+that helped us managing the talk rooms!</p>
+
+<p>Special thanks also go to Daniele Palombo (the latest addition to <a href="/about-us">our team</a>),
+that helped writing this blogpost by reporting his experience at the conference
+as an attendee.</p>
+
+<p>Stay tuned for next year! Also, if you have tips, suggestions, something you
+didn&rsquo;t like about the conference, drop us a line at <a href="mailto:hello@nebulab.it">hello@nebulab.it</a></p>
+
+<h2>Epic shots of awesomeness</h2>
+
+<p>To end this long post, here are some of the funniest (and incriminating) tweets
+and photos from the conf!</p>
+
+<p>Some of the hard work behind it:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">We&rsquo;re hard at work preparing your welcome bags. See how much we love you? 😘😉 <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://twitter.com/hashtag/RubyConf?src=hash">#RubyConf</a> <a href="https://twitter.com/hashtag/Ruby?src=hash">#Ruby</a> <a href="https://twitter.com/hashtag/RoR?src=hash">#RoR</a> <a href="https://t.co/EsWT5Y5g6H">pic.twitter.com/EsWT5Y5g6H</a></p>&mdash; RubyDay Italy (@rubydayit) <a href="https://twitter.com/rubydayit/status/801848757369393152">24 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Alessandro Lepore hosting an unofficial drinking event before the conference:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">Unofficial drinking event is at <a href="https://twitter.com/BrewDogFirenze">@BrewDogFirenze</a> , join us! <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a></p>&mdash; Alessandro Lepore (@alelepore) <a href="https://twitter.com/alelepore/status/801850153653116930">24 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>A photo of the conference venue before starting the conference:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">It is happening! <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://t.co/h5ktOJbaMt">pic.twitter.com/h5ktOJbaMt</a></p>&mdash; Peter Suschlik (@splattael) <a href="https://twitter.com/splattael/status/802060366532452356">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Xavier Noria talking about tension-causing commas:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">.<a href="https://twitter.com/fxn">@fxn</a>: &ldquo;You&rsquo;ll feel tension here.&rdquo; hahaha ;) <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://t.co/FY5AvqqDpS">pic.twitter.com/FY5AvqqDpS</a></p>&mdash; Daniel Carral (@dcarral) <a href="https://twitter.com/dcarral/status/802072524733476864">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Kylie Stradley talking about bugs with a delightful mix of code and hand-drawings:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="und" dir="ltr">Bugs Taxonomy: Bohrbug <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://twitter.com/hashtag/ruby?src=hash">#ruby</a> <a href="https://t.co/PfJwcE0AlB">pic.twitter.com/PfJwcE0AlB</a></p>&mdash; Rebased (@rebased) <a href="https://twitter.com/rebased/status/802130052712435712">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Frontend developers having fun even if JavaScript is nowhere to be found:
+<blockquote class="twitter-tweet" data-cards="hidden" data-lang="it"><p lang="en" dir="ltr">So far it&rsquo;s a really interesting and nice experience attending my first non JavaScript conference. <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://t.co/4wgQVfSapr">pic.twitter.com/4wgQVfSapr</a></p>&mdash; André Ruffert (@andreruffert) <a href="https://twitter.com/andreruffert/status/802136687627407361">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Paolo Perrotta&rsquo;s talk making people laugh and wonder about refinements:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">Simple as that, by <a href="https://twitter.com/nusco">@nusco</a> in his excellent talk walking through the history of refinements. High-level talks today! :) <a href="https://twitter.com/hashtag/RubyDay?src=hash">#RubyDay</a> <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://t.co/W3N2R9QSaJ">pic.twitter.com/W3N2R9QSaJ</a></p>&mdash; Daniel Carral (@dcarral) <a href="https://twitter.com/dcarral/status/802154030298529792">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Awesome people at the conference:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">Today is a good day to thank for having the opportunity to meet awesome people within the Ruby community. Thank you <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://t.co/STq8rt46hQ">pic.twitter.com/STq8rt46hQ</a></p>&mdash; Maurizio De Magnis (@olistik) <a href="https://twitter.com/olistik/status/802226952446812160">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Awesome spekers at the conference:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">Ruby Underground (<a href="https://twitter.com/jodosha">@jodosha</a>, <a href="https://twitter.com/apotonick">@apotonick</a> and <a href="https://twitter.com/_solnic_">@<em>solnic</em></a>) on a single photo at <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://t.co/kwpruKeZ3k">pic.twitter.com/kwpruKeZ3k</a></p>&mdash; Ivan Nemytchenko (@inem) <a href="https://twitter.com/inem/status/802193122172272640">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Awesome food at the conference:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">I&rsquo;ve never seen food! <a href="https://twitter.com/hashtag/rubyday2016?src=hash">#rubyday2016</a> <a href="https://t.co/djm6GNKV4V">pic.twitter.com/djm6GNKV4V</a></p>&mdash; Alessio Coser (@AlessioCoser) <a href="https://twitter.com/AlessioCoser/status/802119919693430784">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">That&rsquo;s unbelievable that it was lunch for attendees. Thanks <a href="https://twitter.com/rubydayit">@rubydayit</a> <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://twitter.com/hashtag/lunch?src=hash">#lunch</a> <a href="https://twitter.com/hashtag/awesome?src=hash">#awesome</a> <a href="https://t.co/trxcJOPNCN">pic.twitter.com/trxcJOPNCN</a></p>&mdash; Bartosz Bonisławski (@b0niek) <a href="https://twitter.com/b0niek/status/802133304552067076">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">Real Italian espresso during coffee break! <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://twitter.com/hashtag/ruby?src=hash">#ruby</a> <a href="https://twitter.com/hashtag/conference?src=hash">#conference</a> <a href="https://twitter.com/rubydayit">@rubydayit</a> <a href="https://t.co/CHrfHmyByy">pic.twitter.com/CHrfHmyByy</a></p>&mdash; Bartosz Bonisławski (@b0niek) <a href="https://twitter.com/b0niek/status/802093256377036800">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Awesome speakers (probably drunk):
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">Amazing talks from these guys at the <a href="https://twitter.com/rubydayit">@rubydayit</a> held in Florence this weekend! Nice to meet you both <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://t.co/g9XQlnykhv">pic.twitter.com/g9XQlnykhv</a></p>&mdash; Nuno Costa (@nunoc0sta) <a href="https://twitter.com/nunoc0sta/status/802827534534512640">27 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Some more awesome speakers (joking about other speakers):
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">.<a href="https://twitter.com/apotonick">@apotonick</a> just in case you need evidence that the Rails Core Team secretly uses Trailblazer <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> cc <a href="https://twitter.com/fxn">@fxn</a> <a href="https://twitter.com/rafaelfranca">@rafaelfranca</a> <a href="https://t.co/gso0YAI45s">pic.twitter.com/gso0YAI45s</a></p>&mdash; Alberto Vena (@AlbertoVena) <a href="https://twitter.com/AlbertoVena/status/803191441488941056">28 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Cool RubyDay shirts:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">Leaving Florence soonish! Proudly wearing <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> shirts 👏 Thank you for the awesome conference❤<a href="https://twitter.com/dawid_jacob">@dawid_jacob</a> <a href="https://twitter.com/schn1ttchen">@schn1ttchen</a> <a href="https://t.co/GaMDbERaQo">pic.twitter.com/GaMDbERaQo</a></p>&mdash; Peter Suschlik (@splattael) <a href="https://twitter.com/splattael/status/802781076024393728">27 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Alessandro Lepore keeps on drinking:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="und" dir="ltr"><a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://twitter.com/hashtag/LeporeTShirt?src=hash">#LeporeTShirt</a> <a href="https://t.co/sXxhgztFIy">pic.twitter.com/sXxhgztFIy</a></p>&mdash; Monica (@KFMolli) <a href="https://twitter.com/KFMolli/status/802246316571131905">25 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">IT&rsquo;S NOT OVER <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://t.co/DGFT8OTuvM">pic.twitter.com/DGFT8OTuvM</a></p>&mdash; Alessandro Lepore (@alelepore) <a href="https://twitter.com/alelepore/status/802594863799828484">26 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>Late night stroll in Florence after the conference:
+<blockquote class="twitter-tweet" data-lang="it"><p lang="en" dir="ltr">Last shot from <a href="https://twitter.com/hashtag/RubyDay2016?src=hash">#RubyDay2016</a> <a href="https://t.co/6JkKKPhRwK">pic.twitter.com/6JkKKPhRwK</a></p>&mdash; Daniele (@ksemuldie) <a href="https://twitter.com/ksemuldie/status/802959529457631232">27 novembre 2016</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>And of course there&rsquo;s <a href="https://twitter.com/hashtag/RubyDaySelfie">Ju Liu&rsquo;s awesome #RubyDaySelfie</a>.</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=RubyDay 2016+http://nebulab.it/blog/rubyday-2016/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/rubyday-2016/&title=RubyDay 2016">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/rubyday-2016/&title=RubyDay 2016&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

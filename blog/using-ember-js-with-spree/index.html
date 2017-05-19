@@ -1,0 +1,1056 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Using Ember.js with Spree - Nebulab</title>
+    <meta name="description" content="For some time we’ve been wondering what would it be like to integrate Ember.js
+with a Spree Ecommerce application. In this post we’ll see how to create a simple...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Using Ember.js with Spree - Nebulab">
+    <meta name="twitter:description" content="For some time we’ve been wondering what would it be like to integrate Ember.js
+with a Spree Ecommerce application. In this post we’ll see how to create a simple...">
+    <meta name="twitter:image" content="/blog/images/articles-images/using-emberjs-with-spree/emberjs_spree-63aa04cc.jpg">
+
+        <meta property="twitter:creator" content="@matteolatini">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="47 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Using Ember.js with Spree - Nebulab by Matteo Latini" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/using-ember-js-with-spree/" />
+    <meta property="og:image" content="/blog/images/articles-images/using-emberjs-with-spree/emberjs_spree-63aa04cc.jpg" />
+    <meta property="og:description" content="For some time we’ve been wondering what would it be like to integrate Ember.js
+with a Spree Ecommerce application. In this post we’ll see how to create a simple..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_using-ember-js-with-spree blog_using-ember-js-with-spree_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Using Ember.js with Spree
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/matteo-5ece94e8.jpg" alt="Matteo" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Matteo Latini
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          47 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/using-emberjs-with-spree/emberjs_spree-63aa04cc.jpg" alt="Using Ember.js with Spree" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>For some time we&rsquo;ve been wondering what would it be like to integrate Ember.js
+with a Spree Ecommerce application. In this post we&rsquo;ll see how to create a simple
+Ember.js application that serves data from a Spree API endpoint.</p>
+
+<p>In this post we&rsquo;ll take a look at:</p>
+
+<ol>
+<li>choosing the right development tools for your app</li>
+<li>how to setup your Spree application to serve an Ember application</li>
+<li>a quick way to authenticate a Spree user to use the Ember application</li>
+<li>understanding the differences between Spree&rsquo;s and Ember Data&rsquo;s APIs</li>
+<li>coding a basic Ember application to show products</li>
+</ol>
+
+<p>You can follow what&rsquo;s happening in the blogbpost by playing around with the fully working example: <a href="https://github.com/nebulab/spree-ember-example">spree-ember-example</a>.
+It&rsquo;s built with Spree 2.1 but both 2.0 and 1.3 should work flawlessly.</p>
+
+<p><strong>WARNING</strong>: this post is quite long as we&rsquo;ll have to cover code for each of the steps needed. If you
+don&rsquo;t like long posts, refer to the demo application linked above to get a full picture faster.</p>
+
+<h2>Choose your tools</h2>
+
+<p>If you&rsquo;re coming from the Rails world you&rsquo;ll feel out of place when you discover that there is
+no powerful environment out of the box to write code without worrying about trivial stuff.</p>
+
+<p>By default you&rsquo;ll have no development server, no template generators, no shared best practices
+for placing files or naming directories. Many tools are trying to overcome the lack of a complete
+development environment like the one Rails has. Expect to spend some time choosing what is
+right for you.</p>
+
+<p>The big decision you have to make upfront is wether you want to run the Ember application as
+part of a Rails application or completely standalone. There are some pros and cons for each
+approach obviously.</p>
+
+<p>What you choose between the two approaches is really up to your requirements and your personal preference.
+That said, even though it can be tempting to reinvent the wheel, there are a couple of projects that do that
+for you.</p>
+
+<h3>Integrated with Rails vs. Standalone</h3>
+
+<p>The tools we&rsquo;re going to refer are <a href="https://github.com/emberjs/ember-rails">ember-rails</a> and
+<a href="http://brunch.io">Brunch</a>/<a href="http://iamstef.net/ember-app-kit/">Ember App Kit</a>; the first stands for the &ldquo;in Rails&rdquo; style
+while the other two are javascript development environments where Ember will sit on its own.</p>
+
+<p>These are the main features and pain points:</p>
+
+<ul>
+<li><p><strong>Inside Rails (ember-rails)</strong>:</p>
+
+<ul>
+<li>all the Rails features we love</li>
+<li>asset pipeline (with Ruby templating support)</li>
+<li>seeds/fixtures/factories</li>
+<li>many cool gems available</li>
+<li>testing can be done with Ruby</li>
+<li>huge mess of files/directories</li>
+<li>painless token based authentication</li>
+<li>effortless deploy</li>
+<li>messy if Rails also serves a &ldquo;classic app&rdquo;</li>
+</ul></li>
+<li><p><strong>Standalone (Brunch/Ember App Kit)</strong>:</p>
+
+<ul>
+<li>setup in no time</li>
+<li>more room for choices</li>
+<li>testing js as intended (with js)</li>
+<li>easier multi-browser testing</li>
+<li>decoupled api design</li>
+<li>have to learn new stuff if you&rsquo;ve never done js</li>
+<li>a little harder to deploy</li>
+<li>the cleanest solution for a big js app</li>
+</ul></li>
+</ul>
+
+<p>In this article we&rsquo;ll talk about ember-rails beacuse it makes sense to use the fastest way to
+get up and running as a Rails developer. That said, you should really check out Brunch and Ember App Kit
+because they&rsquo;re really great tools and you&rsquo;ll have the chance to take a peek at what the javascript community
+is doing. Our personal advice is: start with ember-rails then move to a standalone solution once the Ember
+application grows bigger.</p>
+
+<h2>Prepare your Spree application</h2>
+
+<p>If you&rsquo;ve done your homework you should know by now how to create a Spree store. If you don&rsquo;t read about
+how to <a href="http://guides.spreecommerce.com/developer/getting_started_tutorial.html">get started</a>.</p>
+
+<p>You should have the basic Spree demo store, like this:</p>
+
+<p><img src="/blog/images/articles-images/using-emberjs-with-spree/initial-9e4e62fa.png" alt="A basic Spree demo store" /></p>
+
+<p>Once you have a full store up and running add to your <code>Gemfile</code>:</p>
+<pre class="highlight ruby"><code><span class="c1">#</span>
+<span class="c1"># It will use Ember's latest stable version</span>
+<span class="c1">#</span>
+<span class="n">gem</span> <span class="s1">'ember-rails'</span>
+
+<span class="c1">#</span>
+<span class="c1"># We'll use Ember Data's latest beta version</span>
+<span class="c1">#</span>
+<span class="n">gem</span> <span class="s1">'ember-data-source'</span><span class="p">,</span> <span class="s1">'1.0.0.beta.5'</span>
+</code></pre>
+<p>and run <code>bundle install</code> to install the gems.</p>
+
+<p>You should also add which <em>variant</em> to use in each Rails environment and the paths
+we&rsquo;ll be using to store the Ember application:</p>
+<pre class="highlight ruby"><code><span class="c1">#</span>
+<span class="c1"># Inside config/environments/development.rb</span>
+<span class="c1">#</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">ember</span><span class="p">.</span><span class="nf">variant</span> <span class="o">=</span> <span class="ss">:development</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">ember</span><span class="p">.</span><span class="nf">ember_path</span> <span class="o">=</span> <span class="s1">'lib/assets/javascripts/spree-ember-example'</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">handlebars</span><span class="p">.</span><span class="nf">templates_root</span> <span class="o">=</span> <span class="s1">'spree-ember-example/templates'</span>
+
+<span class="c1">#</span>
+<span class="c1"># Inside config/environments/production.rb</span>
+<span class="c1">#</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">ember</span><span class="p">.</span><span class="nf">variant</span> <span class="o">=</span> <span class="ss">:production</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">ember</span><span class="p">.</span><span class="nf">ember_path</span> <span class="o">=</span> <span class="s1">'lib/assets/javascripts/spree-ember-example'</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">handlebars</span><span class="p">.</span><span class="nf">templates_root</span> <span class="o">=</span> <span class="s1">'spree-ember-example/templates'</span>
+</code></pre>
+<p>This way ember-rails will serve a non-minified-full-verbosity version of Ember in development and a
+minified-zero-verbosity version of Ember in production.</p>
+
+<p>We&rsquo;ll host the Ember application inside <code>lib/assets/javascripts</code> so that
+we don&rsquo;t mess with Spree javascript assets. This requires some extra
+configuration but in the end we&rsquo;ll come up with a pretty clean solution.</p>
+
+<p>Now we can bootstrap some files and directories:</p>
+<pre class="highlight shell"><code><span class="c"># Bootstrap all the things!</span>
+rails generate ember:bootstrap
+</code></pre>
+<p>We&rsquo;ll also need to edit the <code>application.js.coffee</code> file generated to incude jQuery and support our
+custom Ember application path:</p>
+<pre class="highlight coffeescript"><code><span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/application.js.coffee</span>
+<span class="c1">#</span>
+<span class="c1">#= require jquery</span>
+<span class="c1">#= require handlebars</span>
+<span class="c1">#= require ember</span>
+<span class="c1">#= require ember-data</span>
+<span class="c1">#= require_self</span>
+<span class="c1">#= require ./spree_ember_example</span>
+
+<span class="c1"># for more details see: http://emberjs.com/guides/application/</span>
+<span class="nb">window</span><span class="p">.</span><span class="na">SpreeEmberExample</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="na">Application</span><span class="p">.</span><span class="na">create</span><span class="p">()</span>
+</code></pre>
+<h3>Serve the Ember application</h3>
+
+<p>Now that we have our Ember application ready, we&rsquo;ll have to serve it.
+To do this we&rsquo;ll add a controller to manage static pages:</p>
+<pre class="highlight ruby"><code><span class="c1">#</span>
+<span class="c1"># Inside app/controllers/static_controller.rb</span>
+<span class="c1">#</span>
+<span class="k">class</span> <span class="nc">StaticController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">layout</span> <span class="kp">false</span>
+
+  <span class="k">def</span> <span class="nf">ember_shop</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>The <code>ember_shop</code> action will serve our html page with the initial code
+to serve our Ember application. The <code>layout false</code> directive allows us
+to serve full html pages. To add that:</p>
+<pre class="highlight erb"><code><span class="c">&lt;!--
+# Inside app/views/static/ember_shop.html.erb
+--&gt;</span>
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>SpreeEmberExample<span class="nt">&lt;/title&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span>    <span class="s2">"application"</span><span class="p">,</span> <span class="ss">:media</span> <span class="o">=&gt;</span> <span class="s2">"all"</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"spree-ember-example/application"</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>Hello Ember!<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+<p>Now we need to add a route for getting there safely:</p>
+<pre class="highlight ruby"><code><span class="c1">#</span>
+<span class="c1"># Inside config/routes.rb</span>
+<span class="c1">#</span>
+<span class="n">match</span> <span class="s1">'/ember-shop'</span> <span class="o">=&gt;</span> <span class="s1">'static#ember_shop'</span><span class="p">,</span> <span class="ss">:via</span> <span class="o">=&gt;</span> <span class="ss">:get</span>
+</code></pre>
+<p>If you now visit <code>http://localhost:3000/ember-shop</code> you should see a pretty
+sad <em>hello world</em> example:</p>
+
+<p><img src="/blog/images/articles-images/using-emberjs-with-spree/hello-ember-04ba5d54.png" alt="A sad Hello World from Ember.js" /></p>
+
+<p>Ok, last thing, if you look at the <code>javascript_include_tag</code> above, you&rsquo;ll see
+we have a new manifest and we have to tell Rails we want it precompiled
+when it&rsquo;s time otherwise it won&rsquo;t be available in the production environment:</p>
+<pre class="highlight ruby"><code><span class="c1">#</span>
+<span class="c1"># Inside config/environments/production.rb</span>
+<span class="c1">#</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">precompile</span> <span class="o">+=</span> <span class="sx">%w( spree-ember-example/application.js )</span>
+</code></pre>
+<p>Now we&rsquo;re done! We can actually start writing some Ember code! We&rsquo;ll start
+with managing user authentication.</p>
+
+<h3>Authenticate users</h3>
+
+<p>To authenticate a user in our Ember application, we&rsquo;ll use a little trick
+we can use since we&rsquo;re serving the application inside Spree. We&rsquo;ll add a
+<code>meta</code> tag inside our html page carrying some basic information about
+our user. This way we&rsquo;ll pass around the <code>spree_api_key</code> which is necessary
+to use Spree&rsquo;s APIs.</p>
+
+<p>First we&rsquo;ll need to generate the <code>spree_api_key</code>. For that we can use the
+<code>generate_spree_api_key!</code> user method. I like to do that inside <code>db/seeds.rb</code>
+so I don&rsquo;t have to run it each time from the console:</p>
+<pre class="highlight ruby"><code><span class="c1">#</span>
+<span class="c1"># Inside db/seeds.rb</span>
+<span class="c1">#</span>
+<span class="n">admin_user</span> <span class="o">=</span> <span class="no">Spree</span><span class="o">::</span><span class="no">User</span><span class="p">.</span><span class="nf">find_by_login</span><span class="p">(</span><span class="s2">"spree@example.com"</span><span class="p">)</span>
+<span class="n">admin_user</span><span class="p">.</span><span class="nf">generate_spree_api_key!</span> <span class="k">if</span> <span class="n">admin_user</span>
+</code></pre>
+<p>So that running <code>rake db:setup</code> or <code>rake db:seed</code> will provide an api key to
+spree@example.com.</p>
+
+<p>Since we&rsquo;re using a user attribute to access the API, we should only let
+authenticated users access the Ember application:</p>
+<pre class="highlight ruby"><code><span class="c1">#</span>
+<span class="c1"># Inside app/controllers/static_controller.rb</span>
+<span class="c1">#</span>
+<span class="k">class</span> <span class="nc">StaticController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">layout</span> <span class="kp">false</span>
+
+  <span class="k">def</span> <span class="nf">ember_shop</span>
+    <span class="k">if</span> <span class="n">spree_current_user</span><span class="p">.</span><span class="nf">nil?</span>
+      <span class="n">flash</span><span class="p">[</span><span class="ss">:error</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"You should be authenticated before using the Ember application!"</span>
+      <span class="n">redirect_to</span> <span class="n">spree</span><span class="p">.</span><span class="nf">login_path</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>Now we&rsquo;ll need to set the <code>meta</code> tag for Ember to use:</p>
+<pre class="highlight erb"><code><span class="c">&lt;!--
+# Inside app/views/static/ember_shop.html.erb
+--&gt;</span>
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>SpreeEmberExample<span class="nt">&lt;/title&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span>    <span class="s2">"application"</span><span class="p">,</span> <span class="ss">:media</span> <span class="o">=&gt;</span> <span class="s2">"all"</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"spree-ember-example/application"</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span>
+
+  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"api-key"</span> <span class="na">content=</span><span class="s">"</span><span class="cp">&lt;%=</span> <span class="n">spree_current_user</span><span class="p">.</span><span class="nf">spree_api_key</span> <span class="cp">%&gt;</span><span class="s">"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>Hello Ember!<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+<p>To retrieve and use that api key we can use jQuery&rsquo;s <code>$.ajaxPrefilter</code>:</p>
+<pre class="highlight coffeescript"><code><span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/application.js.coffee</span>
+<span class="c1">#</span>
+<span class="c1">#= require jquery</span>
+<span class="c1">#= require handlebars</span>
+<span class="c1">#= require ember</span>
+<span class="c1">#= require ember-data</span>
+<span class="c1">#= require_self</span>
+<span class="c1">#= require ./spree_ember_example</span>
+
+<span class="c1"># for more details see: http://emberjs.com/guides/application/</span>
+<span class="nb">window</span><span class="p">.</span><span class="na">SpreeEmberExample</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="na">Application</span><span class="p">.</span><span class="na">create</span>
+  <span class="na">ready</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="nx">apiKey</span> <span class="o">=</span> <span class="p">(</span><span class="nx">$</span> <span class="s">'meta[name="api-key"]'</span><span class="p">).</span><span class="na">attr</span><span class="p">(</span><span class="s">'content'</span><span class="p">)</span>
+
+    <span class="nx">Ember</span><span class="p">.</span><span class="na">Logger</span><span class="p">.</span><span class="na">debug</span><span class="p">(</span><span class="s">"Spree API Key: "</span> <span class="o">+</span> <span class="nx">apiKey</span><span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># We need a Spree API Key to get resources from the API.</span>
+    <span class="c1"># Here we pass it via X-Spree-Token header.</span>
+    <span class="c1">#</span>
+    <span class="nx">$</span><span class="p">.</span><span class="na">ajaxPrefilter</span> <span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">originalOptions</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">)</span> <span class="o">-&gt;</span>
+      <span class="nx">xhr</span><span class="p">.</span><span class="na">setRequestHeader</span><span class="p">(</span><span class="s">'X-Spree-Token'</span><span class="p">,</span> <span class="nx">apiKey</span><span class="p">)</span>
+</code></pre>
+<p>By doing this we use the <code>ready</code> function that is called as
+soon as Ember has initialized all its components. Inside this function
+we use jQuery to read that <code>meta</code> tag carrying the api key and set it
+as a default for ajax calls to always add a <code>X-Spree-Token</code> header
+carrying the api key, just like <a href="http://guides.spreecommerce.com/api/summary.html#making-an-api-call">Spree suggests</a>.</p>
+
+<p><strong>NOTE</strong>: watch out how you pass that api key around! Always make sure you
+either use SSL or provide api keys for non-admin users who will only have
+access to public/safe data.</p>
+
+<p>Even if this is a pretty basic behavior and we&rsquo;ll use it throughout the blogpost, it can be extended easily.
+For example, you could pass JSON data instead of just a string (you&rsquo;ll need some extra work to make the
+render work with spree<em>auth</em>devise):</p>
+<pre class="highlight erb"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"current-user"</span> <span class="na">content=</span><span class="s">"</span><span class="cp">&lt;%=</span> <span class="n">render</span><span class="p">(</span><span class="ss">:template</span> <span class="o">=&gt;</span> <span class="s1">'spree/api/users/show.v1'</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="s">"</span> <span class="nt">/&gt;</span>
+</code></pre>
+<p>and on the Ember part:</p>
+<pre class="highlight coffeescript"><code><span class="nx">user</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="na">parse</span><span class="p">((</span><span class="nx">$</span> <span class="s">'meta[name="current-user"]'</span><span class="p">).</span><span class="na">attr</span><span class="p">(</span><span class="s">'content'</span><span class="p">))</span>
+
+<span class="nx">$</span><span class="p">.</span><span class="na">ajaxPrefilter</span> <span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">originalOptions</span><span class="p">,</span> <span class="nx">xhr</span><span class="p">)</span> <span class="o">-&gt;</span>
+      <span class="nx">xhr</span><span class="p">.</span><span class="na">setRequestHeader</span><span class="p">(</span><span class="s">'X-Spree-Token'</span><span class="p">,</span> <span class="nx">user</span><span class="p">.</span><span class="na">spree_api_key</span><span class="p">)</span>
+</code></pre>
+<h2>Add some Ember code</h2>
+
+<p>Now that everything is good, we can actually start coding with Ember. We&rsquo;ll
+build a classic &ldquo;Desktop style&rdquo; interface, with a list of products
+in a column on the left and a section on the right where product details
+will be shown.</p>
+
+<p>First thing first, let&rsquo;s replace <code>Hello Ember!</code> with something that has more sense.
+We&rsquo;ll add Ember&rsquo;s main template, the application template:</p>
+<pre class="highlight erb"><code><span class="c">&lt;!--
+# Inside app/views/static/ember_shop.html.erb
+--&gt;</span>
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>SpreeEmberExample<span class="nt">&lt;/title&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span>    <span class="s2">"application"</span><span class="p">,</span> <span class="ss">:media</span> <span class="o">=&gt;</span> <span class="s2">"all"</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"spree-ember-example/application"</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">csrf_meta_tags</span> <span class="cp">%&gt;</span>
+
+  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"api-key"</span> <span class="na">content=</span><span class="s">"</span><span class="cp">&lt;%=</span> <span class="n">spree_current_user</span><span class="p">.</span><span class="nf">spree_api_key</span> <span class="cp">%&gt;</span><span class="s">"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/x-handlebars"</span> <span class="na">data-template-name=</span><span class="s">"application"</span><span class="nt">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">"container"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">My</span> <span class="nx">Little</span> <span class="nx">Ember</span> <span class="nx">Shop</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>
+      <span class="p">{{</span> <span class="nx">outlet</span> <span class="p">}}</span>
+    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+<p>We should be able to see the change as soon as we visit the <code>/ember-shop</code> path.
+The Handlerbars&#39; <code>{{ outlet }}</code> directive is used by Ember to render other things
+that need to be rendered, mostly like Rails&#39; <code>&lt;%= yield %&gt;</code> inside layouts.</p>
+
+<p>Since we now have an <code>{{ outlet }}</code>, we can start rendering products. To do that,
+we have to retrieve the list of products via Spree&rsquo;s API which means we need
+an Ember model:</p>
+<pre class="highlight coffeescript"><code><span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/models/product.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">Product</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">Model</span><span class="p">.</span><span class="na">extend</span>
+  <span class="na">name</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">attr</span><span class="p">(</span><span class="s">'string'</span><span class="p">)</span>
+  <span class="na">description</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">attr</span><span class="p">(</span><span class="s">'string'</span><span class="p">)</span>
+  <span class="na">price</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">attr</span><span class="p">(</span><span class="s">'number'</span><span class="p">)</span>
+</code></pre>
+<p>Before adding more stuff, let&rsquo;s check if we can retrieve products from the browser
+console. Open up your favourite browser console and type:</p>
+<pre class="highlight plaintext"><code>SpreeEmberExample.__container__.lookup('store:main').find('product').then(function(products) { console.log(products.toArray()) })
+</code></pre>
+<p>By doing this you&rsquo;re asking Ember to call the API and return the list of
+products. The <code>toArray()</code> method is there to force the HTTP call otherwise
+Ember will delay it until you ask for the actual products data.</p>
+
+<p>You will find the console either returns an empty array or errors out. We&rsquo;re
+still missing some configurations to the <code>RESTAdapter</code> to actually make Ember
+and Spree API talk:</p>
+<pre class="highlight coffeescript"><code><span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/store.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">ApplicationSerializer</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">ActiveModelSerializer</span><span class="p">.</span><span class="na">extend</span>
+  <span class="na">extractArray</span><span class="o">:</span> <span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">count</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">pages</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">per_page</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">total_count</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">current_page</span>
+
+    <span class="vi">@</span><span class="na">_super</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span>
+
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">Store</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">Store</span><span class="p">.</span><span class="na">extend</span>
+  <span class="na">adapter</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">RESTAdapter</span><span class="p">.</span><span class="na">extend</span>
+    <span class="na">namespace</span><span class="o">:</span> <span class="s">'api'</span>
+</code></pre>
+<p>Here are happening two things:</p>
+
+<ol>
+<li>We&rsquo;re adding a <code>namespace</code> to actually reach the API which is within <code>/api</code> as the <a href="http://guides.spreecommerce.com/api/summary.html">API docs says</a>;</li>
+<li>we&rsquo;re removing Spree API&rsquo;s sideloaded metadata so that Ember won&rsquo;t be bothered by it.</li>
+</ol>
+
+<p>Now if you run the <code>find()</code> again in the console, you should see your array of products!</p>
+
+<h3>API differences</h3>
+
+<p>The biggest effort in making Spree and Ember interact is making Ember understand Spree API&rsquo;s data. What Ember expects
+as server data is somewhat different from what Spree offers.</p>
+
+<p>Spree has a robust and well documented <a href="http://guides.spreecommerce.com/api/">API interface</a>,
+custom built with <a href="https://github.com/nesquena/rabl">RABL</a>. Ember has strong conventions which
+are spread through <a href="https://github.com/rails-api/active_model_serializers">active<em>model</em>serializers</a>. If you spend some
+time reading through both implementations, you&rsquo;ll soon discover that some aspects are completely different. If you
+start coding without knowing what differs, you&rsquo;ll hurt your productivty and make a little Ember hamster die.</p>
+
+<p>One of the biggest differences is what we saw right now; Spree promotes <em>embedded</em> resources with <em>sideloaded</em> and
+<em>unnamespaced</em> metadata while Ember promotes <em>sideloaded</em> data (both resources and metadata) with <em>namespaced</em> metadata.</p>
+
+<p>Here is an example. We&rsquo;ll look at a stripped down version of Spree API&rsquo;s products index payload and
+the same data if we were to serve it in an Ember compatible way (via ActiveModel::Serializers).</p>
+
+<p><strong>Spree API</strong>:</p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example product"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Description"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15.99"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"variants"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ruby on Rails Tote"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pages"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p><strong>ActiveModel::Serializers API</strong>:</p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example product"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Description"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15.99"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"variants"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"variants"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ruby on Rails Tote"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"pages"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Even if these two formats does not seem very much alike, Ember supports embedded resrouces too (it just needs some
+extra configuration) and it&rsquo;s exactly what we&rsquo;ll do since we must avoid changing Spree API&rsquo;s behavior
+whenever we can. This is why we need to disable sideloading: Ember won&rsquo;t accept Spree API&rsquo;s json data otherwise.</p>
+
+<h3>Render the products list</h3>
+
+<p>Now that we have a list of products, we need to render it. We&rsquo;ll need to define a new route:</p>
+<pre class="highlight coffeescript"><code><span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/router.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">Router</span><span class="p">.</span><span class="na">map</span> <span class="o">-&gt;</span>
+  <span class="vi">@</span><span class="na">resource</span> <span class="s">'products'</span>
+
+<span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/routes/index_route.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">IndexRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="na">Route</span><span class="p">.</span><span class="na">extend</span>
+  <span class="na">redirect</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="vi">@</span><span class="na">transitionTo</span><span class="p">(</span><span class="s">'products'</span><span class="p">)</span>
+
+<span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/products_route.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">ProductsRoute</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="na">Route</span><span class="p">.</span><span class="na">extend</span>
+  <span class="na">model</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="vi">@</span><span class="na">store</span><span class="p">.</span><span class="na">find</span><span class="p">(</span><span class="s">'product'</span><span class="p">)</span>
+</code></pre>
+<p>and an Handlebars template:</p>
+<pre class="highlight handlebars"><code><span class="c">{{! Inside lib/assets/javascripts/spree-ember-example/templates/products.hbs }}</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"products"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Products<span class="nt">&lt;/h2&gt;</span>
+
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="k">{{#</span><span class="nn">each</span> <span class="nv">product</span> <span class="nv">in</span> <span class="nv">controller</span><span class="k">}}</span>
+      <span class="nt">&lt;li&gt;</span><span class="k">{{</span> <span class="nv">product</span><span class="p">.</span><span class="nv">name</span> <span class="k">}}</span><span class="nt">&lt;/li&gt;</span>
+    <span class="k">{{/</span><span class="nn">each</span><span class="k">}}</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<p>This will basically define a products resource and redirect to it whenever we visit the <code>/ember-shop</code> path; as
+soon as we get to <code>/ember-shop#/products</code> Ember will load the products hitting the Spree API and render it via
+the template we&rsquo;ve added, like in the screenshot below.</p>
+
+<p><img src="/blog/images/articles-images/using-emberjs-with-spree/product-list-3e1a8597.png" alt="A basic product list" /></p>
+
+<p>Now that we have the basic list, we should work on making it prettier. We want the UI to be like that
+of Mac OS X Finder, with a column list on the left and the details in the center; by using this structure
+we&rsquo;ll guarantee Ember will give its best because that is what Ember is for, desktop-like applications.</p>
+
+<p>To add the images we need to do something a little more elaborate. Since, according to Spree&rsquo;s API,
+images are embededd inside variants which are embeded in products, we need to add two models,
+one for the variants and one for the images and add proper <code>hasMany</code> relations so that we can access
+images from products.
+We also need to tell Ember Data which resources will be embedded (since Ember doesn&rsquo;t support
+embedded resources by default).</p>
+
+<p>So we should change what is inside <code>store.js.coffee</code> to look something like this:</p>
+<pre class="highlight coffeescript"><code><span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/store.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">ApplicationSerializer</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">ActiveModelSerializer</span><span class="p">.</span><span class="na">extend</span><span class="p">(</span><span class="nx">DS</span><span class="p">.</span><span class="na">EmbeddedRecordsMixin</span><span class="p">,</span>
+  <span class="na">attrs</span><span class="o">:</span> <span class="p">{</span>
+    <span class="na">images</span><span class="o">:</span> <span class="p">{</span> <span class="na">embedded</span><span class="o">:</span> <span class="s">'always'</span> <span class="p">}</span>
+    <span class="na">variants</span><span class="o">:</span> <span class="p">{</span> <span class="na">embedded</span><span class="o">:</span> <span class="s">'always'</span> <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="na">extractArray</span><span class="o">:</span> <span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">count</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">pages</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">per_page</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">total_count</span>
+    <span class="k">delete</span> <span class="nx">payload</span><span class="p">.</span><span class="na">current_page</span>
+
+    <span class="vi">@</span><span class="na">_super</span><span class="p">(</span><span class="nx">store</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">payload</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">Store</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">Store</span><span class="p">.</span><span class="na">extend</span>
+  <span class="na">adapter</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">RESTAdapter</span><span class="p">.</span><span class="na">extend</span>
+    <span class="na">namespace</span><span class="o">:</span> <span class="s">'api'</span>
+</code></pre>
+<p>Here we added a mixin called <code>DS.EmbeddedRecordsMixin</code> to make sure we enable support for embedded
+objects. Then, with the <code>attrs</code> parameter, we added which resources we have embedded in our json
+objects. This should be enough to guarantee that Ember will read images and variants correctly.</p>
+
+<p>Then we have to add our two new models as well:</p>
+<pre class="highlight coffeescript"><code><span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/models/image.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">Image</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">Model</span><span class="p">.</span><span class="na">extend</span>
+  <span class="na">productUrl</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">attr</span><span class="p">(</span><span class="s">'string'</span><span class="p">)</span>
+  <span class="na">alt</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">attr</span><span class="p">(</span><span class="s">'string'</span><span class="p">)</span>
+
+<span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/models/variant.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">Variant</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">Model</span><span class="p">.</span><span class="na">extend</span>
+  <span class="na">images</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">hasMany</span><span class="p">(</span><span class="s">'image'</span><span class="p">)</span>
+
+<span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/models/product.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">Product</span> <span class="o">=</span> <span class="nx">DS</span><span class="p">.</span><span class="na">Model</span><span class="p">.</span><span class="na">extend</span>
+  <span class="na">name</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">attr</span><span class="p">(</span><span class="s">'string'</span><span class="p">)</span>
+  <span class="na">description</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">attr</span><span class="p">(</span><span class="s">'string'</span><span class="p">)</span>
+  <span class="na">price</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">attr</span><span class="p">(</span><span class="s">'number'</span><span class="p">)</span>
+  <span class="na">variants</span><span class="o">:</span> <span class="nx">DS</span><span class="p">.</span><span class="na">hasMany</span><span class="p">(</span><span class="s">'variant'</span><span class="p">)</span>
+
+  <span class="na">images</span><span class="o">:</span> <span class="p">(</span><span class="o">-&gt;</span>
+    <span class="vi">@</span><span class="na">get</span><span class="p">(</span><span class="s">'variants.firstObject.images'</span><span class="p">)</span>
+  <span class="p">).</span><span class="na">property</span><span class="p">(</span><span class="s">'variants.firstObject.images'</span><span class="p">)</span>
+
+  <span class="na">mainImage</span><span class="o">:</span> <span class="p">(</span><span class="o">-&gt;</span>
+    <span class="vi">@</span><span class="na">get</span><span class="p">(</span><span class="s">'images.firstObject'</span><span class="p">)</span>
+  <span class="p">).</span><span class="na">property</span><span class="p">(</span><span class="s">'images.firstObject'</span><span class="p">)</span>
+</code></pre>
+<p>To make the <code>Product</code> model easier to use we also added the <code>images</code> and <code>mainImage</code>
+methods which we can use to retrieve images from the product.
+We now need to display the images inside our templates; we&rsquo;ll also add some some
+<a href="http://www.getskeleton.com">Skeleton</a> (Spree&rsquo;s grid system of choice) classes to style it out.</p>
+<pre class="highlight handlebars"><code><span class="c">{{! Inside lib/assets/javascripts/spree-ember-example/templates/products.hbs }}</span>
+<span class="nt">&lt;aside</span> <span class="na">id=</span><span class="s">"sidebar"</span> <span class="na">class=</span><span class="s">"columns five"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"products"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>Products<span class="nt">&lt;/h2&gt;</span>
+
+    <span class="nt">&lt;ul&gt;</span>
+      <span class="k">{{#</span><span class="nn">each</span> <span class="nv">product</span> <span class="nv">in</span> <span class="nv">controller</span><span class="k">}}</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"clearfix"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;img</span> <span class="k">{{</span><span class="nv">bind-attr</span> <span class="nv">src</span><span class="o">=</span><span class="s2">"product.mainImage.productUrl"</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">"product.mainImage.alt"</span> <span class="nv">class</span><span class="o">=</span><span class="s2">":one :column :alpha"</span><span class="k">}}</span><span class="nt">&gt;</span>
+          <span class="k">{{</span> <span class="nv">product</span><span class="p">.</span><span class="nv">name</span> <span class="k">}}</span>
+        <span class="nt">&lt;/li&gt;</span>
+      <span class="k">{{/</span><span class="nn">each</span><span class="k">}}</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/aside&gt;</span>
+</code></pre>
+<p>We now have a pretty list of products! Take a look:</p>
+
+<p><img src="/blog/images/articles-images/using-emberjs-with-spree/product-images-987a4065.png" alt="A decent list of products" /></p>
+
+<p>The list will get boring as soon as you look at it, we&rsquo;ll need to add some interactivity
+to make it better.</p>
+
+<h3>Render the product details</h3>
+
+<p>To add the products details, as usual, we have to change our routes file first:</p>
+<pre class="highlight coffeescript"><code><span class="c1">#</span>
+<span class="c1"># Inside lib/assets/javascripts/spree-ember-example/router.js.coffee</span>
+<span class="c1">#</span>
+<span class="nx">SpreeEmberExample</span><span class="p">.</span><span class="na">Router</span><span class="p">.</span><span class="na">map</span> <span class="o">-&gt;</span>
+  <span class="vi">@</span><span class="na">resource</span> <span class="s">'products'</span><span class="p">,</span> <span class="o">-&gt;</span>
+    <span class="vi">@</span><span class="na">resource</span> <span class="s">'product'</span><span class="p">,</span> <span class="p">{</span> <span class="na">path</span><span class="o">:</span> <span class="s">':product_id'</span> <span class="p">}</span>
+</code></pre>
+<p>Then we&rsquo;ll to change the products template to add links and, since we need to render
+a nested resource, an additional <code>{{ outlet }}</code> directive:</p>
+<pre class="highlight handlebars"><code><span class="c">{{! Inside lib/assets/javascripts/spree-ember-example/templates/products.hbs }}</span>
+<span class="nt">&lt;aside</span> <span class="na">id=</span><span class="s">"sidebar"</span> <span class="na">class=</span><span class="s">"columns five"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"products"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>Products<span class="nt">&lt;/h2&gt;</span>
+
+    <span class="nt">&lt;ul&gt;</span>
+      <span class="k">{{#</span><span class="nn">each</span> <span class="nv">product</span> <span class="nv">in</span> <span class="nv">controller</span><span class="k">}}</span>
+        <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"clearfix"</span><span class="nt">&gt;</span>
+          <span class="k">{{#</span><span class="nn">link-to</span> <span class="s2">"product"</span> <span class="nv">product</span> <span class="nv">classNames</span><span class="o">=</span><span class="s2">"button columns five"</span><span class="k">}}</span>
+            <span class="nt">&lt;img</span> <span class="k">{{</span><span class="nv">bind-attr</span> <span class="nv">src</span><span class="o">=</span><span class="s2">"product.mainImage.productUrl"</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">"product.mainImage.alt"</span> <span class="nv">class</span><span class="o">=</span><span class="s2">":one :column :alpha"</span><span class="k">}}</span><span class="nt">&gt;</span>
+            <span class="k">{{</span> <span class="nv">product</span><span class="p">.</span><span class="nv">name</span> <span class="k">}}</span>
+          <span class="k">{{/</span><span class="nn">link-to</span><span class="k">}}</span>
+        <span class="nt">&lt;/li&gt;</span>
+      <span class="k">{{/</span><span class="nn">each</span><span class="k">}}</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/aside&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">class=</span><span class="s">"columns eleven"</span><span class="nt">&gt;</span>
+  <span class="k">{{</span> <span class="nv">outlet</span> <span class="k">}}</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<p>Now we should have a properly working products list; if you visit <code>/ember-shop#/products</code> click
+around, you should see the URL changing, effectively adding the product&rsquo;s id to the path.
+That said, we&rsquo;re still missing the product template so nothing is shown; let&rsquo;s fix it:</p>
+<pre class="highlight handlebars"><code><span class="c">{{! Inside lib/assets/javascripts/spree-ember-example/templates/product.hbs }}</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"product"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span><span class="k">{{</span><span class="nv">name</span><span class="k">}}</span> $<span class="k">{{</span><span class="nv">price</span><span class="k">}}</span><span class="nt">&lt;/h3&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="k">{{</span><span class="nv">description</span><span class="k">}}</span><span class="nt">&lt;br/&gt;</span>
+
+    <span class="nt">&lt;p&gt;</span>
+    <span class="k">{{#</span><span class="nn">each</span> <span class="nv">image</span> <span class="nv">in</span> <span class="nv">this</span><span class="p">.</span><span class="nv">images</span><span class="k">}}</span>
+      <span class="nt">&lt;img</span> <span class="k">{{</span><span class="nv">bind-attr</span> <span class="nv">src</span><span class="o">=</span><span class="s2">"image.productUrl"</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">"image.alt"</span><span class="k">}}</span><span class="nt">&gt;</span>
+    <span class="k">{{/</span><span class="nn">each</span><span class="k">}}</span>
+  <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<p>We should be able to click around and see the products details in the main section
+of the page. Since we also cycle on the products images, we should see
+every image for each product so, for example, we should have t-shirts with front and
+back images.</p>
+
+<p>Now this is a little more interesting, take a look:</p>
+
+<p><img src="/blog/images/articles-images/using-emberjs-with-spree/product-show-c56671ca.png" alt="Product list with product details" /></p>
+
+<p>Now let&rsquo;s add a finishing touch! You might have noticed that if you visit <code>/ember-shop#/products</code>,
+you get an ugly empty page which might be a little frightening and counter-intuitive. We can
+fix it by adding the proper index template:</p>
+<pre class="highlight handlebars"><code><span class="c">{{! Inside lib/assets/javascripts/spree-ember-example/templates/products/index.hbs }}</span>
+<span class="nt">&lt;h2&gt;</span>Please select a product!<span class="nt">&lt;/h2&gt;</span>
+</code></pre>
+<p>That will make sure we have a placeholder that informs users:</p>
+
+<p><img src="/blog/images/articles-images/using-emberjs-with-spree/products-index-c257bc16.png" alt="The finishing touch, product details placeholder" /></p>
+
+<p>Seems like we&rsquo;re done! We&rsquo;ll stop here but feel free to go on and play around.
+Try adding more resources/interactions, you&rsquo;ll find it&rsquo;s actually quite easy.</p>
+
+<h2>Going further</h2>
+
+<p>If you like what you&rsquo;ve seen and opt for Ember as the weapon of choice, you might encounter
+some more rough edges when you&rsquo;re working with Spree.
+Here are a couple of hints about what has made our life easier while developing with Spree and Ember:</p>
+
+<ul>
+<li>always compare Spree&rsquo;s API with ActiveModel::Serializers&rsquo;s documentation. If you
+want to know what Ember Data will consume happily in terms of API, ActiveModel::Serializers
+will tell you;</li>
+<li>you could be tempted to write your own API using ActiveModel::Serializers, <strong>DON&rsquo;T</strong>.
+Spree&rsquo;s API is not just a bunch of JSON data, it&rsquo;s much more; it manages authentication
+and authorization, it has many useful helpers and it has a sweet test suite you
+can use to test your own additional changes. If you don&rsquo;t believe it, browse through
+<a href="https://github.com/spree/spree/tree/master/api">the source</a> and look at how many
+wheels you&rsquo;d need to reinvent;</li>
+<li>the above warning only counts if you&rsquo;re actually building a store application.
+If your application is something completely different (and you just need few
+of the endpoints of the Spree API) consider using ActiveModel::Serializers from the start;</li>
+<li>if you need to override some of the API&rsquo;s behavior, take note of the
+<a href="https://github.com/spree/spree/blob/master/api/app/helpers/spree/api/api_helpers.rb">api_helpers.rb</a>
+file. This file defines, for each resource, what attributes are included in the JSON payload.
+Before doing a complete RABL view override, try decorating this file, it will
+make your code cleaner and you&rsquo;ll be changing just what you need instead of the
+whole view;</li>
+<li>even if you&rsquo;re just starting out with javascript, don&rsquo;t be afraid to browse
+through Ember&rsquo;s and Ember Data&rsquo;s source code. Since Ember is
+changing so fast most times hours spent looking through stackoverflow&rsquo;s outdated
+posts equal to minutes when reading Ember&rsquo;s well written source code.</li>
+</ul>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Using Ember.js with Spree+http://nebulab.it/blog/using-ember-js-with-spree/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/using-ember-js-with-spree/&title=Using Ember.js with Spree">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/using-ember-js-with-spree/&title=Using Ember.js with Spree&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

@@ -1,0 +1,578 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>How to deploy Solidus to Heroku like a boss - Nebulab</title>
+    <meta name="description" content="Learn with this tutorial how to deploy Solidus to Heroku without wasting time on the architecture.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="How to deploy Solidus to Heroku like a boss - Nebulab">
+    <meta name="twitter:description" content="Learn with this tutorial how to deploy Solidus to Heroku without wasting time on the architecture.">
+    <meta name="twitter:image" content="/blog/images/articles-images/deploy-solidus-to-heroku/deploy-solidus-to-heroku-77d6ffb1.jpg">
+
+        <meta property="twitter:creator" content="@ksemuldie">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="8 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="How to deploy Solidus to Heroku like a boss - Nebulab by Daniele Palombo" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/deploy-solidus-to-heroku-like-a-boss/" />
+    <meta property="og:image" content="/blog/images/articles-images/deploy-solidus-to-heroku/deploy-solidus-to-heroku-77d6ffb1.jpg" />
+    <meta property="og:description" content="Learn with this tutorial how to deploy Solidus to Heroku without wasting time on the architecture." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_deploy-solidus-to-heroku-like-a-boss blog_deploy-solidus-to-heroku-like-a-boss_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Deploy Solidus to Heroku like a boss
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/daniele-70298f0b.jpg" alt="Daniele" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Daniele Palombo
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          8 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/deploy-solidus-to-heroku/deploy-solidus-to-heroku-77d6ffb1.jpg" alt="Deploy Solidus to Heroku like a boss" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>In this tutorial we&rsquo;ll show you how to deploy a <a href="http://nebulab.it/solidus">Solidus eCommerce</a> application
+to Heroku, the most famous cloud platform.</p>
+
+<p>Here are our requirements:</p>
+
+<ul>
+<li><a href="https://aws.amazon.com/s3/">AWS S3 Account</a> with access<em>key and secret</em>key</li>
+<li><a href="https://signup.heroku.com">Heroku account</a></li>
+<li>Installed and configured <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a></li>
+<li>Rails (version 5.0 was used to write this article)</li>
+<li>Git</li>
+</ul>
+
+<h3>Install and configure your eCommerce locally</h3>
+
+<p>First of all, like you did a thousand times, create your new Rails application:</p>
+<pre class="highlight shell"><code>rails new my_ecommerce --database<span class="o">=</span>postgresql
+<span class="nb">cd </span>my_ecommerce
+</code></pre>
+<p>Initialize your project and make your first commit in Git:</p>
+<pre class="highlight shell"><code>git init
+git add .
+git commit -m <span class="s1">'Initial project'</span>
+</code></pre>
+<p>In order to turn your simple application into an eCommerce, you now need to
+install the Solidus gem. Simply add the following lines to your Gemfile:</p>
+<pre class="highlight ruby"><code><span class="n">gem</span> <span class="s1">'solidus'</span><span class="p">,</span> <span class="s1">'~&gt; 2.1.0'</span>
+<span class="n">gem</span> <span class="s1">'solidus_auth_devise'</span>
+<span class="n">gem</span> <span class="s1">'aws-sdk'</span><span class="p">,</span> <span class="s1">'&lt; 2.0'</span>
+</code></pre>
+<p>Note that we are also specifying the <code>aws-sdk</code> gem; this is needed if we want to
+use S3.
+Edit your <code>config/database.yml</code> and add the database configuration:</p>
+<pre class="highlight yaml"><code><span class="na">default</span><span class="pi">:</span> <span class="nl">&amp;default</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="s">5</span>
+
+<span class="na">development</span><span class="pi">:</span>
+  <span class="s">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">my_ecommerce_dev</span>
+
+<span class="na">test</span><span class="pi">:</span>
+  <span class="s">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">my_ecommerce_test</span>
+</code></pre>
+<p>Install and run migrations on Solidus:</p>
+<pre class="highlight shell"><code>bundle
+bundle <span class="nb">exec </span>rake db:create
+bundle <span class="nb">exec </span>rails g spree:install
+bundle <span class="nb">exec </span>rails g solidus:auth:install
+bundle <span class="nb">exec </span>rake railties:install:migrations
+bundle <span class="nb">exec </span>rake db:migrate
+</code></pre>
+<p>Run <code>bundle exec rails s</code> then go to
+<a href="http://localhost:3000">http://localhost:3000</a> and make sure you correctly
+visualize the homepage.</p>
+
+<h3>Configure Heroku</h3>
+
+<p>Ok, let&rsquo;s start running some commands on Heroku. Make sure you are already
+logged in Heroku with the <code>heroku login</code> command. Then you can create your new
+Heroku application with the following:</p>
+<pre class="highlight shell"><code>heroku apps:create my_ecommerce
+</code></pre>
+<p>This command creates a new application called <code>my_ecommerce</code> on Heroku. A new
+remote repository named heroku (pointing to the new application) will also be
+added to your git config.
+You can check this with:</p>
+<pre class="highlight shell"><code>git remote -v
+</code></pre>
+<h3>Configure the production environment</h3>
+
+<p>Add the <code>heroku-postgresql</code> add-on to your Heroku application:</p>
+<pre class="highlight shell"><code>heroku addons:create heroku-postgresql
+</code></pre>
+<p>After adding the add-on you can see the new configuration environment with the
+command:</p>
+<pre class="highlight shell"><code>heroku config
+</code></pre>
+<p>The above command should return something like this:</p>
+<pre class="highlight shell"><code><span class="o">===</span> my_ecommerce Config Vars
+DATABASE_URL: postgres://XXXX:yyyyy@ec2-1-2-3-4.compute.amazonaws.com:5432/zzzzz
+</code></pre>
+<p>The <code>DATABASE_URL</code> variable stores the location of the database. You can now add
+the following lines to your <code>config/database.yml</code> under the production
+environment settings:</p>
+<pre class="highlight yaml"><code><span class="na">production</span><span class="pi">:</span>
+  <span class="s">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">url</span><span class="pi">:</span> <span class="s">&lt;%= ENV['DATABASE_URL'] %&gt;</span>
+</code></pre>
+<h3>Saving files on S3</h3>
+
+<p>Heroku uses an <a href="https://devcenter.heroku.com/articles/dynos#ephemeral-filesystem">Ephemeral filesystem</a>, which means that it doesn&rsquo;t
+provide any sort of persistent storage for data. Your images would therefore be
+removed after each deploy.
+In order to bypass this limitation you&rsquo;ll need to use an external service (like
+Amazon S3) to store your images.
+Run the following commands to prepare the Heroku environment:</p>
+<pre class="highlight shell"><code>heroku config:add <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="s1">'YOUR_ACCESS_KEY'</span>
+heroku config:add <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="s1">'YOUR_SECRET_KEY'</span>
+heroku config:add <span class="nv">S3_BUCKET_NAME</span><span class="o">=</span><span class="s1">'YOUR_BUCKET_NAME'</span>
+</code></pre>
+<p>Add this configuration in <code>config/initializers/spree.rb</code>:</p>
+<pre class="highlight ruby"><code><span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">production?</span>
+  <span class="n">attachment_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="ss">s3_credentials: </span><span class="p">{</span>
+      <span class="ss">access_key_id:     </span><span class="no">ENV</span><span class="p">[</span><span class="s1">'AWS_ACCESS_KEY_ID'</span><span class="p">],</span>
+      <span class="ss">secret_access_key: </span><span class="no">ENV</span><span class="p">[</span><span class="s1">'AWS_SECRET_ACCESS_KEY'</span><span class="p">],</span>
+      <span class="ss">bucket:            </span><span class="no">ENV</span><span class="p">[</span><span class="s1">'S3_BUCKET_NAME'</span><span class="p">]</span>
+    <span class="p">},</span>
+
+    <span class="ss">storage:        :s3</span><span class="p">,</span>
+    <span class="ss">s3_headers:     </span><span class="p">{</span> <span class="s1">'Cache-Control'</span> <span class="o">=&gt;</span> <span class="s1">'max-age=31557600'</span> <span class="p">},</span>
+    <span class="ss">s3_protocol:    </span><span class="s1">'https'</span><span class="p">,</span>
+    <span class="ss">bucket:         </span><span class="no">ENV</span><span class="p">[</span><span class="s1">'S3_BUCKET_NAME'</span><span class="p">],</span>
+    <span class="ss">url:            </span><span class="s1">':s3_domain_url'</span><span class="p">,</span>
+
+    <span class="ss">styles: </span><span class="p">{</span>
+      <span class="ss">mini:     </span><span class="s1">'48x48&gt;'</span><span class="p">,</span>
+      <span class="ss">small:    </span><span class="s1">'100x100&gt;'</span><span class="p">,</span>
+      <span class="ss">product:  </span><span class="s1">'240x240&gt;'</span><span class="p">,</span>
+      <span class="ss">large:    </span><span class="s1">'600x600&gt;'</span>
+    <span class="p">},</span>
+
+    <span class="ss">path:           </span><span class="s1">'/:class/:id/:style/:basename.:extension'</span><span class="p">,</span>
+    <span class="ss">default_url:    </span><span class="s1">'noimage/:style.png'</span><span class="p">,</span>
+    <span class="ss">default_style:  </span><span class="s1">'product'</span>
+  <span class="p">}</span>
+
+  <span class="n">attachment_config</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+    <span class="no">Spree</span><span class="o">::</span><span class="no">Image</span><span class="p">.</span><span class="nf">attachment_definitions</span><span class="p">[</span><span class="ss">:attachment</span><span class="p">][</span><span class="n">key</span><span class="p">.</span><span class="nf">to_sym</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<h3>Deploy Solidus to Heroku</h3>
+
+<p>Now commit and push your code to the Heroku repository:</p>
+<pre class="highlight shell"><code>git add .
+git commit <span class="s1">'Configure Heroku Environment'</span>
+git push heroku master
+</code></pre>
+<p>If the <code>push</code> command runs without errors you&rsquo;ll see:</p>
+<pre class="highlight shell"><code>remote:
+remote: Verifying deploy... <span class="k">done</span>.
+To https://git.heroku.com/my_ecommerce.git
+ <span class="k">*</span> <span class="o">[</span>new branch]      master -&gt; master
+</code></pre>
+<h3>Populate your remote database</h3>
+
+<p>Last but not least, you can now put your data in the database.
+Heroku CLI helps you with the command <code>heroku run</code>, that runs rake tasks
+on the deployed application.</p>
+
+<p>Migrate the database and run the seed data:</p>
+<pre class="highlight shell"><code>heroku run rake db:migrate
+heroku run rake db:seed
+</code></pre>
+<p>The seed process creates the default admin user and the basic configuration
+needed to bootstrap your eCommerce and start selling on the Internet.</p>
+
+<p>If you want to add <a href="https://github.com/solidusio/solidus/blob/master/sample/README.md">sample data</a> you can run:</p>
+<pre class="highlight shell"><code>heroku run rake spree_sample:load
+</code></pre>
+<p>Now you can open your browser and enjoy your Solidus eCommerce by visiting
+http://my_ecommerce.herokuapp.com or using the following Heroku CLI command:</p>
+<pre class="highlight shell"><code>heroku open
+</code></pre>
+<p>You can find the code used for this tutorial on this <a href="https://github.com/nebulab/solidus-on-heroku">repo</a>.</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Deploy Solidus to Heroku like a boss+http://nebulab.it/blog/deploy-solidus-to-heroku-like-a-boss/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/deploy-solidus-to-heroku-like-a-boss/&title=Deploy Solidus to Heroku like a boss">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/deploy-solidus-to-heroku-like-a-boss/&title=Deploy Solidus to Heroku like a boss&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+    <div class="cta">
+<a href="/contact-us" class="cta__content">      <h2 class="cta__content__title">
+        Need help with your Solidus store?
+      </h2>
+      <span class="cta__content__link">
+        Let's talk
+      </span>
+</a>  </div>
+
+  <section class="our-blog">
+      <h6 class="our-blog__section-title">
+        Related posts
+      </h6>
+
+    <div class="articles">
+        <article class="articles__item">
+          <h6>
+            #Code
+          </h6>
+          <h4>
+            <a href="/blog/integrate-your-solidus-store-with-external-services-using-cangaroo/">Integrate Solidus with external services using Cangaroo</a>
+          </h4>
+
+          <div class="articles__item__body">
+            <p>In this article we’ll create a simple application to show how to
+integrate and use Cangaroo to handle any external service
+integration with your Solidus store</p>
+          </div>
+
+          <div class="read-more">
+            <a href="/blog/integrate-your-solidus-store-with-external-services-using-cangaroo/">Read the full article</a>
+          </div>
+        </article>
+        <article class="articles__item">
+          <h6>
+            #Code
+          </h6>
+          <h4>
+            <a href="/blog/why-solidus/">Why Solidus?</a>
+          </h4>
+
+          <div class="articles__item__body">
+            <p>Spree or Solidus? Which OSS project Nebulab, as an agency involved in
+Ruby on Rails eCommerce development, should invest on? This blog post
+tells the story about...</p>
+          </div>
+
+          <div class="read-more">
+            <a href="/blog/why-solidus/">Read the full article</a>
+          </div>
+        </article>
+    </div>
+
+  </section>
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

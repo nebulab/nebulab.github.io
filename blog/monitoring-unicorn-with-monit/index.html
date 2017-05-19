@@ -1,0 +1,601 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Monitoring Unicorn with Monit - Nebulab</title>
+    <meta name="description" content="It’s been a while since we switched all our infrastructure from Apache2 + Passenger to Nginx + Unicorn and we’ve really been satisfied with such a choice.
+
+Unicorn...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Monitoring Unicorn with Monit - Nebulab">
+    <meta name="twitter:description" content="It’s been a while since we switched all our infrastructure from Apache2 + Passenger to Nginx + Unicorn and we’ve really been satisfied with such a choice.
+
+Unicorn...">
+    <meta name="twitter:image" content="/blog/images/articles-images/monitoring-unicorn-with-monit/unicorn-c284ad60.jpg">
+
+        <meta property="twitter:creator" content="@matteolatini">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="18 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Monitoring Unicorn with Monit - Nebulab by Matteo Latini" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/monitoring-unicorn-with-monit/" />
+    <meta property="og:image" content="/blog/images/articles-images/monitoring-unicorn-with-monit/unicorn-c284ad60.jpg" />
+    <meta property="og:description" content="It’s been a while since we switched all our infrastructure from Apache2 + Passenger to Nginx + Unicorn and we’ve really been satisfied with such a choice.
+
+Unicorn..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_monitoring-unicorn-with-monit blog_monitoring-unicorn-with-monit_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Monitoring Unicorn with Monit
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/matteo-5ece94e8.jpg" alt="Matteo" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Matteo Latini
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          18 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/monitoring-unicorn-with-monit/unicorn-c284ad60.jpg" alt="Monitoring Unicorn with Monit" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>It&rsquo;s been a while since we switched all our infrastructure from Apache2 + Passenger to Nginx + Unicorn and we&rsquo;ve really been satisfied with such a choice.</p>
+
+<p>Unicorn gives you tremendous geek power and responsibility. It may seem initially hard (it&rsquo;s so distant from that &ldquo;php feeling&rdquo; you get when working with Passenger) but once you unleash some Unicorn power, you can never go back.</p>
+
+<p>One of the most amazing things you can do with Unicorn is monitor its behavior in depth with ease and peace of mind (read UNIX Signals). To monitor a Unicorn process you can use a multitude of tools: <a href="https://github.com/arya/bluepill">bluepill</a>, <a href="https://github.com/mojombo/god/">god</a> and <a href="http://mmonit.com/monit/">monit</a>. The first two being Ruby applications while monit being a C application.</p>
+
+<p>Since we read so many horror stories about Ruby memory leaking all over that great unicorn fur, we chose monit as our main monitoring solution (not that its syntax is so much more complex than Ruby&rsquo;s).</p>
+
+<h2>Monitoring Unicorn</h2>
+
+<p>Unicorn&rsquo;s structure is simple and effective; it has a <em>&ldquo;master process&rdquo;</em> which administers a number of <em>&ldquo;worker processes&rdquo;</em> that actually serve HTTP requests. These worker processes are actually forked from the master process, this means (in a monitoring perspective) that we can not only monitor each worker individually but also the master process as a sum of resources used up by its workers.
+There is a much more in-depth article (it&rsquo;s great and you should read it): <a href="http://tomayko.com/writings/unicorn-is-unix">I like Unicorn because it&rsquo;s Unix</a>.</p>
+
+<p>We&rsquo;ll see the approach we use in each of our applications:</p>
+
+<ol>
+<li>monitor the application as a whole via the unicorn master and alert if there is any status change;</li>
+<li>monitor each worker process to gracefully kill any worker which is using up too much resources.</li>
+</ol>
+
+<p>All the examples will refer to the <em>nebulab</em> application.</p>
+
+<h3>Master</h3>
+
+<p>Monitoring the unicorn master process is simple, we should already have everything in place by default. This is the required monit configuration (<code>/etc/monit/conf.d/nebulab.monitrc</code>):</p>
+<pre class="highlight shell"><code>check process nebulab with pidfile /var/run/unicorn/nebulab/pid
+  start program <span class="s2">"/etc/init.d/nebulab start"</span>
+  stop program <span class="s2">"/etc/init.d/nebulab stop"</span>
+  <span class="k">if </span>5 restarts within 5 cycles <span class="k">then </span>timeout
+</code></pre>
+<p>Monit will then make sure that this process is always running and will email us if anything happens to the process (i.e. it gets restarted without monit&rsquo;s consensus).
+If you want to keep track of how much memory/cpu unicorn is using up as a whole, you can add some more triggers like so:</p>
+<pre class="highlight shell"><code>check process nebulab with pidfile /var/run/unicorn/nebulab/pid
+  start program <span class="s2">"/etc/init.d/nebulab start"</span>
+  stop program <span class="s2">"/etc/init.d/nebulab stop"</span>
+  <span class="k">if </span>5 restarts within 5 cycles <span class="k">then </span>timeout
+  <span class="k">if </span>totalcpu is greater than 50% <span class="k">for </span>2 cycles <span class="k">then </span>alert
+  <span class="k">if </span>totalcpu is greater than 90% <span class="k">for </span>3 cycles <span class="k">then </span>restart
+  <span class="k">if </span>totalmem is greater than 60% <span class="k">for </span>1 cycles <span class="k">then </span>restart
+</code></pre>
+<p>but we usually don&rsquo;t use those since we have many more monit configurations that monitor the system as a hole.</p>
+
+<h3>Workers</h3>
+
+<p>Monitoring the worker processes is a little bit more complicated, it requires a way of signaling a single worker that needs to shutdown after closing its last request. We also need to make monit aware of that process (we need a pid for each worker). This requires a unicorn configuration that is a bit more elaborate than the &ldquo;default&rdquo;.</p>
+
+<p>We begin by creating a pid for each worker. This can be done with the unicorn <em>after</em>fork_ hook:</p>
+<pre class="highlight ruby"><code><span class="n">after_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
+  <span class="c1"># Create worker pids too</span>
+  <span class="n">child_pid</span> <span class="o">=</span> <span class="n">server</span><span class="p">.</span><span class="nf">config</span><span class="p">[</span><span class="ss">:pid</span><span class="p">].</span><span class="nf">sub</span><span class="p">(</span><span class="sr">/pid$/</span><span class="p">,</span> <span class="s2">"worker.</span><span class="si">#{</span><span class="n">worker</span><span class="p">.</span><span class="nf">nr</span><span class="si">}</span><span class="s2">.pid"</span><span class="p">)</span>
+  <span class="nb">system</span><span class="p">(</span><span class="s2">"echo </span><span class="si">#{</span><span class="no">Process</span><span class="p">.</span><span class="nf">pid</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">#{</span><span class="n">child_pid</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<p>This ensures that, immediately after the worker process has been forked, a pidfile named <em>worker.nr.pid</em> is created (nr being the worker number).
+Here is the complete configuration file:</p>
+<pre class="highlight ruby"><code><span class="c1">##</span>
+<span class="c1"># Unicorn config at /etc/unicorn/nebulab.rb</span>
+<span class="c1"># Managed by Chef - Local Changes will be Nuked from Orbit (just to be sure)</span>
+<span class="c1">##</span>
+
+<span class="c1"># What ports/sockets to listen on, and what options for them.</span>
+<span class="n">listen</span> <span class="s1">'/var/run/unicorn/nebulab/socket'</span><span class="p">,</span> <span class="ss">:backlog</span> <span class="o">=&gt;</span> <span class="mi">100</span>
+
+<span class="n">working_directory</span> <span class="s1">'/var/www/nebulab/current'</span>
+
+<span class="c1"># What the timeout for killing busy workers is, in seconds</span>
+<span class="n">timeout</span> <span class="mi">60</span>
+
+<span class="c1"># Whether the app should be pre-loaded</span>
+<span class="n">preload_app</span> <span class="kp">true</span>
+
+<span class="c1"># How many worker processes</span>
+<span class="n">worker_processes</span> <span class="mi">2</span>
+
+<span class="k">if</span> <span class="no">GC</span><span class="p">.</span><span class="nf">respond_to?</span><span class="p">(</span><span class="ss">:copy_on_write_friendly</span><span class="o">=</span><span class="p">)</span>
+  <span class="no">GC</span><span class="p">.</span><span class="nf">copy_on_write_friendly</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="n">before_exec</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="o">|</span>
+  <span class="no">ENV</span><span class="p">[</span><span class="s1">'BUNDLE_GEMFILE'</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"/var/www/nebulab/current/Gemfile"</span>
+<span class="k">end</span>
+
+<span class="c1"># What to do before we fork a worker</span>
+<span class="n">before_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
+  <span class="n">defined?</span><span class="p">(</span><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">disconnect!</span>
+
+  <span class="nb">system</span> <span class="s2">"test -x /opt/scripts/repair_permissions_nebulab.sh &amp;&amp; /opt/scripts/repair_permissions_nebulab.sh"</span>
+
+  <span class="n">old_pid</span> <span class="o">=</span> <span class="s2">"/var/run/unicorn/nebulab/pid.oldbin"</span>
+  <span class="k">if</span> <span class="no">File</span><span class="p">.</span><span class="nf">exists?</span><span class="p">(</span><span class="n">old_pid</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">server</span><span class="p">.</span><span class="nf">pid</span> <span class="o">!=</span> <span class="n">old_pid</span>
+    <span class="k">begin</span>
+      <span class="no">Process</span><span class="p">.</span><span class="nf">kill</span><span class="p">(</span><span class="s1">'QUIT'</span><span class="p">,</span> <span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="n">old_pid</span><span class="p">).</span><span class="nf">to_i</span><span class="p">)</span>
+    <span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ENOENT</span><span class="p">,</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ESRCH</span>
+      <span class="c1"># someone else did our job for us</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># What to do after we fork a worker</span>
+<span class="n">after_fork</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="p">,</span> <span class="n">worker</span><span class="o">|</span>
+  <span class="n">defined?</span><span class="p">(</span><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">establish_connection</span>
+
+  <span class="c1"># Create worker pids too</span>
+  <span class="n">child_pid</span> <span class="o">=</span> <span class="n">server</span><span class="p">.</span><span class="nf">config</span><span class="p">[</span><span class="ss">:pid</span><span class="p">].</span><span class="nf">sub</span><span class="p">(</span><span class="sr">/pid$/</span><span class="p">,</span> <span class="s2">"worker.</span><span class="si">#{</span><span class="n">worker</span><span class="p">.</span><span class="nf">nr</span><span class="si">}</span><span class="s2">.pid"</span><span class="p">)</span>
+  <span class="nb">system</span><span class="p">(</span><span class="s2">"echo </span><span class="si">#{</span><span class="no">Process</span><span class="p">.</span><span class="nf">pid</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">#{</span><span class="n">child_pid</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1"># Where to drop a pidfile</span>
+<span class="n">pid</span> <span class="s1">'/var/run/unicorn/nebulab/pid'</span>
+
+<span class="c1"># Where stderr gets logged</span>
+<span class="n">stderr_path</span> <span class="s1">'/var/log/unicorn/nebulab/error.log'</span>
+
+<span class="c1"># Where stdout gets logged</span>
+<span class="n">stdout_path</span> <span class="s1">'/var/log/unicorn/nebulab/output.log'</span>
+
+<span class="c1"># The user/group to run unicorn as</span>
+<span class="n">user</span> <span class="s1">'www-data'</span><span class="p">,</span> <span class="s1">'www-data'</span>
+</code></pre>
+<p>We now need a way to signal each worker when to die&hellip; Since we already have an <em>init.d script</em>, will edit that to support single worker signaling. A unicorn worker can be gracefully killed by sending a <code>QUIT</code> signal, we can do it with the <em>init.d script</em>:</p>
+<pre class="highlight shell"><code><span class="c">#!/bin/sh</span>
+<span class="nb">set</span> -e
+
+<span class="c"># Include Bundler path</span>
+<span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/bin
+
+<span class="c">### Unicorn Variables ###</span>
+<span class="nv">TIMEOUT</span><span class="o">=</span>60
+<span class="nv">APP_ROOT</span><span class="o">=</span>/var/www/nebulab/current
+<span class="nv">PID_PATH</span><span class="o">=</span>/var/run/unicorn/nebulab
+<span class="nv">PID</span><span class="o">=</span><span class="nv">$PID_PATH</span>/pid
+<span class="nv">CMD</span><span class="o">=</span><span class="s2">"bundle exec unicorn -D -c /etc/unicorn/nebulab.rb -E production"</span>
+<span class="nv">INIT_CONF</span><span class="o">=</span><span class="nv">$APP_ROOT</span>/config/init.conf
+
+<span class="nv">action</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<span class="nb">set</span> -u
+
+<span class="nb">test</span> -f <span class="s2">"</span><span class="nv">$INIT_CONF</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> . <span class="nv">$INIT_CONF</span>
+
+<span class="nv">old_pid</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PID</span><span class="s2">.oldbin"</span>
+
+<span class="nb">cd</span> <span class="nv">$APP_ROOT</span> <span class="o">||</span> <span class="nb">exit </span>1
+
+sig <span class="o">()</span> <span class="o">{</span>
+  <span class="nb">test</span> -s <span class="s2">"</span><span class="nv">$PID</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> <span class="nb">kill</span> -<span class="nv">$1</span> <span class="sb">`</span>cat <span class="nv">$PID</span><span class="sb">`</span>
+<span class="o">}</span>
+
+oldsig <span class="o">()</span> <span class="o">{</span>
+  <span class="nb">test</span> -s <span class="nv">$old_pid</span> <span class="o">&amp;&amp;</span> <span class="nb">kill</span> -<span class="nv">$1</span> <span class="sb">`</span>cat <span class="nv">$old_pid</span><span class="sb">`</span>
+<span class="o">}</span>
+
+workersig <span class="o">()</span> <span class="o">{</span>
+  <span class="nv">workerpid</span><span class="o">=</span><span class="nv">$PID_PATH</span>/worker.<span class="nv">$2</span>.pid
+  <span class="nb">test</span> -s <span class="s2">"</span><span class="nv">$workerpid</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> <span class="nb">kill</span> -<span class="nv">$1</span> <span class="sb">`</span>cat <span class="nv">$workerpid</span><span class="sb">`</span>
+<span class="o">}</span>
+
+create_pid_path <span class="o">()</span> <span class="o">{</span>
+  <span class="nb">test</span> -d <span class="nv">$PID_PATH</span> <span class="o">||</span> <span class="o">(</span> mkdir -p <span class="nv">$PID_PATH</span> <span class="o">&amp;&amp;</span> chown www-data.www-data <span class="nv">$PID_PATH</span> <span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">case</span> <span class="nv">$action</span> <span class="k">in
+</span>start<span class="p">)</span>
+  create_pid_path
+  sig 0 <span class="o">&amp;&amp;</span> <span class="nb">echo</span> &gt;&amp;2 <span class="s2">"Already running"</span> <span class="o">&amp;&amp;</span> <span class="nb">exit </span>0
+  <span class="nv">$CMD</span>
+<span class="p">;;</span>
+stop<span class="p">)</span>
+  sig QUIT <span class="o">&amp;&amp;</span> <span class="nb">exit </span>0
+  <span class="nb">echo</span> &gt;&amp;2 <span class="s2">"Not running"</span>
+<span class="p">;;</span>
+force-stop<span class="p">)</span>
+  sig TERM <span class="o">&amp;&amp;</span> <span class="nb">exit </span>0
+  <span class="nb">echo</span> &gt;&amp;2 <span class="s2">"Not running"</span>
+<span class="p">;;</span>
+restart|reload<span class="p">)</span>
+  sig HUP <span class="o">&amp;&amp;</span> <span class="nb">echo </span>reloaded OK <span class="o">&amp;&amp;</span> <span class="nb">exit </span>0
+  <span class="nb">echo</span> &gt;&amp;2 <span class="s2">"Couldn't reload, starting '</span><span class="nv">$CMD</span><span class="s2">' instead"</span>
+  <span class="nv">$CMD</span>
+<span class="p">;;</span>
+upgrade<span class="p">)</span>
+  sig USR2 <span class="o">&amp;&amp;</span> <span class="nb">exit </span>0
+  <span class="nb">echo</span> &gt;&amp;2 <span class="s2">"Couldn't upgrade, starting '</span><span class="nv">$CMD</span><span class="s2">' instead"</span>
+  <span class="nv">$CMD</span>
+<span class="p">;;</span>
+status<span class="p">)</span>
+  sig 0 <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"running with pid </span><span class="sb">`</span>cat <span class="nv">$PID</span><span class="sb">`</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> <span class="nb">exit </span>0
+  <span class="nb">echo </span>stopped <span class="o">&amp;&amp;</span> <span class="nb">exit </span>1
+<span class="p">;;</span>
+kill_worker<span class="p">)</span>
+  workersig QUIT <span class="nv">$2</span> <span class="o">&amp;&amp;</span> <span class="nb">exit </span>0
+  <span class="nb">echo</span> &gt;&amp;2 <span class="s2">"Worker not running"</span>
+<span class="p">;;</span>
+reopen-logs<span class="p">)</span>
+  sig USR1
+<span class="p">;;</span>
+<span class="k">*</span><span class="p">)</span>
+  <span class="nb">echo</span> &gt;&amp;2 <span class="s2">"Usage: </span><span class="nv">$0</span><span class="s2"> &lt;start|stop|status|restart|upgrade|force-stop|reopen-logs|kill_worker&gt;"</span>
+  <span class="nb">exit </span>1
+<span class="p">;;</span>
+<span class="k">esac</span>
+</code></pre>
+<p>We added a <code>kill_worker</code> command to the init script that sends the <code>QUIT</code> signal so that we can kill a worker by running:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>/etc/init.d/nebulab kill_worker nr
+</code></pre>
+<p>where nr is the number of the worker. This will give us a way of killing a worker without worrying about lost connections and the unicorn master process will make sure to spawn a brand new worker.</p>
+
+<p>Now that we have the correct pieces in place, we can configure monit. We should have a configuration for each of the worker processes. The nebulab application will have two monit configurations (one for each worker). Below is the configuration for <code>worker 0</code>:</p>
+<pre class="highlight shell"><code>check process nebulab_worker_0 with pidfile /var/run/unicorn/nebulab/worker.0.pid
+  alert root@localhost only on <span class="o">{</span> pid <span class="o">}</span>
+  <span class="k">if </span>changed pid 2 <span class="nb">times </span>within 60 cycles <span class="k">then </span>alert
+  <span class="k">if </span>memory usage &gt; 16% <span class="k">for </span>1 cycles <span class="k">then
+    </span><span class="nb">exec</span> <span class="s2">"/etc/init.d/nebulab kill_worker 0"</span>
+  <span class="k">if </span>cpu is greater than 50% <span class="k">for </span>2 cycles <span class="k">then
+    </span><span class="nb">exec</span> <span class="s2">"/etc/init.d/nebulab kill_worker 0"</span>
+</code></pre>
+<p>This will ensure that our worker will get gracefully killed if:</p>
+
+<ul>
+<li>it takes more than 16% memory for 30 seconds</li>
+<li>it takes more than 50% cpu for 1 minute</li>
+</ul>
+
+<p>Since we expect the worker to be killed often, we don&rsquo;t want to be notified every time something happens to the workers:</p>
+<pre class="highlight shell"><code>alert root@localhost only on <span class="o">{</span> pid <span class="o">}</span>
+<span class="k">if </span>changed pid 2 <span class="nb">times </span>within 60 cycles <span class="k">then </span>alert
+</code></pre>
+<p>This will notify us only of pid changes (when the worker is killed and a new one is spawned) and  we&rsquo;ll be notified only when the pid is changed at least twice in 30 minutes. There is no need to spam our inbox, the more mail we receive, the more we risk disregarding a serious problem as &ldquo;just another of monit&rsquo;s alerts&rdquo;.
+Instead, by doing so, we only get an email when a worker goes crazy for some reason and keeps eating up cpu/memory, thus being continuously restarted.</p>
+
+<p>Once you have everything in place you should be able to restart monit and wait for the magic to happen&hellip; You can keep track of what monit is doing with the <code>monit status</code> command.</p>
+
+<h2>Additional Resources</h2>
+
+<ul>
+<li><a href="http://unicorn.bogomips.org/SIGNALS.html">Unicorn signals</a></li>
+<li><a href="http://mmonit.com/monit/documentation/monit.html">Monit documentation</a></li>
+<li>Other articles on the matter: <a href="http://www.stopdropandrew.com/2010/06/01/where-unicorns-go-to-die-watching-unicorn-workers-with-monit.html">1</a>, <a href="http://shapeshed.com/managing-unicorn-workers-with-monit/">2</a></li>
+</ul>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Monitoring Unicorn with Monit+http://nebulab.it/blog/monitoring-unicorn-with-monit/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/monitoring-unicorn-with-monit/&title=Monitoring Unicorn with Monit">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/monitoring-unicorn-with-monit/&title=Monitoring Unicorn with Monit&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

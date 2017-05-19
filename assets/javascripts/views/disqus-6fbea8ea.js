@@ -1,0 +1,1 @@
+$(function(){if($("#disqus_thread").length>0){var e=document.createElement("script");e.type="text/javascript",e.async=!0,e.src="http://nebulab.disqus.com/embed.js",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(e)}});

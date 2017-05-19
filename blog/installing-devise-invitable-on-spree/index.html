@@ -1,0 +1,491 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Installing Devise Invitable on Spree - Nebulab</title>
+    <meta name="description" content="Usually it’s easy to add a gem (not an extension) to Spree but sometimes things
+can get a little rough, devise_invitable
+is just like that, at first it might...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Installing Devise Invitable on Spree - Nebulab">
+    <meta name="twitter:description" content="Usually it’s easy to add a gem (not an extension) to Spree but sometimes things
+can get a little rough, devise_invitable
+is just like that, at first it might...">
+    <meta name="twitter:image" content="/blog/images/articles-images/installing_devise_invitable_on_spree/devise-30b7d5a0.jpg">
+
+        <meta property="twitter:creator" content="@alessio_rocco">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="9 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Installing Devise Invitable on Spree - Nebulab by Alessio Rocco" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/installing-devise-invitable-on-spree/" />
+    <meta property="og:image" content="/blog/images/articles-images/installing_devise_invitable_on_spree/devise-30b7d5a0.jpg" />
+    <meta property="og:description" content="Usually it’s easy to add a gem (not an extension) to Spree but sometimes things
+can get a little rough, devise_invitable
+is just like that, at first it might..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_installing-devise-invitable-on-spree blog_installing-devise-invitable-on-spree_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Installing Devise Invitable on Spree
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/alessio-b245ae61.jpg" alt="Alessio" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Alessio Rocco
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          9 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/installing_devise_invitable_on_spree/devise-30b7d5a0.jpg" alt="Installing Devise Invitable on Spree" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>Usually it&rsquo;s easy to add a gem (not an extension) to Spree but sometimes things
+can get a little rough, <a href="https://github.com/scambra/devise_invitable">devise_invitable</a>
+is just like that, at first it might seem easy to install, but that&rsquo;s not true,
+follow us to see how we have installed this good gem on Spree commerce.</p>
+
+<p>We recently added an &ldquo;invite a friend&rdquo; feature to a Spree ecommerce. Looking for
+a solution we didn&rsquo;t find any valid extension but we knew there was the
+<a href="https://github.com/scambra/devise_invitable">devise_invitable gem</a>.
+At first it seemed an easy task but devise_invitable didn&rsquo;t just work out of the
+box with Spree so we needed to get our hands dirty.</p>
+
+<p>Let&rsquo;s start by adding the devise_invitable gem to our Gemfile:</p>
+<pre class="highlight ruby"><code><span class="n">gem</span> <span class="s1">'devise_invitable'</span><span class="p">,</span> <span class="s1">'~&gt; 1.3'</span>
+</code></pre>
+<p>then as usual run <code>bundle install</code> and generate everything that&rsquo;s needed by
+devise_invitable:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>bundle install
+<span class="gp">$ </span>rails generate devise_invitable:install
+<span class="gp">$ </span>rails generate devise_invitable:views spree
+<span class="gp">$ </span>rails generate devise_invitable Spree::User
+<span class="gp">$ </span>rake db:migrate
+</code></pre>
+<p>Now it&rsquo;s time to make some changes to our user model so we need to decorate the
+<strong>Spree::User</strong> class and add the invitable module, the other modules come from
+<a href="https://github.com/spree/spree_auth_devise/blob/master/app/models/spree/user.rb#L6">spree<em>auth</em>devise</a>
+and as usual we can change those if we need some custom behavior.</p>
+<pre class="highlight ruby"><code><span class="c1"># app/models/spree/user_decorator.rb</span>
+
+<span class="no">Spree</span><span class="o">::</span><span class="no">User</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
+  <span class="n">devise</span> <span class="ss">:database_authenticatable</span><span class="p">,</span> <span class="ss">:registerable</span><span class="p">,</span> <span class="ss">:recoverable</span><span class="p">,</span> <span class="ss">:rememberable</span><span class="p">,</span>
+         <span class="ss">:trackable</span><span class="p">,</span> <span class="ss">:validatable</span><span class="p">,</span> <span class="ss">:encryptable</span><span class="p">,</span> <span class="ss">:invitable</span><span class="p">,</span>
+         <span class="ss">encryptor: </span><span class="s1">'authlogic_sha512'</span>
+<span class="k">end</span>
+</code></pre>
+<p>Then we run the application, go to <code>/signup</code> and add a user we can use to invite
+our friends. If we go to <code>/user/spree_user/invitation/new</code> we see a form
+for inviting new users. Here is where the trouble starts, an
+<code>uninitialized constant Spree::InvitationsController</code> exception is raised
+because devise_invitable is not under the Spree namespace.</p>
+
+<p>When working with Spree, namespace troubles are to be expected, since Spree uses
+a namespace for everything if you want to integrate something that is not an
+extension you&rsquo;ll probably end up in this situation.</p>
+
+<p>In this case we need to create a <code>Spree::InvitationsController</code> class which
+inherits from <code>Devise::InvitationsController</code>.</p>
+<pre class="highlight ruby"><code><span class="c1"># app/controllers/spree/invitations_controller.rb</span>
+
+<span class="k">class</span> <span class="nc">Spree</span><span class="o">::</span><span class="no">InvitationsController</span> <span class="o">&lt;</span> <span class="no">Devise</span><span class="o">::</span><span class="no">InvitationsController</span>
+<span class="k">end</span>
+</code></pre>
+<p>then we try to reload the previus path another exception is raised:</p>
+
+<p><code>undefined method &#39;spree_user_invitation_path&#39;</code></p>
+
+<p>this time the exception is raised because the path helper used by the
+devise<em>invitable views is wrong. To fix it we have two options, we can either
+change the devise `router</em>name` or change the path to the devise_invitable
+views.</p>
+
+<p>The first option is faster to apply but it makes devise only work in the Spree
+namespace and in some cases that is not what we want.
+If in an application is using the Spree engine alone this solution can safely be
+used, we can add this to the devise initializer:</p>
+<pre class="highlight ruby"><code><span class="c1"># config/initializers/devise.rb</span>
+
+<span class="no">Devise</span><span class="p">.</span><span class="nf">router_name</span> <span class="o">=</span> <span class="ss">:spree</span>
+<span class="no">Devise</span><span class="p">.</span><span class="nf">scoped_views</span> <span class="o">=</span> <span class="kp">true</span>
+</code></pre>
+<p>and we&rsquo;re done with this option.</p>
+
+<p>The other option needs a little more work but it&rsquo;s the one we prefer since it&rsquo;s
+more flexible and more versatile. We have to completely change the path helpers
+in the views to use the Spree namespace:</p>
+<pre class="highlight erb"><code># app/views/spree/invitations/new.html.erb
+...
+<span class="cp">&lt;%=</span> <span class="n">form_for</span> <span class="n">resource</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="n">resource_name</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="n">spree</span><span class="p">.</span><span class="nf">spree_user_invitation_path</span><span class="p">,</span> <span class="ss">:html</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:method</span> <span class="o">=&gt;</span> <span class="ss">:post</span><span class="p">}</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span>
+...
+
+# app/views/spree/invitations/edit.html.erb
+...
+<span class="cp">&lt;%=</span> <span class="n">form_for</span> <span class="n">resource</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="n">resource_name</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="n">spree</span><span class="p">.</span><span class="nf">spree_user_invitation_path</span><span class="p">,</span> <span class="ss">:html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:method</span> <span class="o">=&gt;</span> <span class="ss">:put</span> <span class="p">}</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span>
+...
+
+# app/views/spree/mailer/invitation_instructions.html.erb
+...
+<span class="nt">&lt;p&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="no">I18n</span><span class="p">.</span><span class="nf">t</span><span class="p">(</span><span class="s2">"devise.mailer.invitation_instructions.accept"</span><span class="p">),</span> <span class="n">accept_spree_user_invitation_url</span><span class="p">(</span><span class="ss">:invitation_token</span> <span class="o">=&gt;</span> <span class="vi">@token</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="nt">&lt;/p&gt;</span>
+...
+</code></pre>
+<p>The exception should be gone, we should be able to go to
+<code>/user/spree_user/invitation/new</code> see the form and send an invite.  While
+sending the email another exception is raised, devise_invitable is looking for
+the email views in the wrong path because <code>Devise.mailer</code> is set to
+<code>Spree::UserMailer</code>. This should be a simple fix:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>mv app/views/spree/mailer app/views/spree/user_mailer
+</code></pre>
+<p>At last we have to setup the <code>default_url_options</code> for the mailer,
+like we would normally do with devise:</p>
+<pre class="highlight ruby"><code><span class="c1"># config/environments/development.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">default_url_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">host: </span><span class="s1">'localhost'</span><span class="p">,</span> <span class="ss">port: </span><span class="mi">3000</span> <span class="p">}</span>
+</code></pre>
+<p>Now we should be able to go to <code>/user/spree_user/invitation/new</code> to invite a
+user, all should be good, the email is sent and the new user can click on the
+link to setup a password, but&hellip; there is no layout for these
+views, lets fix this.</p>
+
+<p>Normally we would make <code>InvitationsController</code> inherit from
+<code>Spree::StoreController</code> but because our controller already inherits from
+<code>Devise::InvitationsController</code> we need to add some modules and helpers to make
+sure it works as expected:</p>
+<pre class="highlight ruby"><code><span class="k">module</span> <span class="nn">Spree</span>
+  <span class="k">class</span> <span class="nc">InvitationsController</span> <span class="o">&lt;</span> <span class="no">Devise</span><span class="o">::</span><span class="no">InvitationsController</span>
+    <span class="kp">include</span> <span class="no">Spree</span><span class="o">::</span><span class="no">Core</span><span class="o">::</span><span class="no">ControllerHelpers</span><span class="o">::</span><span class="no">Common</span>
+    <span class="kp">include</span> <span class="no">Spree</span><span class="o">::</span><span class="no">Core</span><span class="o">::</span><span class="no">ControllerHelpers</span><span class="o">::</span><span class="no">Store</span>
+    <span class="n">helper</span> <span class="s1">'spree/base'</span><span class="p">,</span> <span class="s1">'spree/store'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>now we can just add a link to the invitation page using deface with the route
+<code>new_spree_user_invitation</code> to let your users invite their friends.</p>
+
+<p>If you want to take a look at the final result you can go
+<a href="https://github.com/nebulab/spree-invite-a-friend-example">here</a> to download the
+ demo application. In this application you can find two branches, the
+<a href="https://github.com/nebulab/spree-invite-a-friend-example/tree/solution_with_router_name">solution<em>with</em>router_name</a>
+and the <a href="https://github.com/nebulab/spree-invite-a-friend-example/tree/master">master</a>
+branch that use the last option in this article.</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Installing Devise Invitable on Spree+http://nebulab.it/blog/installing-devise-invitable-on-spree/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/installing-devise-invitable-on-spree/&title=Installing Devise Invitable on Spree">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/installing-devise-invitable-on-spree/&title=Installing Devise Invitable on Spree&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

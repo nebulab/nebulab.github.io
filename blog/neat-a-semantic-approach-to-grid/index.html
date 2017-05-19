@@ -1,0 +1,689 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>Neat - A semantic approach to Grid - Nebulab</title>
+    <meta name="description" content="As a result of a Responsive approach in Web Design and therefore to
+the need to create adaptable layouts suitable from different devices, has become
+usual, I...">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="Neat - A semantic approach to Grid - Nebulab">
+    <meta name="twitter:description" content="As a result of a Responsive approach in Web Design and therefore to
+the need to create adaptable layouts suitable from different devices, has become
+usual, I...">
+    <meta name="twitter:image" content="/blog/images/articles-images/neat-a-semantic-approach-to-grid/neat-a-semantic-approach-to-grid-e32d351b.jpg">
+
+        <meta property="twitter:creator" content="@nebulab_it">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="18 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="Neat - A semantic approach to Grid - Nebulab by Rita D'Aprano" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/neat-a-semantic-approach-to-grid/" />
+    <meta property="og:image" content="/blog/images/articles-images/neat-a-semantic-approach-to-grid/neat-a-semantic-approach-to-grid-e32d351b.jpg" />
+    <meta property="og:description" content="As a result of a Responsive approach in Web Design and therefore to
+the need to create adaptable layouts suitable from different devices, has become
+usual, I..." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_neat-a-semantic-approach-to-grid blog_neat-a-semantic-approach-to-grid_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          Neat - A semantic approach to Grid
+        </h1>
+
+        <span class="blog-post__header__author">
+
+          <span class="blog-post__header__author__name">
+            Rita D'Aprano
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          18 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/neat-a-semantic-approach-to-grid/neat-a-semantic-approach-to-grid-e32d351b.jpg" alt="Neat - A semantic approach to Grid" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>As a result of a <strong>Responsive</strong> approach in <strong>Web Design</strong> and therefore to
+the need to create adaptable layouts suitable from different devices, has become
+usual, I would say almost fundamental, to use a good Grid System.</p>
+
+<p>A <strong>Grid System</strong> is nothing but a system of <code>columns</code> separated by <code>gutters</code>
+according to which our layout&rsquo;s contents are distributed.</p>
+
+<p><img src="/blog/images/articles-images/neat-a-semantic-approach-to-grid/grid-95933048.jpg" alt="Grid-System" /></p>
+
+<p>This system helps us not only to handle layout&rsquo;s elements proportions and
+positioning in a more concrete way, but it helps us especially in the task of
+rearranging our contents according to the size of the screen, making them
+accessible from any device.</p>
+
+<p>A <em>Grid System</em> can be <em>Fluid</em> or <em>Fixed</em>, depending on how columns&#39; size is
+computed (if <code>px</code> or <code>%</code>), but the common trend is to use <strong>Fluid Grid</strong>, that
+allow us to manage dimensions according to a proportional system and so it&rsquo;s
+more easily adaptive.</p>
+
+<p>Resources about grids available online are so many and have been conceived many
+<em>frameworks</em>, each with its advantages and faults, but anyway a lot to choose
+from.</p>
+
+<h2>Choose a Grid System or D.I.Y.?</h2>
+
+<p>Many not being satisfied with &lsquo;limits&rsquo; that the choice of a system can reach,
+decided to create a Grid System themselves.
+Surely it&rsquo;s not a choice to blame, we know that many developers are more at ease
+using their own resources, however creating, optimizing and improving a
+framework requires a lot of time and effort.</p>
+
+<p>Then an important point to keep in mind is related to <em>teamwork</em>:
+in a team often happens that you have to make changes on an existing project,
+therefore it&rsquo;s very important to have a well detailed documentation, that a
+custom resource doesn&rsquo;t have.</p>
+
+<p>We should also consider all the benefits we would have choosing an <em>open-source</em>
+project, in fact its being collaborative and open to improvements by many users,
+makes it a real great choice.</p>
+
+<h2>Popular Grid Systems overview</h2>
+
+<p>Often our needs change depending on time and the project we&rsquo;re working on, then
+in the course of our job we focused on several <strong>frameworks</strong>, even so we tried
+many before getting to a satisfying choice for us:
+lately in fact we&rsquo;re using <a href="http://neat.bourbon.io/">Neat</a> for our projects, in
+addition to <a href="http://bourbon.io/">Bourbon</a>, a useful and powerful
+<em>Mixin Library</em> on which it has been developed.</p>
+
+<p>But before we talk about <em>Neat</em>, let&rsquo;s see some <strong>Grid System</strong> we used:</p>
+
+<h4>Bootstrap</h4>
+
+<p><a href="http://getbootstrap.com/">Bootstrap</a> it&rsquo;s surely the most popular and one of
+the first <em>frameworks</em> designed. In addition to a Responsive Grid System it has
+a wide infrastructure full of utilities such as CSS components, global styles
+for HTML elements and a series of jQuery plugins that may be included
+individually or all together. So a very rich base to start.</p>
+
+<p>Talking about its own <em>Grid System</em>, it has a structure like this:</p>
+<pre class="highlight html"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-6"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-6"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<p>Columns should be positioned inside a <code>.row</code> and this one inside a <code>.container</code>.
+Classes for columns follow this convention:</p>
+<pre class="highlight html"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col–{xs/sm/md/lg}–{numberOfColumns}"</span><span class="nt">&gt;</span>
+</code></pre>
+<p>Where <code>{xs/sm/md/lg}</code> respond to devices:</p>
+<pre class="highlight plaintext"><code>  xs = phones
+  sm = tablets
+  md = desktops
+  lg = large desktops
+</code></pre>
+<p>So in the example above we have two <code>div</code> by 6 columns starting from tablet
+devices <code>(sm = tablet)</code>, instead in mobile these will cover the entire row.</p>
+
+<h4>Skeleton</h4>
+
+<p><a href="http://getskeleton.com/">Skeleton</a> compared to Bootstrap is less provided, but
+not for this less helpful: besides the Responsive Grid, it provides a set of
+predefined classes for our tables, forms, buttons and lists.</p>
+<pre class="highlight html"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"one column"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"eleven columns"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<p>The grid follows a standard similar to Bootstrap with a <code>.container</code> and a
+<code>.row</code> and this rule for columns classes:</p>
+<pre class="highlight html"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"LiteralNumberOfColumns column/s"</span><span class="nt">&gt;</span>
+</code></pre>
+<p>So it has a different way for naming classes, non-numeric but literal this time:
+maybe it&rsquo;s more intuitive and immediate compared to Bootstrap but it
+has not the same potential so they are not to compare (in fact there&rsquo;s no
+definition through classes between devices).</p>
+
+<h4>Foundation</h4>
+
+<p>Also <a href="http://foundation.zurb.com/">Foundation</a> can be a useful tool, it
+provides us also Components and Plugins and going on with versions have
+increased and become many.</p>
+
+<p>Let&rsquo;s talk about Grid:</p>
+<pre class="highlight html"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"small-6 large-5 columns"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"small-6 large-7 columns"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<p>Also here there&rsquo;s a <code>.row</code> that contains columns and to define the width of a
+column we do:</p>
+<pre class="highlight html"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"small/medium/large - numberOfColumns columns"</span><span class="nt">&gt;</span>
+</code></pre>
+<p>Here <code>small/medium/large</code> refers to the device we are working on, and the
+number, for example <code>6</code>, to the amount of columns that it must cover.</p>
+
+<h2>Bourbon Neat</h2>
+
+<p>Nothing to say about these frameworks, but one of the first things that concerned
+us about <a href="http://neat.bourbon.io/">Neat</a> is the different approach used to
+define the Grid:</p>
+
+<blockquote>
+<p>“ Neat is a semantic grid framework „</p>
+</blockquote>
+
+<p><strong>Neat</strong> in fact, is built entirely with <code>Sass</code>, so it allows us to separate
+the markup from the grid definition, which occurs in stylesheets, making a more
+clean and simple code, but above all, more maintainable:
+in fact we could completely upset the style without changing each class in the
+html page.
+It also helps us in the aim to create a <strong>semantic</strong> markup because we won&rsquo;t have
+to put additional classes to declare grid.</p>
+
+<h6>html:</h6>
+<pre class="highlight html"><code><span class="nt">&lt;article&gt;</span>...<span class="nt">&lt;/article&gt;</span>
+<span class="nt">&lt;article&gt;</span>...<span class="nt">&lt;/article&gt;</span>
+</code></pre>
+<h6>scss:</h6>
+<pre class="highlight scss"><code><span class="nt">article</span> <span class="p">{</span>
+  <span class="k">@include</span> <span class="nd">span-columns</span><span class="p">(</span><span class="m">6</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+<p>It&rsquo;s a helpful approach even if we consider methodologies for code structure and
+organization like <a href="https://github.com/stubbornella/oocss/wiki">OOCSS</a>, <a href="https://smacss.com/">SMACSS</a> or <a href="https://en.bem.info/">BEM</a>;</p>
+
+<p>This kind of system in fact, enables us more easily to:</p>
+
+<ul>
+<li>separate <em>structure</em> from <em>presentation</em></li>
+<li>assign clear and meaningful <em>classes names</em>, much possible descriptive of their
+content</li>
+<li>built an architecture made from potentially <em>&ldquo;reusable&rdquo; blocks</em></li>
+</ul>
+
+<p>Also since the modular approach will bring us to have extended class names,
+sometimes also formed by compound words (for example <code>header__logo</code>, and in the
+case of <em>SMACSS</em> also of additional <em>state-rules</em> like <code>tab is-collapsed</code>), to
+put other classes for grid won&rsquo;t surely ease the understanding and the
+readability of our code.</p>
+
+<p>We have to point out that lately also in the latest versions of <em>Bootstrap</em>,
+<em>Foundation</em> and others there&rsquo;s an option for using this approach, but it seems
+like an adjustment rather than the primary trend, in fact the complete
+documentation is focused on predefined classes to be included directly in the
+html.</p>
+
+<p>The semantic approach is used also in the naming of <strong>mixin</strong> and <strong>variables</strong>
+that it provides us, which are in my opinion intuitive and well defined.</p>
+
+<p>Let&rsquo;s see basic mixins to build our <strong>Responsive Layout</strong>:</p>
+
+<h3>Mixins</h3>
+
+<h5>Outer-container</h5>
+<pre class="highlight scss"><code><span class="k">@mixin</span> <span class="nf">outer-container</span><span class="p">(</span><span class="nv">$local-max-width</span><span class="o">:</span> <span class="nv">$max-width</span><span class="p">)</span> <span class="p">{</span> <span class="nc">...</span> <span class="p">}</span>
+</code></pre>
+<p>The mixin <code>outer-container</code> is used to define the main container in which other
+elements will be placed;</p>
+
+<h6>html:</h6>
+<pre class="highlight html"><code><span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">”main-articles”</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;article&gt;</span>...<span class="nt">&lt;/article&gt;</span>
+  <span class="nt">&lt;article&gt;</span>...<span class="nt">&lt;/article&gt;</span>
+<span class="nt">&lt;/section&gt;</span>
+</code></pre>
+<h6>scss:</h6>
+<pre class="highlight scss"><code><span class="nc">.main-articles</span> <span class="p">{</span>
+  <span class="k">@include</span> <span class="nd">outer-container</span><span class="p">(</span><span class="m">1280px</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+<p>If we look at generated css we see that its purpose is to center the content
+with <code>margin-left</code> and <code>margin-right</code>, set a <code>max-width</code> and &ldquo;clean&rdquo; any <code>float</code>
+with another mixin (<code>@include clearfix</code>, a <em>Bourbon</em> mixin). The <code>max-width</code> is
+a value that can be defined in a variable, as we&rsquo;ll see later.</p>
+
+<h6>Css Output:</h6>
+<pre class="highlight css"><code><span class="nc">.main-articles</span> <span class="p">{</span>
+  <span class="nl">max-width</span><span class="p">:</span> <span class="m">1280px</span><span class="p">;</span>
+  <span class="nl">margin-left</span><span class="p">:</span> <span class="nb">auto</span><span class="p">;</span>
+  <span class="nl">margin-right</span><span class="p">:</span> <span class="nb">auto</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.main-articles</span><span class="nd">:after</span> <span class="p">{</span>
+  <span class="nl">clear</span><span class="p">:</span> <span class="nb">both</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+<h5>Span-columns</h5>
+<pre class="highlight scss"><code><span class="k">@mixin</span> <span class="nf">span-columns</span><span class="p">(</span><span class="nv">$span</span><span class="o">,</span> <span class="nv">$display</span><span class="o">:</span> <span class="nb">block</span><span class="p">)</span> <span class="p">{</span> <span class="nc">...</span> <span class="p">}</span>
+</code></pre>
+<p>With <code>Span-columns</code> we can decide the number of columns that a single element
+must cover and optionally its display property.</p>
+
+<h6>html:</h6>
+<pre class="highlight html"><code><span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">”main-articles”</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;article&gt;</span>...<span class="nt">&lt;/article&gt;</span>
+  <span class="nt">&lt;article&gt;</span>...<span class="nt">&lt;/article&gt;</span>
+<span class="nt">&lt;/section&gt;</span>
+</code></pre>
+<h6>scss:</h6>
+<pre class="highlight scss"><code><span class="nc">.main-articles</span> <span class="p">{</span>
+  <span class="k">@include</span> <span class="nd">outer-container</span><span class="p">;</span>
+
+  <span class="nt">article</span> <span class="p">{</span>
+    <span class="k">@include</span> <span class="nd">span-columns</span><span class="p">(</span><span class="m">6</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<p><img src="/blog/images/articles-images/neat-a-semantic-approach-to-grid/span-columns-25d608d8.jpg" alt="Span-columns" /></p>
+
+<h5>Shift</h5>
+<pre class="highlight scss"><code><span class="k">@mixin</span> <span class="nf">shift</span><span class="p">(</span><span class="nv">$n-columns</span><span class="o">:</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span> <span class="nc">...</span> <span class="p">}</span>
+</code></pre>
+<p><code>Shift</code> allows us to move an item by columns, then assuming that we want only an
+<code>&lt;article&gt;</code> positioned in the middle:</p>
+
+<h6>html:</h6>
+<pre class="highlight html"><code><span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">”main-articles”</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;article&gt;</span>...<span class="nt">&lt;/article&gt;</span>
+<span class="nt">&lt;/section&gt;</span>
+</code></pre>
+<h6>scss:</h6>
+<pre class="highlight scss"><code><span class="nc">.main-articles</span> <span class="p">{</span>
+  <span class="k">@include</span> <span class="nd">outer-container</span><span class="p">;</span>
+
+  <span class="nt">article</span> <span class="p">{</span>
+    <span class="k">@include</span> <span class="nd">span-columns</span><span class="p">(</span><span class="m">6</span><span class="p">);</span>
+    <span class="k">@include</span> <span class="nd">shift</span><span class="p">(</span><span class="m">3</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<p><img src="/blog/images/articles-images/neat-a-semantic-approach-to-grid/shift-a1bf965e.jpg" alt="Shift" /></p>
+
+<h3>Variables</h3>
+
+<p>Also we could change grid properties by setting some <strong>variables</strong>:</p>
+<pre class="highlight scss"><code><span class="nv">$grid-columns</span><span class="p">:</span> <span class="m">12</span> <span class="o">!</span><span class="nb">default</span><span class="p">;</span>
+</code></pre>
+<p><code>Grid-columns</code> specifies the number of columns in the grid: by default is 12 but
+this value can be changed overwriting this variable or, as we&rsquo;ll see later,
+inside a mixin where we could also choose a different number of these in each
+<code>breakpoint</code>.</p>
+<pre class="highlight scss"><code><span class="nv">$max-width</span><span class="p">:</span> <span class="m">1280px</span><span class="p">;</span>
+</code></pre>
+<p><code>Max-width</code> sets the maximum size of the grid; by default it&rsquo;s set in <code>em</code> but
+we can insert it also in <code>px</code>; so every <code>outer-container</code> will take this maximum
+size, even if you can change it separately for each container through the
+<code>outer-container()</code> mixin.</p>
+<pre class="highlight scss"><code><span class="nv">$visual-grid</span><span class="p">:</span> <span class="bp">true</span><span class="p">;</span>
+</code></pre>
+<p>A nice feature then, is related to the <code>visual-grid</code> variable, that set to
+<code>true</code>, shows a real grid on the background of our layout, something very
+useful in development.</p>
+
+<p>Later it&rsquo;s possibile to change its color, arrangement (below or above our
+contents) and opacity:</p>
+<pre class="highlight scss"><code><span class="nv">$visual-grid-color</span><span class="p">:</span> <span class="mh">#eee</span> <span class="o">!</span><span class="nb">default</span><span class="p">;</span>
+<span class="nv">$visual-grid-index</span><span class="p">:</span> <span class="n">back</span> <span class="o">!</span><span class="nb">default</span><span class="p">;</span>
+<span class="nv">$visual-grid-opacity</span><span class="p">:</span> <span class="m">0</span><span class="mi">.4</span> <span class="o">!</span><span class="nb">default</span><span class="p">;</span>
+</code></pre>
+<p>Finally we mast talk about <strong>Media queries</strong>, that are fundamentals for
+<em>Responsive Design</em>; as you can see we can define them inside a variable and
+also specify the number of columns we want to create for each of these (in the
+ex.: 12 12 4):</p>
+<pre class="highlight scss"><code><span class="nv">$desktop</span><span class="p">:</span> <span class="nf">new-breakpoint</span><span class="p">(</span><span class="n">min-width</span> <span class="m">960px</span> <span class="m">12</span><span class="p">);</span>
+<span class="nv">$tablet</span><span class="p">:</span> <span class="nf">new-breakpoint</span><span class="p">(</span><span class="n">max-width</span> <span class="m">959px</span> <span class="m">12</span><span class="p">);</span>
+<span class="nv">$mobile</span><span class="p">:</span> <span class="nf">new-breakpoint</span><span class="p">(</span><span class="n">max-width</span> <span class="m">767px</span> <span class="m">4</span><span class="p">);</span>
+</code></pre>
+<p>We can recall these variables inside the <code>media()</code> mixin whenever we want to
+make a change depending on a breakpoint:</p>
+<pre class="highlight scss"><code><span class="nc">.main-articles</span> <span class="p">{</span>
+  <span class="k">@include</span> <span class="nd">outer-container</span><span class="p">;</span>
+
+  <span class="nt">article</span> <span class="p">{</span>
+    <span class="k">@include</span> <span class="nd">span-columns</span><span class="p">(</span><span class="m">6</span><span class="p">);</span>
+
+    <span class="k">@include</span> <span class="nd">media</span><span class="p">(</span><span class="nv">$mobile</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">@include</span> <span class="nd">fill-parent</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<p>In the last example we used <code>fill-parent</code> mixin, that makes an element fits the
+entire size of its container <code>div</code>. If we set a <code>shift</code> before to this element,
+in addition to <code>fill-parent</code> we have to reset it with <code>shift(0)</code>.</p>
+<pre class="highlight scss"><code><span class="k">@include</span> <span class="nd">shift</span><span class="p">(</span><span class="m">3</span><span class="p">);</span>
+
+<span class="k">@include</span> <span class="nd">media</span><span class="p">(</span><span class="nv">$mobile</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">@include</span> <span class="nd">fill-parent</span><span class="p">;</span>
+  <span class="k">@include</span> <span class="nd">shift</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+<p>Therefore in mobile we&rsquo;ll have a 4 columns grid and each <code>&lt;article&gt;</code> will fill
+its container:</p>
+
+<p><img src="/blog/images/articles-images/neat-a-semantic-approach-to-grid/mobile-45adb5f7.jpg" alt="Mobile" /></p>
+
+<p>As you can see <strong>Neat</strong> gives us very useful tools to simplify and help our
+workflow: with few lines of code and by intuitive keywords that are easy to
+remember, we have a strong foundation to develop our <em>Responsive Layout</em>,
+creating a clean and readable code.</p>
+
+<p>Here we talked about just a part of its structure, if you&rsquo;re interested and you
+want a more detailed view you can look at its <a href="http://thoughtbot.github.io/neat-docs/latest/">Documentation</a>, in our opinion also this very
+simple and well explained, and furthermore here is a <a href="http://codepen.io/ritaD86/pen/XXzzVB">Codepen</a> with the example in action.</p>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=Neat - A semantic approach to Grid+http://nebulab.it/blog/neat-a-semantic-approach-to-grid/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/neat-a-semantic-approach-to-grid/&title=Neat - A semantic approach to Grid">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/neat-a-semantic-approach-to-grid/&title=Neat - A semantic approach to Grid&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

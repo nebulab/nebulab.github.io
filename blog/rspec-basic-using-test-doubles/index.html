@@ -1,0 +1,604 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+
+    <title>RSpec Basic: Using Test Doubles - Nebulab</title>
+    <meta name="description" content="Are you a Ruby on Rails developer new to mocks, stubs and spies? Here's an overview on RSpec test doubles.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nebulab_it">
+
+    <meta name="twitter:title" content="RSpec Basic: Using Test Doubles - Nebulab">
+    <meta name="twitter:description" content="Are you a Ruby on Rails developer new to mocks, stubs and spies? Here's an overview on RSpec test doubles.">
+    <meta name="twitter:image" content="/blog/images/articles-images/rspec-basic-using-test-doubles/rspec-cbd72722.jpg">
+
+        <meta property="twitter:creator" content="@AlbertoVena">
+      <meta name="twitter:label1" content="Reading Time">
+      <meta name="twitter:data1" content="16 minutes">
+
+    <meta property="article:publisher" content="https://www.facebook.com/teamnebulab/">
+    <meta property="og:title" content="RSpec Basic: Using Test Doubles - Nebulab by Alberto Vena" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://nebulab.it/blog/rspec-basic-using-test-doubles/" />
+    <meta property="og:image" content="/blog/images/articles-images/rspec-basic-using-test-doubles/rspec-cbd72722.jpg" />
+    <meta property="og:description" content="Are you a Ruby on Rails developer new to mocks, stubs and spies? Here's an overview on RSpec test doubles." />
+    <meta property="og:site_name" content="Nebulab" />
+    <meta property="fb:admins" content="244455778929654" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "Nebulab",
+        "url": "http://nebulab.it",
+        "logo": "http://nebulab.it/assets/images/public/logo.svg",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-085-57296",
+          "email": "hello@nebulab.it",
+          "contactType": "sales",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.facebook.com/teamnebulab",
+          "https://www.instagram.com/teamnebulab",
+          "https://twitter.com/nebulab_it",
+          "https://www.linkedin.com/company/nebulab",
+          "https://github.com/nebulab",
+          "https://plus.google.com/108922619281149094352"
+        ]
+      }
+    </script>
+
+    <link href="/assets/images/favicon.ico" rel="icon" type="image/ico" />
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-0eb6fabe.png" />
+    <script>
+  (function(d) {
+    var config = {
+      kitId: 'zgl1gmr',
+      scriptTimeout: 3000,
+      async: false
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+</script>
+
+    <!-- Hotjar Tracking Code for http://nebulab.it/ -->
+<script>
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:434151,hjsv:5};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+    <link href="/assets/stylesheets/application-b7024cb7.css" rel="stylesheet" />
+  </head>
+
+  <body class="blog blog_rspec-basic-using-test-doubles blog_rspec-basic-using-test-doubles_index">
+    <div class="menu-button">
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+  <span class="menu-button__line"></span>
+</div>
+
+<div class="full-menu is-closed">
+  <div class="full-menu__content">
+
+  <div class="full-menu__content__logo">
+<a href="../../">      <img src="/assets/images/logo_white-1233a304.svg" width="148px" height="45px" alt="Logo white" />
+</a>  </div>
+
+  <nav class="full-menu__content__navigation">
+    <ul class="full-menu__content__navigation__list">
+      <li class="full-menu__content__navigation__list__item">
+        <a href="../../" class="full-menu__content__navigation__list__item__link">Home</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/services" class="full-menu__content__navigation__list__item__link">Services</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/about-us" class="full-menu__content__navigation__list__item__link">About us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/lab" class="full-menu__content__navigation__list__item__link">Lab</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/contact-us" class="full-menu__content__navigation__list__item__link">Contact us</a>
+      </li>
+      <li class="full-menu__content__navigation__list__item">
+        <a href="/blog" class="full-menu__content__navigation__list__item__link">Blog</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="full-menu__content__contact">
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Let's talk
+        </h6>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="mailto:hello@nebulab.it" class="full-menu__content__contact__list__item__link">hello@nebulab.it</a>
+      </li>
+      <li class="full-menu__content__contact__list__item">
+        <a href="tel:+3908557296" class="full-menu__content__contact__list__item__link">(+39) 085 57296</a>
+      </li>
+    </ul>
+    <ul class="full-menu__content__contact__list">
+      <li class="full-menu__content__contact__list__item">
+        <h6>
+          Follow us
+        </h6>
+      </li>
+      <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<header class="header">
+<a href="../../">      <img src="/assets/images/logo-468b9b26.svg" width="148px" height="45px" class="logo" alt="Logo" />
+</a>
+  <nav class="main-navigation">
+  <ul class="main-navigation__list">
+    <li class="main-navigation__list__item">
+      <a href="/services" class="main-navigation__list__item__link ">Services</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/about-us" class="main-navigation__list__item__link ">About us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/lab" class="main-navigation__list__item__link ">Lab</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/contact-us" class="main-navigation__list__item__link ">Contact us</a>
+    </li>
+    <li class="main-navigation__list__item">
+      <a href="/blog" class="main-navigation__list__item__link active">Blog</a>
+    </li>
+  </ul>
+</nav>
+
+
+</header>
+
+
+      <section class="blog-page">
+    <article class="blog-post">
+      <header class="blog-post__header">
+        <h1 class="blog-post__header__title">
+          RSpec Basic: Using Test Doubles
+        </h1>
+
+        <span class="blog-post__header__author">
+            <span class="blog-post__header__author__img">
+              <img src="/blog/images/authors/alberto-f63de619.jpg" alt="Alberto" />
+            </span>
+
+          <span class="blog-post__header__author__name">
+            Alberto Vena
+          </span>
+        </span>
+
+        <span class="blog-post__header__tags">
+          #Code
+        </span>
+
+        <h6 class="blog-post__header__reading-time">
+          16 minutes Read
+        </h6>
+      </header>
+
+        <div class="blog-post__cover">
+    <img src="/blog/images/articles-images/rspec-basic-using-test-doubles/rspec-cbd72722.jpg" alt="RSpec Basic: Using Test Doubles" />
+  </div>
+
+
+      <div class="blog-post__body">
+        <p>In this blog post we&rsquo;ll focus on differences between stubs, mocks and spies
+in RSpec. We think that there&rsquo;s a lot of wording confusion for those who start
+using these testing tools and we would like to try to explain how to use them
+as <strong>simply​</strong> as possible.</p>
+
+<p>By creating some example test scenarios we&rsquo;ll present frequent contexts a
+developer can come up against while adopting more advanced test techniques.
+After reading this blog post, readers should have a more clear overview of test
+doubles and they should be able to understand how and which one of the
+presented tools to use in order to better solve the situation they are
+dealing with.</p>
+
+<h2>Definition of Test Double</h2>
+
+<p>First of all let&rsquo;s group stubs, mocks and spies into the generic definition
+of <strong>test double</strong>.</p>
+
+<blockquote>
+<p>A test double is a simplified version of an object that allows us
+to define &ldquo;fake&rdquo; methods and their return values.</p>
+</blockquote>
+
+<p>For example, suppose we have two classes: <code>User</code> and <code>Book</code>.
+A User can buy multiple books, and the logic is implemented with this code:</p>
+<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">User</span>
+  <span class="k">def</span> <span class="nf">buy</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+    <span class="n">book</span><span class="p">.</span><span class="nf">decrease_count_on_hand</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Book</span>
+  <span class="k">def</span> <span class="nf">decrease_count_on_hand</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span>
+    <span class="no">API</span><span class="o">::</span><span class="no">Stock</span><span class="o">::</span><span class="no">Book</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nb">id</span><span class="p">).</span><span class="nf">decrease_count_on_hand</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span> <span class="c1"># return true or false</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>While testing the <code>buy</code> method on User we probably don&rsquo;t want to actually call
+<code>decrease_count_on_hand</code> on Book for several reasons:</p>
+
+<ul>
+<li>it could call an external API which is generally slow;</li>
+<li>it could be hard to configure the database with factories in order to make it
+work;</li>
+<li>it is not responsibility of a User unit test to ensure that this method
+works properly;</li>
+<li>this method could not have been implemented yet on the API;</li>
+</ul>
+
+<h2>Spec without test doubles</h2>
+
+<p>How would we test the buy method without using any test double?
+Probably with something like:</p>
+<pre class="highlight ruby"><code><span class="n">context</span> <span class="s1">'#buy'</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:book</span><span class="p">)</span> <span class="p">{</span> <span class="no">Book</span><span class="p">.</span><span class="nf">create</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s1">'returns true'</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">buy</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nf">to</span> <span class="n">eq</span> <span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>Everything is correct here but does it make sense?
+What are we actually doing here?
+We are just testing the return value of <code>decrease_count_on_hand</code> method,
+which is slow and it is probably already tested elsewhere.</p>
+
+<p>We can improve our spec by testing that <code>decrease_count_on_hand</code> on Book
+is called, which is exactly what the <code>buy</code> method on <code>User</code> is doing.</p>
+
+<p>To accomplish this task we can use test doubles.
+We are going to analyze three types of usage of test doubles:
+<strong>stubs</strong>, <strong>mocks</strong> and <strong>spy</strong>.</p>
+
+<h2>Stubs</h2>
+
+<p>By definition:</p>
+
+<blockquote>
+<p>A method stub is an implementation that returns a pre-determined value.</p>
+</blockquote>
+
+<p>This means that we can say RSpec to preventively define the return value of an
+object method without actually call it.</p>
+<pre class="highlight ruby"><code><span class="n">context</span> <span class="s1">'#buy'</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:book</span><span class="p">)</span> <span class="p">{</span> <span class="no">Book</span><span class="p">.</span><span class="nf">create</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s1">'returns true'</span> <span class="k">do</span>
+    <span class="n">allow</span><span class="p">(</span><span class="n">book</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:decrease_count_on_hand</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
+
+    <span class="n">expect</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">buy</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nf">to</span> <span class="n">eq</span> <span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>This way <code>decrease_count_on_hand</code> is not actually called on Book.
+Anyway we can do better since we are creating a real Book instance without
+using it at all. Also, creating a Book instance could trigger API calls or
+other slow operations.</p>
+
+<p>What if we were able to create a fake object which we could define methods
+behavior on?</p>
+
+<p>Well, we can by defining a <code>double</code>:</p>
+<pre class="highlight ruby"><code><span class="n">context</span> <span class="s1">'#buy'</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:book</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span><span class="p">(</span><span class="s1">'fake book'</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s1">'calls decrease_count_on_hand'</span> <span class="k">do</span>
+    <span class="n">allow</span><span class="p">(</span><span class="n">book</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:decrease_count_on_hand</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
+
+    <span class="n">expect</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">buy</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nf">to</span> <span class="n">eq</span> <span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>You can imagine a <strong>double</strong> as a empty object which will only respond to those
+methods we are going to stub on it.</p>
+
+<h2>Mocks</h2>
+
+<p>Better, but often not enough: this test makes sense because we are sure that
+the <code>buy</code> method is calling <code>decrease_count_on_hand</code>. But what would happen
+if we change the <code>buy</code> method implementation so that in some case it just
+return true?</p>
+<pre class="highlight ruby"><code><span class="k">def</span> <span class="nf">buy</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+  <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="n">book</span><span class="p">.</span><span class="nf">ebook?</span>
+  <span class="n">book</span><span class="p">.</span><span class="nf">decrease_count_on_hand</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<p>Of course the test will pass. When we need to be sure a method is called
+we can <strong>mock</strong> it, which means <strong>stub</strong> it and set an expectation that it will
+be called. In this case we want to be sure <code>decrease_count_on_hand</code> is called
+on the <code>book</code> double only for some scenarios:</p>
+<pre class="highlight ruby"><code><span class="n">context</span> <span class="s1">'#buy'</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:book</span><span class="p">)</span> <span class="p">{</span> <span class="n">double</span><span class="p">(</span><span class="s1">'fake book'</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">context</span> <span class="s1">'when book is digital'</span> <span class="k">do</span>
+    <span class="n">before</span> <span class="k">do</span>
+      <span class="n">allow</span><span class="p">(</span><span class="n">book</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:ebook?</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">it</span> <span class="s1">'does not call decrease_count_on_hand'</span> <span class="k">do</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">book</span><span class="p">).</span><span class="nf">not_to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:decrease_count_on_hand</span><span class="p">)</span>
+
+      <span class="n">user</span><span class="p">.</span><span class="nf">buy</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">context</span> <span class="s1">'when book is not digital'</span> <span class="k">do</span>
+    <span class="n">before</span> <span class="k">do</span>
+      <span class="n">allow</span><span class="p">(</span><span class="n">book</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:ebook?</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="kp">false</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">it</span> <span class="s1">'calls decrease_count_on_hand'</span> <span class="k">do</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">book</span><span class="p">).</span><span class="nf">to</span> <span class="n">receive</span><span class="p">(</span><span class="ss">:decrease_count_on_hand</span><span class="p">).</span><span class="nf">with</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nf">and_return</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
+
+      <span class="n">user</span><span class="p">.</span><span class="nf">buy</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>This spec breaks if <code>decrease_count_on_hand</code> is not called with <code>1</code> as parameter.
+Also, it comes with a stubbed <code>true</code> return value. From its definition:</p>
+
+<blockquote>
+<p>A mock is a stub with a built-in expectation to be satisfied during the test.</p>
+</blockquote>
+
+<p>Note that we had to stub the <code>ebook?</code> method return value since the <strong>double</strong>
+wouldn&rsquo;t have responded to this method otherwise.</p>
+
+<h2>Spies</h2>
+
+<p>Mocking someway breaks the usual spec flows, that should be similar to the one
+described by Dan Croak in
+<a href="https://robots.thoughtbot.com/four-phase-test">Four-Phase Test</a> post.
+We are setting the expectation before executing the code that we want to verify.
+If we want to respect the &ldquo;standard&rdquo; flow we can take advantage of <strong>Spies</strong>:</p>
+
+<blockquote>
+<p>Spies are objects that by default can accept all methods without throwing any
+exception and keep an history of the methods called on them.</p>
+</blockquote>
+
+<p>We can easily revert the flow:</p>
+<pre class="highlight ruby"><code><span class="n">context</span> <span class="s1">'#buy'</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:book</span><span class="p">)</span> <span class="p">{</span> <span class="n">spy</span><span class="p">(</span><span class="s1">'fake book'</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s1">'calls decrease_count_on_hand'</span> <span class="k">do</span>
+    <span class="n">user</span><span class="p">.</span><span class="nf">buy</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">expect</span><span class="p">(</span><span class="n">book</span><span class="p">).</span><span class="nf">to</span> <span class="n">have_received</span><span class="p">(</span><span class="ss">:decrease_count_on_hand</span><span class="p">).</span><span class="nf">with</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<h2>More confidence with Verifying Doubles</h2>
+
+<p>Working with test doubles it is normal to feel like we are dealing with
+too much abstract objects, sometime it&rsquo;s like a complete fiction.
+Some <em>justified</em> questions that can pop into a developer&rsquo;s mind could be:</p>
+
+<ul>
+<li>what if I delete <code>decrease_count_on_hand</code> method from my <code>Book</code> class?</li>
+<li>what if the implementation changes and <code>quantity</code> become, for example, the
+second argument?</li>
+</ul>
+
+<p>All these questions are legitimate, especially because in both cases the answer
+would be: &ldquo;yes, tests will yet pass, wrongly.
+But when more confidence is needed we can use <strong>Verifying Doubles</strong>, another
+type of double provided by RSpec.
+<strong>Verifying Doubles</strong> are very similar to simple doubles or spies but they also
+check that methods actually exist on objects and that they are called with
+parameters consistent with method definition.
+This way you can even sleep better at night.</p>
+<pre class="highlight ruby"><code><span class="n">context</span> <span class="s1">'#buy'</span> <span class="k">do</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:book</span><span class="p">)</span> <span class="p">{</span> <span class="n">instance_spy</span><span class="p">(</span><span class="s1">'Book'</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="n">it</span> <span class="s1">'calls decrease_count_on_hand'</span> <span class="k">do</span>
+    <span class="n">user</span><span class="p">.</span><span class="nf">buy</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">expect</span><span class="p">(</span><span class="n">book</span><span class="p">).</span><span class="nf">to</span> <span class="n">have_received</span><span class="p">(</span><span class="ss">:decrease_count_on_hand</span><span class="p">).</span><span class="nf">with</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<p>For example, above code behaves exactly like the previous example but it also
+checks that <code>decrease_count_on_hand</code> is defined into Book and it accepts an
+integer as first parameter.</p>
+
+<p>Verifying doubles are available for class methods as well. You can find more
+info <a href="https://github.com/rspec/rspec-mocks/tree/master/features/verifying_doubles">here</a></p>
+
+<h2>Conclusions: How to choose the right test double?</h2>
+
+<p>Here&rsquo;s some simple rules to keep in mind when we need to choose the right test
+double in our specs:</p>
+
+<ul>
+<li>Choose to <strong>stub</strong> (using <code>allow</code>) when you want to stub something into the
+setup phase, which usually is a prerequisite of what you want to test;</li>
+<li>Choose to <strong>mock</strong> or <strong>spy</strong> (using <code>expect</code>) when the stubbed method is
+also a method you want to test;</li>
+<li>Choose to use a <strong>verifying double</strong> when you need to be sure that the method
+you are stubbing remains consistent with its real implementation.</li>
+</ul>
+
+      </div>
+
+      <div class="blog-post__share">
+  <h6 class="blog-post__share__title">
+    Share
+  </h6>
+
+  <ul class="share-links-list js-social-links">
+  <li>
+    <a href="http://twitter.com/intent/tweet?status=RSpec Basic: Using Test Doubles+http://nebulab.it/blog/rspec-basic-using-test-doubles/ via @nebulab_it">
+      <i class='fa fa-twitter'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.facebook.com/share.php?u=http://nebulab.it/blog/rspec-basic-using-test-doubles/&title=RSpec Basic: Using Test Doubles">
+      <i class='fa fa-facebook'></i>
+    </a>
+  </li>
+  <li>
+    <a href="http://www.linkedin.com/shareArticle?mini=true&url=http://nebulab.it/blog/rspec-basic-using-test-doubles/&title=RSpec Basic: Using Test Doubles&source=http://nebulab.it">
+      <i class='fa fa-linkedin'></i>
+    </a>
+  </li>
+</ul>
+
+</div>
+
+    </article>
+  </section>
+
+  
+
+
+
+  <div class="blog-post">
+    <div class="blog-post__comments">
+  <h2>Join the Conversation</h2>
+
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+  </div>
+
+
+    <footer class="footer">
+  <div class="footer__content">
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Nebulab srls
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="mailto:hello@nebulab.it" class="footer__content__list__item__link mail">hello@nebulab.it</a>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="tel:+3908557296" class="footer__content__list__item__link phone">(+39) 085 57296</a>
+      </li>
+      <li class="footer__content__list__item">
+        VAT Number: IT02112180688
+      </li>
+      <li class="footer__content__list__item">
+        <a href="/contact-us#careers" class="footer__content__list__item__link careers-link">Careers</a>
+      </li>
+      <li class="footer__content__list__item">
+        <ul class="social-icons">
+  <li class="social-icons__item">
+    <a href="http://twitter.com/nebulab_it" target="_blank" class="social-icons__item__link"><i class="fa fa-twitter"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://www.facebook.com/teamnebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-facebook"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="https://instagram.com/teamnebulab/" target="_blank" class="social-icons__item__link"><i class="fa fa-instagram"></i></a>
+  </li>
+  <li class="social-icons__item">
+    <a href="http://github.com/nebulab" target="_blank" class="social-icons__item__link"><i class="fa fa-github"></i></a>
+  </li>
+</ul>
+
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Pescara
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/maps/RGmbCp19mMD2" target="_blank" class="footer__content__list__item__link">Strada Comunale Piana, 1/1 <br> 65129 Pescara <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Latina
+        </h6>
+      </li>
+      <li class="footer__content__list__item">
+        <a href="https://goo.gl/T4pIR1" target="_blank" class="footer__content__list__item__link">Via Ufente, 20 <br> 04100 Latina <br> Italy</a>
+      </li>
+    </ul>
+    <ul class="footer__content__list">
+      <li class="footer__content__list__item">
+        <h6>
+          Start a project
+        </h6>
+      </li class="footer__content__list__item">
+        <h2>
+          <a href="/contact-us" class="footer__content__list__item__link">Let's talk</a>
+        </h2>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+
+    <div class="cookie-message">
+      <p>This site uses cookies. Continuing you accept <a href="/privacy-policy">our terms</a>. &nbsp <a class='close-button'>Close</a></p>
+    </div>
+
+    <script src="/assets/javascripts/application-fd819535.js"></script>
+      <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-25604808-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+  </body>
+</html>

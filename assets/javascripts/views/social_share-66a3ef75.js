@@ -1,0 +1,1 @@
+$(function(){$(".js-social-links a").click(function(e){var n=this.href;window.open(n,"","menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600"),e.preventDefault()})});
